@@ -1,0 +1,290 @@
+@media only screen and (max-width : 992px){
+	.hilight-box{
+		margin-top: 0px;
+	}
+
+	.hilight-box .hilight-title h2{
+		color: #2e3193;
+	}
+
+	.tour-header-bar{
+		.title-header{
+			width: auto;
+		}
+		&.result{
+			.title-header{
+				h2{
+				color: #222569;
+				}
+			}
+			.digi{
+				border-color: #222569;
+				color: #222569;
+			}
+			h3{
+				color: #222569;
+			}	
+		}
+	}
+}
+
+@media only screen and (max-width : 767px){
+	.tour-box.readmore{
+		margin-top: 20px;
+	}
+
+	.hilight-wrapper{
+		height: auto;
+		min-height: 460px;
+		.filter-bar{
+			margin-bottom: 40px;
+		}
+	}
+
+	.tours-program-box .title-header{
+		margin: 50px auto 10px auto;
+	}
+	
+	.menu-list{
+		width: 100%;
+		height: 100%;
+		background-color: darken(#222569, 15%);
+		position: fixed;
+		z-index: 999;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		padding: 15%;
+		text-align: left;
+		opacity: 0;
+		pointer-events: none;
+		li{
+			width: 100%;
+			margin: 0px;
+			a{
+				font-size: 1.2em;
+				margin: 20px 0;
+				display: block;
+			}
+		}
+		&.open{
+			transition: 0.3s all ease;
+			opacity: 1;
+			pointer-events: auto;
+		}
+		.user-profile{
+			width: 100%;
+			ul{
+				display: block;
+				width: 100%;
+				position: static;
+				background-color: transparent;
+				border: none;
+				li{
+					width: 100%;
+					margin: 0px;
+					border: none;
+					a{
+						font-size: 1.2em;
+						margin: 5px 0;
+						display: block;
+						color: white;
+					}
+				}
+			}
+		}
+	}
+
+	.menu-burger{
+		display: block;
+	}
+
+	.pagination-wrapper{
+		text-align: center;
+		padding-right: 0px;
+	}
+
+	.login-box-wrapper{
+    	left: 50%;
+	}
+
+	.form-group table{
+		thead{display: none;}
+		tbody tr{
+			border: 1px solid lightgray;
+			display: inline-block;
+			margin-bottom: 10px;
+			padding: 10px;
+			td{
+				display: block;
+				float: left;
+				padding: 0 0 10px 0;
+				&:nth-of-type(1){border-bottom: 1px solid #2e3193;}
+				&:nth-of-type(2){
+					background-color: ghostwhite;
+					padding: 0px 0px 0px 10px;
+					line-height: 30px;
+					margin-bottom: 10px;
+				}
+				&:nth-of-type(1),&:nth-of-type(2){		
+					width: 100%;
+					span{
+						display: inline-block;
+						margin-right: 10px;
+					}
+				}
+				&:nth-of-type(3),&:nth-of-type(4){
+					width: 50%;
+					padding-left: 10px;
+				}
+				&:nth-of-type(5),&:nth-of-type(6),&:nth-of-type(7){		
+					width: 33.33%;
+					float: left;
+					padding-left: 10px;
+				}
+				span{
+					display: block;
+					font-size: 0.9em;
+					line-height: 15px;
+				}
+			}
+			
+		}
+	}
+
+	.choose-step-box{
+		text-align: left;
+		.circle{
+			text-align: center;
+			margin-left: 10px;
+		}
+	}
+}
+
+@media only screen and (max-width : 480px) {
+	body{
+		font-size: 80%;
+	}
+
+	.title-bar .container{
+		background: url(../images/ico-index.png) no-repeat left 15px bottom;
+		background-size: 50px;
+		padding: 30px 0 0 90px;
+		.search-bar{
+			float: left;
+		}
+	}
+
+	.title-bar.readmore {
+		min-height: 60px;
+		.container{
+			background: url(../images/ico-readmore.png) no-repeat left 10px bottom;
+			background-size: 60px;
+			min-height: 60px;
+		}
+	}
+
+	.hilight-box .hilight-title h2,
+	.tours-program-box h2{
+		margin-left: 0px;
+	}
+
+	header{
+		.logo{
+			width: 60px;
+		}
+		.header-box{
+			padding: 0px;
+			br{
+				display: block;
+			}
+		}
+	} 
+
+	.tour-header-bar .digi{
+		padding: 6px 12px;
+	}
+
+	footer .contact{
+		float: none;	
+		margin: 15px 0;
+		height: 20px;
+		width: 100%;
+		font-size: 120%;
+		h2,p,a{
+			float: left;
+			font-size: 1em;
+		}
+		h2{
+			margin-right: 10px;
+			&:after{
+				content: ' : ';
+			}
+		}
+		&:first-of-type{
+			margin-top: 25px;
+		}
+		&:last-of-type{
+			border-right: none;
+		}
+	}
+
+	header .header-box .contact:last-of-type h2{
+		display: none;
+	}
+
+	.choose-step-box{
+	 	width: calc(100% - 30px);
+	 	margin: 0 15px;
+	}
+
+	.login-box-wrapper{
+		max-width: calc(100% - 20px);
+		input{max-width: 100%;}
+	}
+
+	header.user{
+		h1{
+			width: 100%;
+		}
+		.btn.border{
+			margin-top: 0px;
+			float: left;
+		}
+	}
+
+	.mybooking-card{
+		font-size: 120%;
+		.btn-wrapper .btn{
+			max-width: 100%;
+		}
+	}
+
+	.hotel-box {
+		select{
+			width: 100%;
+			margin: 5px 0 15px 0;
+		}
+		.location{
+			font-size: 120%;
+			width: 100%;
+			h3{width: 100%;}
+		}
+	}
+
+	.flight-box .location{
+		width: 100%;
+	}
+}
+
+@media only screen and (max-width : 320px) {
+    body{
+		font-size: 80%;
+	}
+
+	header .header-box .contact{
+		margin: 3.5px 5px;
+	}
+}
+

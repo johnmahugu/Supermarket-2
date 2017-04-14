@@ -1,0 +1,21 @@
+@mixin rotate( $deg:45deg){
+	-moz-transform: rotate($deg);
+	-webkit-transform: rotate($deg);
+	-o-transform: rotate($deg);
+	-ms-transform: rotate($deg);
+	transform: rotate($deg);
+}
+
+@mixin rotate-move($deg,$x,$y){
+	-moz-transform: rotate($deg) translate($x,$y);
+	-webkit-transform: rotate($deg) translate($x,$y);
+	-o-transform: rotate($deg) translate($x,$y);
+	-ms-transform: rotate($deg) translate($x,$y);
+	transform: rotate($deg) translate($x,$y);
+}
+
+@mixin shadow{
+	-webkit-box-shadow: 0px 2px 4px 0px rgba(50, 50, 50, 0.1);
+	-moz-box-shadow:    0px 2px 4px 0px rgba(50, 50, 50, 0.1);
+	box-shadow:         0px 2px 4px 0px rgba(50, 50, 50, 0.1);
+}
