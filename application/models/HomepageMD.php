@@ -32,9 +32,9 @@ class HomepageMD extends CI_Model {
 		$this->db->where('tour.tour_type',$type);
 		$this->db->where('CURDATE() BETWEEN tour.tour_openBooking AND tour.tour_closeBooking');
 		if($country == 'thailand'){
-			$this->db->where('countries.country_name','thailand');
+			$this->db->where('tour.tour_nationality','thailand domestic tour');
 		}else{
-			$this->db->where('countries.country_name !=','thailand');
+			$this->db->where('tour.tour_nationality !=','thailand domestic tour');
 		}
 		if($per_page != ''){
 			if($offset == ''){
@@ -115,10 +115,10 @@ class HomepageMD extends CI_Model {
 			$this->db->where('continents.continent_name',$continent);
 		}
 		if($country != ''){
-			if($country == 'Thailand'){
-				$this->db->where('countries.country_name','Thailand');
+			if($country == 'thailand'){
+				$this->db->where('tour.tour_nationality','thailand domestic tour');
 			}else if($country == 'international'){
-				$this->db->where('countries.country_name !=','Thailand');
+				$this->db->where('tour.tour_nationality !=','thailand domestic tour');
 			}else{
 				$this->db->where('countries.country_name',$country);
 			}

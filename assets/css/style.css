@@ -173,17 +173,21 @@ html, body {
   height: 100%; }
 
 div.ui-datepicker {
-  font-size: 12px;
-  font-family: Arial, sans-serif !important; }
+  font-size: 1em;
+  font-family: Arial, sans-serif !important;
+  width: 22em;
+  padding: 0px; }
 
 .ui-widget-header {
-  background: #f0763d;
+  background: #2e3797;
   color: white;
-  height: 30px; }
+  border: none; }
 
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
   background: white;
-  color: #f0763d; }
+  color: #2e3797;
+  border: 1px solid white;
+  padding: 10px; }
 
 .ui-widget-header .ui-icon {
   background: url(../images/ui-icon.png); }
@@ -195,13 +199,14 @@ div.ui-datepicker {
   background-position: -48px -192px !important; }
 
 .ui-state-hover, .ui-state-active {
-  background: #f8c014 !important;
-  color: white !important; }
+  background: #2e3797 !important;
+  color: white !important;
+  border: 1px solid white !important; }
 
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
   background: white;
-  color: #cf503f;
-  border: 1px solid #04254d; }
+  color: #2e3797;
+  border: 1px solid #2e3797; }
 
 .ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year {
   height: 20px;
@@ -209,6 +214,19 @@ div.ui-datepicker {
   color: dimgray;
   background: url(../images/select-down.png) white no-repeat right 7px top 6px;
   font-family: Arial, sans-serif !important; }
+
+.ui-corner-all, .ui-corner-bottom,
+.ui-corner-right, .ui-corner-br {
+  border-bottom-right-radius: 0px !important; }
+
+.ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl {
+  border-bottom-left-radius: 0px !important; }
+
+.ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr {
+  border-top-right-radius: 0px !important; }
+
+.ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl {
+  border-top-left-radius: 0px !important; }
 
 .owl-carousel {
   position: relative;
@@ -323,6 +341,7 @@ header {
       header .header-box .contact:nth-of-type(2) {
         padding-top: 2.5px; }
       header .header-box .contact a {
+        color: #ddd;
         vertical-align: middle;
         margin-left: 5px; }
     header .header-box .language-box {
