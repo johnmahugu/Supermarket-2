@@ -137,10 +137,10 @@ if(isset($price_range)){
 				</div>
 				<div class="col-sm-9">
 					<div id="series-package-selector" class="tour-category-box current">
-						Series Package
+						Join Group Tours
 					</div>
 					<div id="easy-package-selector" class="tour-category-box">
-						Easy Package
+						Private Group Tours
 					</div>
 				</div>
 				<div class="clear"></div>

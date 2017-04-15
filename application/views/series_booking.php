@@ -182,7 +182,30 @@ if(isset($price_range)){
 					echo '<div class="form-group"><h3>Tour package option</h3>';
 					foreach($condition->result_array() AS $row){
 				?>
-					<input type="checkbox" class="tour-option" style="width:2%;vertical-align: middle;margin-left:20px;" condition="<?=$row['tc_condition']?>" price="<?=$row['tc_price']?>"> <?=$row['tc_data'];?>
+				<div class="col-md-6">
+					<div class="checkbox-box">
+						<input type="checkbox" class="tour-option" condition="<?=$row['tc_condition']?>" price="<?=$row['tc_price']?>"><span><?=$row['tc_data'];?>
+				<?php
+					if($row['tc_condition'] == 'decrease'){
+						$result = "<b class='discount'> discount ";
+						if($package['tour_currency'] == 'THB'){
+							$result .= number_format($row['tc_price'])." Baht</b>";
+						}else{
+							$result .= "$".number_format($row['tc_price'])."</b>";
+						}
+						echo $result;
+					}else{
+						$result = "<b> add ";
+						if($package['tour_currency'] == 'THB'){
+							$result .= number_format($row['tc_price'])." Baht</b>";
+						}else{
+							$result .= "$".number_format($row['tc_price'])."</b>";
+						}
+						echo $result;
+					}
+				 ?></span>
+					</div>
+				</div>
 				<?php
 					}
 					echo '</div>';
@@ -238,7 +261,7 @@ if(isset($price_range)){
 						}
 						?>
 						<hr>
-						<div class="list">
+						<div class="list total-amount">
 							<div class="col-sm-5"><label>Total amount</label></div>
 							<div class="col-sm-4"><p id="total-amount" class="total">0</p>
 							<?php if($package['tour_currency'] == 'THB'){echo 'Baht';}else{echo 'Dollar';}?>
@@ -292,7 +315,7 @@ if(isset($price_range)){
 	        </div>
 	        <div class="modal-body text-center">
 	        	<img src="<?=base_url()?>assets/images/ico-success.png" alt="">
-	        	<h4>Something wrong</h4>
+	        	<h4>Infomations</h4>
 						<p id="alert-warning"></p>
 	        </div>
 	        <div class="modal-footer">

@@ -173,21 +173,17 @@ html, body {
   height: 100%; }
 
 div.ui-datepicker {
-  font-size: 1em;
-  font-family: Arial, sans-serif !important;
-  width: 22em;
-  padding: 0px; }
+  font-size: 12px;
+  font-family: Arial, sans-serif !important; }
 
 .ui-widget-header {
-  background: #2e3797;
+  background: #f0763d;
   color: white;
-  border: none; }
+  height: 30px; }
 
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
   background: white;
-  color: #2e3797;
-  border: 1px solid white;
-  padding: 10px; }
+  color: #f0763d; }
 
 .ui-widget-header .ui-icon {
   background: url(../images/ui-icon.png); }
@@ -199,14 +195,13 @@ div.ui-datepicker {
   background-position: -48px -192px !important; }
 
 .ui-state-hover, .ui-state-active {
-  background: #2e3797 !important;
-  color: white !important;
-  border: 1px solid white !important; }
+  background: #f8c014 !important;
+  color: white !important; }
 
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
   background: white;
-  color: #2e3797;
-  border: 1px solid #2e3797; }
+  color: #cf503f;
+  border: 1px solid #04254d; }
 
 .ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year {
   height: 20px;
@@ -214,19 +209,6 @@ div.ui-datepicker {
   color: dimgray;
   background: url(../images/select-down.png) white no-repeat right 7px top 6px;
   font-family: Arial, sans-serif !important; }
-
-.ui-corner-all, .ui-corner-bottom,
-.ui-corner-right, .ui-corner-br {
-  border-bottom-right-radius: 0px !important; }
-
-.ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl {
-  border-bottom-left-radius: 0px !important; }
-
-.ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr {
-  border-top-right-radius: 0px !important; }
-
-.ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl {
-  border-top-left-radius: 0px !important; }
 
 .owl-carousel {
   position: relative;
@@ -449,9 +431,7 @@ header {
           display: inline-block; }
     header.user.edit {
       height: 300px; }
-.contact a {
-  color: #cccccc;
-}
+
 .menu-burger {
   float: right;
   position: absolute;
@@ -910,12 +890,29 @@ footer {
     width: 100%;
     height: 30px;
     margin: 10px 0; }
+  .form-group input[type="checkbox"] {
+    width: 20px;
+    margin-right: 10px;
+    height: auto; }
   .form-group textarea {
     height: 80px;
     resize: none; }
   .form-group label {
     margin-top: 10px;
     color: #2e3193; }
+  .form-group .checkbox-box {
+    border: 1px solid #999cff;
+    padding: 15px 10px;
+    margin-top: 20px; }
+    .form-group .checkbox-box b {
+      color: #2e3193; }
+      .form-group .checkbox-box b.discount {
+        color: crimson; }
+  .form-group .label-level {
+    margin-top: 35px; }
+    .form-group .label-level .checkbox-box {
+      padding: 0 10px;
+      margin-top: 0px; }
   .form-group .note {
     font-size: 14px;
     line-height: 18px;
@@ -1027,7 +1024,7 @@ footer {
   margin-left: -30px;
   position: absolute;
   right: 65px;
-  bottom: 17px;
+  bottom: 18px;
   color: dimgray; }
 
 .list {
@@ -1065,7 +1062,7 @@ footer {
     .list.header-chart > div:last-child {
       text-align: right; }
   .list .unit {
-    bottom: 0px; }
+    bottom: 3px; }
   .list.total-amount {
     background-color: ghostwhite;
     padding: 15px 0; }
@@ -1123,7 +1120,7 @@ footer {
     background: url(../images/ico-readmore.png) no-repeat center bottom;
     background-color: #eee;
     color: #2e3193;
-    height: 20%;
+    height: 100%;
     min-height: 178px; }
     .mybooking-card .bookingno h2 {
       font-size: 1.35em;
