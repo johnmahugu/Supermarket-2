@@ -104,7 +104,8 @@ if(isset($price_range)){
 	<div class="title-bar readmore">
 		<div class="container">
 			<div class="col-sm-6">
-				<h1><?php
+				<h1>
+				<?php
 					if(empty($package['tour_name'.$lang])){
 						echo strtoupper($package['tour_name'.$lang]);
 					}else{
@@ -114,7 +115,8 @@ if(isset($price_range)){
 							echo strtoupper($package['tour_nameEN']);
 						}
 					}
-				?></h1><br>
+				?>
+				</h1><br>
 				<p><?=date_format(date_create($booking_timerange[0]['from']),"j F Y");?> - <?=date_format(date_create($booking_timerange[$last_btr]['to']),"j F Y");?></p>
 			</div>
 		</div>
