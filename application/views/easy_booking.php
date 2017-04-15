@@ -29,6 +29,7 @@ if(isset($price_range)){
 	<link rel="stylesheet" href="assets/css/font-awesome.min.css">
 
 	<link rel="stylesheet" href="assets/css/style.css">
+  <script src="<?=base_url()?>assets/js/date.format.js"></script>
 </head>
 <body>
 	<header class="readmore outbouce">
@@ -155,7 +156,7 @@ if(isset($price_range)){
 					<h3>Nationality</h3>
 					<div class="col-md-12">
 						<label for="">Tourist Nationality</label><br>
-						<select>
+						<select name="nationality">
 							<option disabled selected>Select Tourist Nationality </option>
               <?php
   						foreach($nationality->result_array() as $row){
@@ -169,7 +170,7 @@ if(isset($price_range)){
 					<h3>Tour Booking</h3>
 					<div class="col-md-6">
 						<label for="">Day Trip</label><br>
-						<select name="daytrip">
+						<select name="day-trip">
 							<option disabled selected>Select Day Trip</option>
               <?php
   						for($i=0;$i<=$last_btr;$i++){
@@ -191,7 +192,7 @@ if(isset($price_range)){
 					</div>
 					<div class="col-md-6">
 						<label for="">Tourist</label><br>
-						<input type="number" min="1" value="1" required>
+						<input name="tourist-total-num" type="number" min="1" value="1" required>
 						<span class="unit">prople</span>
 					</div>
 				</div>
@@ -200,7 +201,7 @@ if(isset($price_range)){
 		<div class="clear"></div>
 		<div class="btn-wrapper">
 			<div class="col-sm-4 col-sm-offset-4">
-				<a href="easypkg-booking2.html" class="btn bold">Next <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+				<button type="button" class="btn bold booking-infopage">Next <i class="fa fa-angle-right" aria-hidden="true"></i></button>
 			</div>
 		</div>
 	</div>
@@ -226,13 +227,65 @@ if(isset($price_range)){
 			</div>
 		</div>
 		<div class="strap"></div>
-		<form id="to-booking-info" action="series-booking-info" method="post">
+		<form id="to-booking-ticket-hotel" action="easy-booking-ticket-hotel" method="post">
 			<input name="tour-nameSlug" type="hidden" value="<?php echo $package['tour_nameSlug']?>" required>
 			<input name="booking-detail" type="hidden" value="" required>
 		</form>
 	</footer>
+  <!-- Modal -->
+	<div class="modal fade" id="popup" role="dialog">
+	  <div class="modal-dialog modal-md">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i></button>
+	      </div>
+	      <div class="modal-body text-center">
+	        <img src="<?=base_url()?>assets/images/ico-success.png" alt="">
+	        <h4>Infomations</h4>
+					<p id="alert-warning"></p>
+	      </div>
+	      <div class="modal-footer">
+	      </div>
+	    </div>
+	  </div>
+  </div>
 </body>
 <script>
-
+/*****************Submit form to booking-info page*************/
+  $('.booking-infopage').click(function(){
+    $status_nationality = false;
+    $status_dayTrip = false;
+    $status_total_tourist = false;
+    if($('select[name="nationality"]').val() == null){
+      $('#alert-warning').html('Plese select tourist nationality');
+      $('#popup').modal('show');
+    }else{
+      $status_nationality = true;
+    }
+    if($('select[name="day-trip"]').val() == null){
+      $('#alert-warning').html('Plese select your interested day trip');
+      $('#popup').modal('show');
+    }else{
+      $status_dayTrip = true;
+    }
+    if($('input[name="tourist-total-num"]').val() == null){
+      $('#alert-warning').html('Plese fill total tourist more than zero');
+      $('#popup').modal('show');
+    }else{
+      $status_total_tourist = true;
+    }
+    if($status_nationality && $status_dayTrip && $status_total_tourist){
+      $b_detail = '{"touristnationality":"'+$('select[name="nationality"]').val()+'",';
+      $datestart = $('select[name="day-trip"]').find(':selected').attr('datestart');
+      $datefinish = $('select[name="day-trip"]').find(':selected').attr('datefinish');
+      $b_detail += '"date":[{"start":"'+$datestart+'","end":"'+$datefinish+'"}],';
+      $totaltourist = $('input[name="tourist-total-num"]').val();
+      $b_detail += '"tourist":[{"totaltourist":"'+$totaltourist+'"}]}';
+      document.forms['to-booking-ticket-hotel'].submit();
+    }else{
+      $('#alert-warning').html('Something wrong. Please contact to the call-center');
+      $('#popup').modal('show');
+    }
+  });
 </script>
 </html>

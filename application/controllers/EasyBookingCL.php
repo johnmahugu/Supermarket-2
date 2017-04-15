@@ -13,7 +13,7 @@ class EasyBookingCL extends CI_Controller {
   function easy_booking(){
     /********************Initial Variable********************/
     $tour_nameSlug = $this->input->get('tour');
-    /********************Initial Variable********************/
+    /**********************Set Package***********************/
     $data['nationality'] = $this->EasyBookingMD->getNationality();
     $query = $this->EasyBookingMD->getPackage($tour_nameSlug);
     $data['package'] = $query;
@@ -23,6 +23,10 @@ class EasyBookingCL extends CI_Controller {
 
   function easy_booking_ticket_hotel(){
     /********************Initial Variable********************/
+    $tour_nameSlug = $this->input->post('tour-nameSlug');
+    $b_detail = $this->input->post('booking-detail');
+    /*********************Set Package************************/
+    $this->load->view('easy_booking_ticket_hotel');
   }
 
   function easy_booking_submit(){

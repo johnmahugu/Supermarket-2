@@ -552,7 +552,7 @@ if(isset($price_range)){
 					$('input[name=booking-detail]').val($jsonData);
 					document.forms['to-booking-info'].submit();
 				}else{
-					$('#alert-warning').html('Something wrong. Plese contact call-center.');
+					$('#alert-warning').html('Something wrong. Please contact to the call-center');
 					$('#popup').modal('show');
 				}
 			}
