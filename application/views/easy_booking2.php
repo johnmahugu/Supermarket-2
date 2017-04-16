@@ -174,8 +174,8 @@ if(isset($price_range)){
 					</div>
 					<div class="col-md-6">
 						<label for="">Tourist</label><br>
-						<input type="number" min="1" value="1" required>
-						<span class="unit">prople</span>
+						<input id="tourist-total-num" type="number" min="1" value="1">
+						<span class="unit">people</span>
 					</div>
 				</div>
         <?php
@@ -227,7 +227,7 @@ if(isset($price_range)){
                     }
                     echo '</thead><tbody>';
                     for($j=0;$j<=$count;$j++){
-                      echo '<tr><td><input type="radio" name="hotel">'.$temp[$j]['name'].'</td>';
+                      echo '<tr><td><input type="radio" name="hotel" index="'.$j.'">'.$temp[$j]['name'].'</td>';
                       echo '<td><span>Star</span> '.$temp[$j]['star'].' Stars</td>';
                       echo '<td><span>Location</span>'.$temp[$j]['location'.$lang].'</td>';
                       echo '<td class="hotel-list hotel-Twin-room-price"></td>';
@@ -247,34 +247,14 @@ if(isset($price_range)){
 					<h3>Select Room</h3>
 					<div class="form-group">
 						<div class="list">
-							<div class="amount"><p>Total <span><b>0</b> / 2</span> คน</p></div>
+							<div class="amount"><p>Total <span>0</span> / <span id="total-tourist">1</span> person</p></div>
 						</div>
-						<div class="list">
-							<div class="col-sm-5"><label>Twin / Tripple room</label></div>
-							<div class="col-sm-4 col-xs-7"><p>13,900 บาท / คน</p></div>
-							<div class="col-sm-3 col-xs-5"><input type="number" value="0" value="0" min="1" max="2"><span class="unit">คน</span></div>
-						</div>
-						<div class="list">
-							<div class="col-sm-5"><label>Single room <br><span>เพิ่ม 2500 บาท</span></label></div>
-							<div class="col-sm-4 col-xs-7"><p>16,400 บาท / คน</p></div>
-							<div class="col-sm-3 col-xs-5"><input type="number" value="0" value="0" min="1" max="2"><span class="unit">คน</span></div>
-						</div>
-						<div class="list">
-							<div class="col-sm-5"><label>Children 2-12 Year old</label><br>
-							</div>
-							<div class="col-sm-4 col-xs-7"><p>13,900 บาท / คน</p></div>
-							<div class="col-sm-3 col-xs-5"><input type="number" value="0" value="0" min="1" max="2"><span class="unit">คน</span></div>
-						</div>
-						<div class="list">
-							<div class="col-sm-5"><label>Children < 2 year old</label><br>
-							</div>
-							<div class="col-sm-4 col-xs-7"><p>13,900 บาท / คน</p></div>
-							<div class="col-sm-3 col-xs-5"><input type="number" value="0" value="0" min="1" max="2"><span class="unit">คน</span></div>
-						</div>
+            <div id="hotel-room">
+            </div>
 						<hr>
 						<div class="list total-amount">
-							<div class="col-sm-5"><label>รวมทั้งสิ้น</label></div>
-							<div class="col-sm-4"><p class="total"> 27,800 บาท</p></div>
+							<div class="col-sm-5"><label>Total Amount</label></div>
+							<div class="col-sm-4"><p class="total"> 0 <?php if($package['tour_currency'] == 'THB'){echo 'Baht';}else{echo 'Dollar';}?></p></div>
 						</div>
 					</div>
 				</div>
@@ -341,21 +321,51 @@ if(isset($price_range)){
   $('select[name="daytrip"]').change(function(){
     $price = $(this).find(':selected').attr('price');
     $('#initial-hotel-price').val($price);
-    set_room();
+    set_room(1);
   });
 
-  function set_room(){
-    $price = parseInt($('#initial-hotel-price').val().replace(',',''));
-    $count_list = $('.hotel-list').length;
-    $count_room_type = $('.roomtype').length;
-    for($i=0;$i<$count_list;$i++){
-      $('.hotel-Twin-room-price').eq($i).html(numeral($price).format('0,0'));
-      for($j=0;$j<$count_room_type;$j++){
-        $roomtype = $('.roomtype').eq($j).attr('roomtype');
-        $n_price = parseInt($('.hotel-'+$roomtype+'-price').eq($i).attr($roomtype+'-price'));
-        $n_price += $price;
-        $('.hotel-'+$roomtype+'-price').eq($i).html(numeral($n_price).format('0,0'));
-      }
+  $('#tourist-total-num').change(function(){
+    $('#total-tourist').html($(this).val());
+		$total = parseInt($(this).val(),10);
+    switch(true){
+      case ($total == 0 || $total < 0):
+        $(this).val(1);
+        set_room(1);
+        $('#alert-warning').html('Invalid number');
+        $('#popup').modal('show');
+      break;
+      case ($total == 100 || $total > 100):
+				$(this).val(1);
+				set_room(1);
+				$('#alert-warning').html('Invalid number');
+				$('#popup').modal('show');
+			break;
+    }
+  });
+
+  $('input:radio[name=hotel]').change(function(){
+    $index = $(this).attr('index');
+    
+  });
+
+  function set_room($temp){
+    switch($temp){
+      case 1:
+        $price = parseInt($('#initial-hotel-price').val().replace(',',''));
+        $count_list = $('.hotel-list').length;
+        $count_room_type = $('.roomtype').length;
+        for($i=0;$i<$count_list;$i++){
+          $('.hotel-Twin-room-price').eq($i).html(numeral($price).format('0,0'));
+          for($j=0;$j<$count_room_type;$j++){
+            $roomtype = $('.roomtype').eq($j).attr('roomtype');
+            $n_price = parseInt($('.hotel-'+$roomtype+'-price').eq($i).attr($roomtype+'-price'));
+            $n_price += $price;
+            $('.hotel-'+$roomtype+'-price').eq($i).html(numeral($n_price).format('0,0'));
+          }
+        }
+      break;
+      case 2:
+      break;
     }
   }
 </script>
