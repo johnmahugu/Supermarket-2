@@ -29,7 +29,7 @@ if(isset($price_range)){
 	<link rel="stylesheet" href="assets/css/font-awesome.min.css">
 
 	<link rel="stylesheet" href="assets/css/style.css">
-  <script src="<?=base_url()?>assets/js/date.format.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.4/numeral.min.js"></script>
 </head>
 <body>
 	<header class="readmore outbouce">
@@ -115,8 +115,8 @@ if(isset($price_range)){
 						}
 					}
 				?>
-      </h1>
-      <p><?=date_format(date_create($booking_timerange[0]['from']),"j F Y");?> - <?=date_format(date_create($booking_timerange[$last_btr]['to']),"j F Y");?></p>
+      </h1><br>
+				<p><?=date_format(date_create($booking_timerange[0]['from']),"j F Y");?> - <?=date_format(date_create($booking_timerange[$last_btr]['to']),"j F Y");?></p>
 			</div>
 		</div>
 	</div>
@@ -132,21 +132,16 @@ if(isset($price_range)){
 			</div>
 		</div>
 		<div class="row top-mg">
-			<div class="col-sm-4 no-pd">
+			<div class="col-sm-1 hidden-xs"></div>
+			<div class="col-sm-5 no-pd">
 				<a href="#" class="choose-step-box current">
 					<span class="circle"> 1 </span>
-					Select Nationality And Amount
+					Select Amount And Room
 				</a>
 			</div>
-			<div class="col-sm-4 no-pd">
+			<div class="col-sm-5 no-pd">
 				<a href="#" class="choose-step-box">
 					<span class="circle"> 2 </span>
-					Select Ticket And Hotel
-				</a>
-			</div>
-			<div class="col-sm-4 no-pd">
-				<a href="#" class="choose-step-box">
-					<span class="circle"> 3 </span>
 					Fill Tourist Infomation
 				</a>
 			</div>
@@ -154,23 +149,39 @@ if(isset($price_range)){
 		<div class="row">
 			<div class="col-xs-12">
 				<div class="form-group">
-					<h3>Nationality</h3>
-					<div class="col-md-12">
-						<label for="">Tourist Nationality</label><br>
-						<select name="nationality">
-							<option disabled selected>Select Tourist Nationality </option>
+					<h3>Tour Booking</h3>
+					<div class="col-md-6">
+						<label for="">Select Day Trip</label><br>
+						<select name="daytrip">
+							<option disabled selected>Select Day Trip</option>
               <?php
-  						foreach($nationality->result_array() as $row){
-                echo '<option value="'.$row['country_nationality'].'">'.$row['country_nationality'].'</option>';
+  						for($i=0;$i<=$last_btr;$i++){
+                //if(date('Y-m-d') <= $booking_timerange[$i]['to']){
+  								echo '<option datestart="'.$booking_timerange[$i]['from'].'" datefinish="'.$booking_timerange[$i]['to'].'" price="'.$booking_timerange[$i]['price'].'">';
+  								$open_booking = date_format(date_create($booking_timerange[$i]['from']),"d M Y");
+  								$close_booking = date_format(date_create($booking_timerange[$i]['to']),"d M Y");
+  								echo '<td>'.$open_booking." - ".$close_booking.'</td>';
+  								if($package['tour_currency'] == 'THB'){
+  									echo '<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.number_format($booking_timerange[$i]['price']).' Baht</td>';
+  								}else{
+  									echo '<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$'.number_format($booking_timerange[$i]['price']).'</td>';
+  								}
+  								echo '</option>';
+  							//}
               }
               ?>
 						</select>
 					</div>
+					<div class="col-md-6">
+						<label for="">Tourist</label><br>
+						<input type="number" min="1" value="1" required>
+						<span class="unit">prople</span>
+					</div>
 				</div>
-				<?php
-				if($condition->num_rows() > 0){
+        <?php
+				if($condition_option->num_rows() > 0){
 					echo '<div class="form-group"><h3>Tour package option</h3>';
-					foreach($condition->result_array() AS $row){
+					foreach($condition_option->result_array() AS $row){
 				?>
 				<div class="col-md-6">
 					<div class="checkbox-box">
@@ -202,33 +213,69 @@ if(isset($price_range)){
 				}
 				?>
 				<div class="form-group">
-					<h3>Tour Booking</h3>
-					<div class="col-md-6">
-						<label for="">Day Trip</label><br>
-						<select name="day-trip">
-							<option disabled selected>Select Day Trip</option>
-              <?php
-  						for($i=0;$i<=$last_btr;$i++){
-                //if(date('Y-m-d') <= $booking_timerange[$i]['to']){
-  								echo '<option datestart="'.$booking_timerange[$i]['from'].'" datefinish="'.$booking_timerange[$i]['to'].'">';
-  								$open_booking = date_format(date_create($booking_timerange[$i]['from']),"d M Y");
-  								$close_booking = date_format(date_create($booking_timerange[$i]['to']),"d M Y");
-  								echo '<td>'.$open_booking." - ".$close_booking.'</td>';
-  								if($package['tour_currency'] == 'THB'){
-  									echo '<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.number_format($booking_timerange[$i]['price']).' Baht</td>';
-  								}else{
-  									echo '<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$'.number_format($booking_timerange[$i]['price']).'</td>';
-  								}
-  								echo '</option>';
-  							//}
-              }
-              ?>
-						</select>
-					</div>
-					<div class="col-md-6">
-						<label for="">Tourist</label><br>
-						<input name="tourist-total-num" type="number" min="1" value="1" required>
-						<span class="unit">prople</span>
+					<h3>Select Hotel</h3>
+					<div class="col-md-12">
+                  <?php
+        					if(isset($condition_hotel)){
+                    $temp = json_decode($condition_hotel,true);
+                    $count = count($temp)-1;
+                    $count2 = count($temp[0]['room'])-1;
+                    echo '<table><thead><tr><td>Hotel Name</td><td>Star</td><td>Location</td><td>Price / Person</td>';
+                    for($i=0;$i<=$count2;$i++){
+                      $roomtype = str_replace(' ','-',$temp[0]['room'][$i]['roomtype']);
+                      echo '<td class="roomtype" roomtype="'.$roomtype.'">'.$temp[0]['room'][$i]['roomtype'].'</td>';
+                    }
+                    echo '</thead><tbody>';
+                    for($j=0;$j<=$count;$j++){
+                      echo '<tr><td><input type="radio" name="hotel">'.$temp[$j]['name'].'</td>';
+                      echo '<td><span>Star</span> '.$temp[$j]['star'].' Stars</td>';
+                      echo '<td><span>Location</span>'.$temp[$j]['location'.$lang].'</td>';
+                      echo '<td class="hotel-list hotel-Twin-room-price"></td>';
+                      for($k=0;$k<=$count2;$k++){
+                        $slug = str_replace(' ','-',$temp[$j]['room'][$k]['roomtype']);
+                        echo '<td class="hotel-'.$slug.'-price" '.$slug.'-price="'.$temp[$j]['room'][$k]['price'].'">'.number_format($package['tour_startPrice']+$temp[$j]['room'][$k]['price']).'</td></tr>';
+                      }
+                    }
+                  }
+                  ?>
+								</tbody>
+							</table>
+						</div>
+				</div>
+
+				<div class="form-group">
+					<h3>Select Room</h3>
+					<div class="form-group">
+						<div class="list">
+							<div class="amount"><p>Total <span><b>0</b> / 2</span> คน</p></div>
+						</div>
+						<div class="list">
+							<div class="col-sm-5"><label>Twin / Tripple room</label></div>
+							<div class="col-sm-4 col-xs-7"><p>13,900 บาท / คน</p></div>
+							<div class="col-sm-3 col-xs-5"><input type="number" value="0" value="0" min="1" max="2"><span class="unit">คน</span></div>
+						</div>
+						<div class="list">
+							<div class="col-sm-5"><label>Single room <br><span>เพิ่ม 2500 บาท</span></label></div>
+							<div class="col-sm-4 col-xs-7"><p>16,400 บาท / คน</p></div>
+							<div class="col-sm-3 col-xs-5"><input type="number" value="0" value="0" min="1" max="2"><span class="unit">คน</span></div>
+						</div>
+						<div class="list">
+							<div class="col-sm-5"><label>Children 2-12 Year old</label><br>
+							</div>
+							<div class="col-sm-4 col-xs-7"><p>13,900 บาท / คน</p></div>
+							<div class="col-sm-3 col-xs-5"><input type="number" value="0" value="0" min="1" max="2"><span class="unit">คน</span></div>
+						</div>
+						<div class="list">
+							<div class="col-sm-5"><label>Children < 2 year old</label><br>
+							</div>
+							<div class="col-sm-4 col-xs-7"><p>13,900 บาท / คน</p></div>
+							<div class="col-sm-3 col-xs-5"><input type="number" value="0" value="0" min="1" max="2"><span class="unit">คน</span></div>
+						</div>
+						<hr>
+						<div class="list total-amount">
+							<div class="col-sm-5"><label>รวมทั้งสิ้น</label></div>
+							<div class="col-sm-4"><p class="total"> 27,800 บาท</p></div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -236,11 +283,11 @@ if(isset($price_range)){
 		<div class="clear"></div>
 		<div class="btn-wrapper">
 			<div class="col-sm-4 col-sm-offset-4">
-				<button type="button" class="btn bold booking-infopage">Next <i class="fa fa-angle-right" aria-hidden="true"></i></button>
+				<a href="booking2.html" class="btn bold">Next <i class="fa fa-angle-right" aria-hidden="true"></i></a>
 			</div>
 		</div>
 	</div>
-  <footer>
+	<footer>
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-4 col-xs-12">
@@ -252,18 +299,18 @@ if(isset($price_range)){
 				<div class="col-sm-4 col-sm-offset-4 col-xs-12">
 					<div class="contact">
 						<h2>Add Line</h2>
-						<a href="http://line.me/ti/p/~bankzahaplus"><img src="<?=base_url()?>assets/images/ico-line.png" alt=""></a>
+						<a href="#"><img src="assets/images/ico-line.png" alt=""></a>
 					</div>
 					<div class="contact">
 						<h2>Contact Us</h2>
-						<p><a href="tel:0875012500">02-222-2222</a></p>
+						<p>02-222-2222</p>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="strap"></div>
-		<form id="to-booking-ticket-hotel" action="easy-booking-ticket-hotel" method="post">
-			<input name="tour-nameSlug" type="hidden" value="<?php echo $package['tour_nameSlug']?>" required>
+    <form id="to-booking-ticket-hotel" action="easy-booking-ticket-hotel" method="post">
+			<input name="tour-nameSlug" type="hidden" value="<?=$package['tour_nameSlug']?>" required>
 			<input name="booking-detail" type="hidden" value="" required>
 		</form>
 	</footer>
@@ -284,48 +331,32 @@ if(isset($price_range)){
 	    </div>
 	  </div>
   </div>
+  <input type="hidden" id="initial-hotel-price" value="<?=number_format($package['tour_startPrice'])?>">
 </body>
 <script>
-/*****************Submit form to booking-info page*************/
-  $('.booking-infopage').click(function(){
-    $status_nationality = false;
-    $status_dayTrip = false;
-    $status_total_tourist = false;
-    if($('select[name="nationality"]').val() == null){
-      $('#alert-warning').html('Plese select tourist nationality');
-      $('#popup').modal('show');
-    }else{
-			if($('select[name="day-trip"]').val() == null){
-	      $('#alert-warning').html('Plese select your interested day trip');
-	      $('#popup').modal('show');
-	    }else{
-				if($('input[name="tourist-total-num"]').val() == null){
-		      $('#alert-warning').html('Plese fill total tourist more than zero');
-		      $('#popup').modal('show');
-		    }else{
-					$b_detail = '{"touristnationality":"'+$('select[name="nationality"]').val()+'",';
-		      $datestart = $('select[name="day-trip"]').find(':selected').attr('datestart');
-		      $datefinish = $('select[name="day-trip"]').find(':selected').attr('datefinish');
-		      $b_detail += '"date":[{"start":"'+$datestart+'","end":"'+$datefinish+'"}],';
-		      $totaltourist = $('input[name="tourist-total-num"]').val();
-		      $b_detail += '"tourist":[{"totaltourist":"'+$totaltourist+'"}],';
-					$tour_option = $('input.tour-option:checked');
-					if($tour_option.length > 0){
-						$b_detail += '"option":[';
-						$tour_option.each(function(i){
-							$b_detail += '{"condition":"'+$(this).attr('condition')+'","info":"'+$(this).attr('info')+'","price":"'+$(this).attr('price')+'"}';
-							if(i != $tour_option.length-1){
-								$b_detail += ',';
-							}
-						});
-						$b_detail += ']';
-					}
-					$b_detail += '}';
-					$('input[name="booking-detail"]').val($b_detail);
-					document.forms['to-booking-ticket-hotel'].submit();
-		    }
-	    }
-    }
+  $(document).ready(function(){
+    $('.hotel-Twin-room-price').html($('#initial-hotel-price').val());
   });
+
+  $('select[name="daytrip"]').change(function(){
+    $price = $(this).find(':selected').attr('price');
+    $('#initial-hotel-price').val($price);
+    set_room();
+  });
+
+  function set_room(){
+    $price = parseInt($('#initial-hotel-price').val().replace(',',''));
+    $count_list = $('.hotel-list').length;
+    $count_room_type = $('.roomtype').length;
+    for($i=0;$i<$count_list;$i++){
+      $('.hotel-Twin-room-price').eq($i).html(numeral($price).format('0,0'));
+      for($j=0;$j<$count_room_type;$j++){
+        $roomtype = $('.roomtype').eq($j).attr('roomtype');
+        $n_price = parseInt($('.hotel-'+$roomtype+'-price').eq($i).attr($roomtype+'-price'));
+        $n_price += $price;
+        $('.hotel-'+$roomtype+'-price').eq($i).html(numeral($n_price).format('0,0'));
+      }
+    }
+  }
 </script>
 </html>
