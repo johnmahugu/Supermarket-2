@@ -32,6 +32,15 @@ class EasyBookingCL extends CI_Controller {
     $this->load->view('easy_booking2', $data);
   }
 
+  function get_hotel_room(){
+    $slug = $this->input->post('slug');
+    $index = $this->input->post('index');
+    $query = $this->EasyBookingMD->getHotelRoom($slug);
+    $temp = json_decode($query->row()->tc_data,true);
+    $data['room'] = $temp[$index]['room'];
+    echo json_encode($data['room']);
+  }
+
   function easy_booking_ticket_hotel(){
     /********************Initial Variable********************/
     if(!empty($this->input->post('tour-nameSlug'))){

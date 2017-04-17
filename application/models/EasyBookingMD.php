@@ -39,6 +39,15 @@ class EasyBookingMD extends CI_Model {
 		return $this->db->get();
 	}
 
+	function getHotelRoom($tour_nameSlug){
+		$this->db->select("tour_condition.tc_data");
+		$this->db->from('tour');
+		$this->db->join('tour_condition','tour.tour_id = tour_condition.tour_id','inner');
+		$this->db->where('tour_condition.tc_type','hotel');
+		$this->db->where('tour.tour_nameSlug',$tour_nameSlug);
+		return $this->db->get();
+	}
+
 	function getConditionHotel($tour_nameSlug){
 		$this->db->select("tour_condition.tc_data");
 		$this->db->from('tour');

@@ -161,11 +161,7 @@ if(isset($price_range)){
   								$open_booking = date_format(date_create($booking_timerange[$i]['from']),"d M Y");
   								$close_booking = date_format(date_create($booking_timerange[$i]['to']),"d M Y");
   								echo '<td>'.$open_booking." - ".$close_booking.'</td>';
-  								if($package['tour_currency'] == 'THB'){
-  									echo '<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.number_format($booking_timerange[$i]['price']).' Baht</td>';
-  								}else{
-  									echo '<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$'.number_format($booking_timerange[$i]['price']).'</td>';
-  								}
+  								echo '<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.number_format($booking_timerange[$i]['price']).' '.$package['tour_currency'].'</td>';
   								echo '</option>';
   							//}
               }
@@ -188,21 +184,9 @@ if(isset($price_range)){
 						<input type="checkbox" class="tour-option" condition="<?=$row['tc_condition']?>" info="<?=$row['tc_data']?>" price="<?=$row['tc_price']?>"><span><?=$row['tc_data'];?>
 				<?php
 					if($row['tc_condition'] == 'decrease'){
-						$result = "<b class='discount'> discount ";
-						if($package['tour_currency'] == 'THB'){
-							$result .= number_format($row['tc_price'])." Baht</b>";
-						}else{
-							$result .= "$".number_format($row['tc_price'])."</b>";
-						}
-						echo $result;
+						echo "<b class='discount'> discount ".number_format($row['tc_price'])." ".$package['tour_currency']."</b>";
 					}else{
-						$result = "<b> add ";
-						if($package['tour_currency'] == 'THB'){
-							$result .= number_format($row['tc_price'])." Baht</b>";
-						}else{
-							$result .= "$".number_format($row['tc_price'])."</b>";
-						}
-						echo $result;
+						echo "<b> add ".number_format($row['tc_price'])." ".$package['tour_currency']."</b>";
 					}
 				 ?></span>
 					</div>
@@ -254,7 +238,7 @@ if(isset($price_range)){
 						<hr>
 						<div class="list total-amount">
 							<div class="col-sm-5"><label>Total Amount</label></div>
-							<div class="col-sm-4"><p class="total"> 0 <?php if($package['tour_currency'] == 'THB'){echo 'Baht';}else{echo 'Dollar';}?></p></div>
+							<div class="col-sm-4"><p class="total">0</p><p><?=$package['tour_currency']?></p></div>
 						</div>
 					</div>
 				</div>
@@ -263,7 +247,7 @@ if(isset($price_range)){
 		<div class="clear"></div>
 		<div class="btn-wrapper">
 			<div class="col-sm-4 col-sm-offset-4">
-				<a href="booking2.html" class="btn bold">Next <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+				<button type="button" class="btn bold">Next <i class="fa fa-angle-right" aria-hidden="true"></i></a>
 			</div>
 		</div>
 	</div>
@@ -311,7 +295,9 @@ if(isset($price_range)){
 	    </div>
 	  </div>
   </div>
-  <input type="hidden" id="initial-hotel-price" value="<?=number_format($package['tour_startPrice'])?>">
+	<input id="tour-nameSlug" type="hidden" value="<?php echo $package['tour_nameSlug']?>">
+  <input id="initial-hotel-price" type="hidden" value="<?=number_format($package['tour_startPrice'])?>">
+	<input id="currency" type="hidden" value="<?=$package['tour_currency']?>">
 </body>
 <script>
   $(document).ready(function(){
@@ -321,7 +307,8 @@ if(isset($price_range)){
   $('select[name="daytrip"]').change(function(){
     $price = $(this).find(':selected').attr('price');
     $('#initial-hotel-price').val($price);
-    set_room(1);
+    set_hotel(1);
+		route();
   });
 
   $('#tourist-total-num').change(function(){
@@ -330,25 +317,100 @@ if(isset($price_range)){
     switch(true){
       case ($total == 0 || $total < 0):
         $(this).val(1);
-        set_room(1);
+				$('#total-tourist').html(1);
+        set_hotel(1);
         $('#alert-warning').html('Invalid number');
         $('#popup').modal('show');
       break;
       case ($total == 100 || $total > 100):
 				$(this).val(1);
-				set_room(1);
+				$('#total-tourist').html(1);
+				set_hotel(1);
 				$('#alert-warning').html('Invalid number');
 				$('#popup').modal('show');
 			break;
     }
+		route();
+		$('.amount').find('span').eq(0).html(0);
   });
 
   $('input:radio[name=hotel]').change(function(){
-    $index = $(this).attr('index');
-    
+		route();
   });
 
-  function set_room($temp){
+	function route(){
+		$daytrip = $('select[name="daytrip"]').find(':selected').attr('price');
+		$index_hotel = $('input:radio[name=hotel]:checked').attr('index');
+		$status_daytrip = false;
+		if($daytrip != undefined){
+			$status_daytrip = true;
+		}
+		$status_hotel = false;
+		if($index_hotel != undefined){
+			$status_hotel = true;
+		}
+		if($status_daytrip && $status_hotel){
+			$slug = $('#tour-nameSlug').val();
+			get_room($slug,$index_hotel);
+		}
+	}
+
+	function get_room($slug,$index_hotel){
+		$.ajax({
+			type: 'POST',
+			async : false,
+			url:'/get-hotel-room',
+			data:{
+				'slug': $slug,
+				'index': $index_hotel
+				},
+			dataType: 'json',
+			success:function(data){
+				$result = listRoom(data);
+				$('#hotel-room').html($result);
+				$('.tourist-num').change(function(){
+					$tourist_total_num = $('#tourist-total-num').val();
+					$tourist_total = 0;
+					$count = $('.tourist-num').length;
+					for($i=0;$i<$count;$i++){
+						$tourist_total += parseInt($('.tourist-num').eq($i).val(),10);
+						if($tourist_total>$tourist_total_num){
+							$('.tourist-num').eq($i).val(0);
+							break;
+						}
+					}
+					set_max($tourist_total_num);
+					sum_amount();
+				});
+			}
+		});
+	}
+
+	function listRoom(data){
+		$result = '';
+		$twin_price = $('#initial-hotel-price').val();
+		$currency = $('#currency').val();
+		$ck_people = parseInt($('#tourist-total-num').val(),10);
+		if($ck_people > 1){
+			$result += '<div class="list">';
+			$result += '<div class="col-sm-5"><label>Twin / Tripple room</label></div>';
+			$result += '<div class="col-sm-4 col-xs-7"><p>'+numeral($twin_price).format('0,0')+' '+$currency+' / people</p></div>';
+			$result += '<div class="col-sm-3 col-xs-5"><input class="tourist-num" type="number" value="0" min="0" max="1" price="'+$twin_price+'"><span class="unit">people</span></div>';
+			$result += '</div>';
+		}
+		$twin_price = parseInt($twin_price.replace(',',''),10);
+		for($i in data){
+			$result += '<div class="list">';
+			$n_price = $twin_price+parseInt(data[$i]['price'],10);
+			$result += '<div class="col-sm-5"><label>'+data[$i]['roomtype']+'</label></div>';
+			$result += '<div class="col-sm-4 col-xs-7"><p>'+numeral($n_price).format('0,0')+' '+$currency+' / prople</p></div>';
+			$result += '<div class="col-sm-3 col-xs-5"><input class="tourist-num" type="number" value="0" min="0" max="1" price="'+$n_price+'"><span class="unit">people</span></div>';
+			$result += '</div>';
+		}
+		return $result;
+	}
+
+  function set_hotel($temp){
     switch($temp){
       case 1:
         $price = parseInt($('#initial-hotel-price').val().replace(',',''));
@@ -368,5 +430,32 @@ if(isset($price_range)){
       break;
     }
   }
+
+	function set_max($tourist_num){
+		$max_left = 0;
+		$use_left = 0;
+		$count = $('.tourist-num').length;
+		for($i=0;$i<$count;$i++){
+			$use_left += parseInt($('.tourist-num').eq($i).val(),10);
+		}
+		$max_left = $tourist_num-$use_left;
+		for($i=0;$i<$count;$i++){
+			$value = parseInt($('.tourist-num').eq($i).val(),10);
+			$max = $value+$max_left;
+			$('.tourist-num').eq($i).attr('max',$max);
+		}
+		$('.amount').find('span').eq(0).html($use_left);
+	}
+
+	function sum_amount(){
+		$total_amount = 0;
+		$count = $('.tourist-num').length;
+		for($i=0;$i<$count;$i++){
+			$num = parseInt($('.tourist-num').eq($i).val(),10);
+			$price = parseInt($('.tourist-num').eq($i).attr('price'),10);
+			$total_amount += $num*$price;
+		}
+		$('.total').html(numeral($total_amount).format('0,0'));
+	}
 </script>
 </html>

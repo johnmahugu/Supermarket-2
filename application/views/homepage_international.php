@@ -196,7 +196,7 @@ if(isset($price_range)){
 		<div class="hilight-box row">
 			<div class="hilight-title">
 				<div class="col-md-12">
-					<h2>HILIGHT PROGRAM<br>
+					<h2>HIGHLIGHT PROGRAM<br>
 					<span>โปรแกรมทัวร์แนะนำ</span></h2>
 				</div>
 			</div>
