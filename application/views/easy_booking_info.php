@@ -67,8 +67,8 @@
 	<div class="title-bar readmore">
 		<div class="container">
 			<div class="col-sm-6">
-				<h1>EASY PACKAGE TOUR EXAMPLE</h1><br>
-				<p>ตลอดเดือน ก.ค.-ก.ย. 59</p>
+				<h1>EASY SMILE OF MYANMAR 2</h1><br>
+				<p>ตลอดเดือน ก.ค. - ก.ย. 59</p>
 			</div>
 		</div>
 	</div>
@@ -84,21 +84,16 @@
 			</div>
 		</div>
 		<div class="row top-mg">
-			<div class="col-sm-4 no-pd">
-				<a href="#" class="choose-step-box current check">
+			<div class="col-sm-1 hidden-xs"></div>
+			<div class="col-sm-5 no-pd">
+				<a href="booking.html" class="choose-step-box current check">
 					<span class="circle"> <i class="fa fa-check" aria-hidden="true"></i> </span>
-					เลือกสัญชาติและจำนวน
+					เลือกจำนวนและห้องพัก
 				</a>
 			</div>
-			<div class="col-sm-4 no-pd">
-				<a href="#" class="choose-step-box current check">
-					<span class="circle"> <i class="fa fa-check" aria-hidden="true"></i> </span>
-					เลือกตั๋วและโรงแรม
-				</a>
-			</div>
-			<div class="col-sm-4 no-pd">
+			<div class="col-sm-5 no-pd">
 				<a href="#" class="choose-step-box current">
-					<span class="circle"> 3 </span>
+					<span class="circle"> 2 </span>
 					กรอกข้อมูลผู้เดินทาง
 				</a>
 			</div>
@@ -107,7 +102,11 @@
 			<div class="col-xs-12">
 				<div class="form-group">
 					<h3>ข้อมูลส่วนตัว</h3>
-					<div id="">
+					<div id="checkaccount" class="btn-wrapper">
+						<a href="signin.html" class="btn">เคยใช้บริการมาก่อน</a>
+						<div class="btn border">ไม่เคยมีบัญชีผู้ใช้งาน</div>
+					</div>
+					<div id="noaccount">
 						<div class="col-md-6">
 							<label for="">ชื่อ - นามสกุล *</label><br>
 							<input type="text" required><br>
@@ -129,7 +128,8 @@
 						<div class="col-md-6">
 							<label for="">Passport Image *</label><br>
 							<div class="upload">
-								<input type="file" required ><br>
+								<img src="assets/images/ico-passport.png" alt="">
+								<input class="img" name="img" type="file" required ><br>
 							</div>
 						</div>
 						<div class="col-md-6">
@@ -236,6 +236,40 @@
 	</footer>
 </body>
 <script>
+	$('#seemore').click(function() {
+		$('.tour-date').toggleClass('current');
+		if($(this).text()=="See More"){
+			$(this).text('Hide');
+		}else{
+			$(this).text('See More');
+		}
+	});
+	$('.menu-burger').click(function(){
+		$('.menu-burger , .menu-list').toggleClass('open');
+	});
 
+	$('#checkaccount .btn.border').click(function(){
+		$(this).closest('#checkaccount').addClass('hide');
+		$('#noaccount').fadeIn(500);
+	});
+
+	$('.upload img').click(function(){
+		$(this).siblings('.img').click();
+	});
+
+	$(".img").change(function(){
+		readURL(this,$(this).attr('name'));
+		console.log($(this).attr('name'));
+	});
+
+	function readURL(input,bypass) {
+	    if (input.files && input.files[0]) {
+	        var reader = new FileReader();
+	        reader.onload = function (e) {
+	            $('.upload input[name="'+bypass+'"]').closest('.upload').find('img').attr('src', e.target.result);
+	        }
+	        reader.readAsDataURL(input.files[0]);
+	    }
+	}
 </script>
 </html>
