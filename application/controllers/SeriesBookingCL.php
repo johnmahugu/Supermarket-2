@@ -60,7 +60,6 @@ class SeriesBookingCL extends CI_Controller {
 		$data['package'] = $query;
 		$data['price_range'] = $query->row()->tour_priceRange;
 		$data['booking_detail'] = json_decode($booking_detail);
-
 		$this->load->view('series_booking_info',$data);
 	}
 

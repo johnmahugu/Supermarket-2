@@ -136,7 +136,7 @@ if(isset($price_range)){
 			<div class="col-sm-5 no-pd">
 				<a href="#" class="choose-step-box current">
 					<span class="circle"> 1 </span>
-					Select Amount And Room
+					Select Room
 				</a>
 			</div>
 			<div class="col-sm-5 no-pd">
@@ -381,7 +381,7 @@ if(isset($price_range)){
 						$roomtype = $('.roomtype').eq($i).attr('roomtype');
 						$tourist_num = $('.tourist-num').eq($i).val();
 						if($tourist_num > 0){
-							$b_detail += '{"roomtype":"'+$roomtype+'","tourist_num":"'+$tourist_num+'"}';
+							$b_detail += '{"roomtype":"'+$roomtype+'","tourist_num":'+$tourist_num+'}';
 							if($i != $count){
 								$b_detail += ',';
 							}
@@ -405,11 +405,12 @@ if(isset($price_range)){
 						$b_detail += '],';
 					}
 					$totaltourist = $('#tourist-total-num').val();
-					$b_detail += '"tourist":[{"total_tourist":"'+$totaltourist+'"}],';
+					$b_detail += '"tourist":[{"total_tourist":'+$totaltourist+'}],';
 					$totalamount = numeral($('.totalamount').html()).format('0');
-					$b_detail += '"total_amount":"'+$totalamount+'"';
+					$b_detail += '"total_amount":'+$totalamount+'';
 					$b_detail += '}';
 					$('input[name="booking-detail"]').val($b_detail);
+					alert($b_detail);
 					document.forms['to-booking-info'].submit();
 				}
 			}
