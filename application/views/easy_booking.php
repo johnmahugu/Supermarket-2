@@ -410,7 +410,6 @@ if(isset($price_range)){
 					$b_detail += '"total_amount":'+$totalamount+'';
 					$b_detail += '}';
 					$('input[name="booking-detail"]').val($b_detail);
-					alert($b_detail);
 					document.forms['to-booking-info'].submit();
 				}
 			}

@@ -39,7 +39,6 @@ if(isset($price_range)){
 
 	<script src="<?=base_url()?>assets/js/date.format.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.4/numeral.min.js"></script>
-	<script src="<?=base_url()?>assets/js/page_controllers/series-booking-info.js"></script>
 </head>
 <body>
 	<header class="readmore outbouce">
@@ -160,7 +159,7 @@ if(isset($price_range)){
 		</div>
 		<div class="row">
 			<div class="col-xs-12">
-			<form id="submitbooking" action="series-booking-submit" method="post" enctype="multipart/form-data">
+			<form id="submitbooking" action="easy-booking-submit" method="post" enctype="multipart/form-data">
 				<div class="form-group">
 					<h3>Personal Information</h3>
 					<div id="checkaccount" class="btn-wrapper">
@@ -282,13 +281,6 @@ if(isset($price_range)){
 					<div class="col-md-6">
 						<label for="">Telephone Number *</label><br>
 						<input type="text"><br>
-					</div>
-					<div class="col-md-6">
-						<label for="">Passport Image *</label><br>
-						<div class="upload">
-							<img src="<?=base_url()?>assets/images/ico-passport.png" alt="passport image">
-							<input pointer="img[<?=$i+1?>]" name="passportImg[]" class="img" type="file"><br>
-						</div>
 					</div>
 					<div class="col-md-6">
 						<label for="">Passport No. *</label><br>
@@ -697,6 +689,23 @@ if(isset($price_range)){
 		var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
  		return regex.test(email);
 	}
+
+	function checkEmail($email){
+		$result = '';
+		$.ajax({
+			type: 'POST',
+			async : false,
+			url:'/check-email',
+			data:{
+				'email':$email
+				},
+			success:function(data){
+				$result = data;
+			}
+		});
+		return $result;
+	}
+
 
 	/**********Catch Resubmission***********/
 	function preventBack(){
