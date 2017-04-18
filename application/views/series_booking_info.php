@@ -731,5 +731,9 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
+
+    $('.menu-burger').click(function(){
+      $('.menu-burger , .menu-list').toggleClass('open');
+    });
   </script>
 </html>

@@ -280,18 +280,6 @@
     	}
     });
 
-    $('#seemore').click(function() {
-    	$('.tour-date').toggleClass('current');
-    	if($(this).text()=="See More"){
-    		$(this).text('Hide');
-    	}else{
-    		$(this).text('See More');
-    	}
-    });
-    $('.menu-burger').click(function(){
-    	$('.menu-burger , .menu-list').toggleClass('open');
-    });
-
     $('#checkaccount .btn.border').click(function(){
     	$(this).closest('#checkaccount').addClass('hide');
     	$('#noaccount').fadeIn(500);
@@ -301,10 +289,13 @@
     	$('#cancel-booking_code').val($(this).attr('cancel-booking'));
     });
 
-
     $('#cancel-booking-submit').click(function(){
     	$('#cancel-content').val($('textarea[name=content]').val());
     	document.forms['cancel-booking-form'].submit();
+    });
+
+    $('.menu-burger').click(function(){
+      $('.menu-burger , .menu-list').toggleClass('open');
     });
   </script>
 </html>

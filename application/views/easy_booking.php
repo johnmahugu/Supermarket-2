@@ -571,5 +571,9 @@
     	return true;
     }
     }
+
+    $('.menu-burger').click(function(){
+      $('.menu-burger , .menu-list').toggleClass('open');
+    });
   </script>
 </html>
