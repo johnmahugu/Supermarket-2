@@ -13,6 +13,7 @@ class EasyBookingMD extends CI_Model {
 			tour.tour_nameTH,
 			tour.tour_nameEN,
 			tour.tour_nameSlug,
+      tour.tour_dayNight,
 			tour.tour_startPrice,
 			tour.tour_priceRange,
 			tour.tour_currency,

@@ -29,6 +29,7 @@
     <link rel="stylesheet" href="assets/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.4/numeral.min.js"></script>
+    <script src="assets/js/date.js"></script>
   </head>
   <body>
     <header class="readmore outbouce">
@@ -153,21 +154,7 @@
             <h3>Tour Booking</h3>
             <div class="col-md-6">
               <label for="">Select Day Trip</label><br>
-              <select name="daytrip">
-                <option disabled selected>Select Day Trip</option>
-                <?php
-                  for($i=0;$i<=$last_btr;$i++){
-                          //if(date('Y-m-d') <= $booking_timerange[$i]['to']){
-                  		echo '<option datestart="'.$booking_timerange[$i]['from'].'" datefinish="'.$booking_timerange[$i]['to'].'" price="'.$booking_timerange[$i]['price'].'">';
-                  		$open_booking = date_format(date_create($booking_timerange[$i]['from']),"d M Y");
-                  		$close_booking = date_format(date_create($booking_timerange[$i]['to']),"d M Y");
-                  		echo '<td>'.$open_booking." - ".$close_booking.'</td>';
-                  		echo '<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.number_format($booking_timerange[$i]['price']).' '.$package['tour_currency'].'</td>';
-                  		echo '</option>';
-                  	//}
-                        }
-                        ?>
-              </select>
+              <input type="text" class="date" readonly placeholder="Select Day Trip">
             </div>
             <div class="col-md-6">
               <label for="">Tourist</label><br>
@@ -375,10 +362,66 @@
     <input id="tour-nameSlug" type="hidden" value="<?php echo $package['tour_nameSlug']?>">
     <input id="initial-hotel-price" type="hidden" value="<?=number_format($package['tour_startPrice'])?>">
     <input id="currency" type="hidden" value="<?=$package['tour_currency']?>">
+    <input id="daterange" type="hidden" value="<?=str_replace("\"","'",$price_range)?>">
+    <input id="dayplus" type="hidden" value="<?=$package['tour_dayNight']?>">
+    <input id="datestart" type="hidden" value="">
+    <input id="datefinish" type="hidden" value="">
   </body>
   <script>
     $(document).ready(function(){
       $('.room').hide();
+      listDate();
+    });
+
+    $listDate = Array();
+
+    function listDate(){
+      $daterange = $('#daterange').val().split("'").join("\"");
+      $daterange = JSON.parse($daterange);
+      $today = new Date();
+      for($i in $daterange){
+        $datestart = new Date($daterange[$i]['from']);
+        $datefinish = new Date($daterange[$i]['to']);
+        for($j=0;$datestart<=$datefinish;$j++){
+          if($datestart >= $today){
+            $d = $datestart.getDate();
+            $m = $datestart.getMonth()+1;
+            $y = $datestart.getFullYear();
+            $temp = $d+'/'+$m+'/'+$y;
+            $listDate.push($temp);
+          }
+          $datestart.setDate($datestart.getDate()+1);
+        }
+      }
+    }
+
+    $('.date').datepicker({
+      dateFormat:"dd/mm/yy",
+      beforeShowDay: function(date) {
+        var year = date.getFullYear();
+        var month = date.getMonth()+1;
+        var day = date.getDate();
+        var dateString = day + "/" + month + "/" + year;
+        var gotDate = jQuery.inArray(dateString, $listDate);
+          if (gotDate >= 0) {
+            return [true,""];
+          }
+        return [false,""];
+      }
+    });
+
+    $('.date').change(function(){
+      $datestart = $('.date').val();
+      $temp = $datestart.split("/");
+      $temp = new Date($temp[2]+'-'+$temp[1]+'-'+$temp[0]);
+      $dayplus = $('#dayplus').val();
+      $temp.setDate($temp.getDate()+parseInt($dayplus[0])-1);
+      $d = $temp.getDate();
+      $m = $temp.getMonth()+1;
+      $y = $temp.getFullYear();
+      $datefinish = $d+'/'+$m+'/'+$y;
+      $('#datestart').val($datestart);
+      $('#datefinish').val($datefinish);
     });
 
     $( function() {
@@ -515,13 +558,14 @@
           /*******extention-activity***********/
           $extension_activity_price = $('input:radio[name=extension-activity]:checked').attr('price');
           if($extension_activity_price > 0){
-            $b_detail += '"extension_activity":["activity":"'+$('input:radio[name=extension-activity]:checked').attr('activity')+'","price":'+numeral($('input:radio[name=extension-activity]:checked').attr('price')).format('0')+'],';
+            $b_detail += '"extension_activity":{"activity":"'+$('input:radio[name=extension-activity]:checked').attr('activity')+'","price":'+numeral($('input:radio[name=extension-activity]:checked').attr('price')).format('0')+'},';
           }
     			$totalamount = numeral($('.totalamount').html()).format('0');
     			$b_detail += '"total_amount":'+$totalamount+'';
     			$b_detail += '}';
     			$('input[name="booking-detail"]').val($b_detail);
-    			document.forms['to-booking-info'].submit();
+          alert($b_detail);
+          //document.forms['to-booking-info'].submit();
     		}
     	}
     }
