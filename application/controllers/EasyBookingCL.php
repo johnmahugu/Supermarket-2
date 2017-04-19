@@ -25,6 +25,8 @@ class EasyBookingCL extends CI_Controller {
     $data['price_range']      = $query->row()->tour_priceRange;
     $query                    = $this->EasyBookingMD->getConditionHotel($tour_nameSlug);
     $data['condition_hotel']  = $query->row()->tc_data;
+    $data['mapping'] = json_encode($this->EasyBookingMD->getMappingRoomType()->result_array());
+    $data['condition_option_activity'] = $this->EasyBookingMD->getConditionActivity($tour_nameSlug);
     $this->load->view('easy_booking', $data);
   }
   function easy_booking_info() {
@@ -167,7 +169,7 @@ class EasyBookingCL extends CI_Controller {
       $this->easy_booking_submit();
     }
   }
-  
+
   function resize($img_path){
 		$this->load->library('image_lib');
 		$config = array(

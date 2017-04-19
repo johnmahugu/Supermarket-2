@@ -197,38 +197,105 @@
             echo '</div>';
             }
             ?>
-          <div class="form-group">
+          <div class="form-group" id="multiple">
+					<h3>Select an activity of interest</h3>
+					<div class="col-md-12">
+						<table>
+							<tbody>
+								<tr>
+									<td><input type="radio" name="extension-activity" price="0" checked>Do Not Participate</td>
+									<td>No Charge</td>
+								</tr>
+                <?php
+                if(isset($condition_option_activity)){
+                  foreach($condition_option_activity->result_array() as $row){
+                    echo '<tr><td><input type="radio" name="extension-activity" activity="'.$row['tc_data'].'" price="'.$row['tc_price'].'">'.$row['tc_data'].'</td>';
+                    echo '<td><span>Increase</span>Add '.number_format($row['tc_price']).' '.$package['tour_currency'].'</td>';
+                    echo '</tr>';
+                  }
+                }
+                 ?>
+							</tbody>
+						</table>
+					</div>
+				</div>
+          <div class="form-group" id="hotel">
             <h3>Select Hotel</h3>
             <div class="col-md-12">
               <?php
                 if(isset($condition_hotel)){
                        $temp = json_decode($condition_hotel,true);
-                       $count = count($temp)-1;
-                       $count2 = count($temp[0]['room'])-1;
-                       echo '<table><thead><tr><td>Hotel Name</td><td>Star</td><td>Location</td><td class="roomtype" roomtype="Twin-room">Price / Person</td>';
-                       for($i=0;$i<=$count2;$i++){
+                       $count_hotel = count($temp)-1;
+                       $count_roomtype = count($temp[0]['room'])-1;
+                       $temp_mapping = json_decode($mapping,true);
+                       $count_mapping = count($temp_mapping)-1;
+                       echo '<table><thead><tr><td>Hotel Name</td><td>Star</td><td>Location</td>';
+                       for($i=0;$i<=$count_roomtype;$i++){
                          $roomtype = str_replace(' ','-',$temp[0]['room'][$i]['roomtype']);
-                         echo '<td class="roomtype" roomtype="'.$roomtype.'">'.$temp[0]['room'][$i]['roomtype'].'</td>';
-                       }
-                       echo '</thead><tbody>';
-                       for($j=0;$j<=$count;$j++){
-                if($j==0){
-                echo '<tr><td><input type="radio" name="hotel" index="'.$j.'" checked>'.$temp[$j]['name'].'</td>';
-                }else{
-                echo '<tr><td><input type="radio" name="hotel" index="'.$j.'">'.$temp[$j]['name'].'</td>';
-                }
-                         echo '<td><span>Star</span> '.$temp[$j]['star'].' Stars</td>';
-                         echo '<td><span>Location</span>'.$temp[$j]['location'.$lang].'</td>';
-                         echo '<td class="hotel-list hotel-Twin-room-price"></td>';
-                         for($k=0;$k<=$count2;$k++){
-                           $slug = str_replace(' ','-',$temp[$j]['room'][$k]['roomtype']);
-                           echo '<td class="hotel-'.$slug.'-price" '.$slug.'-price="'.$temp[$j]['room'][$k]['price'].'">+'.number_format($temp[$j]['room'][$k]['price']).'</td></tr>';
+                         for($m=0;$m<=$count_mapping;$m++){
+                           if($temp_mapping[$m]['mapping_1'] == $temp[0]['room'][$i]['roomtype']){
+                             $mapping_result = $temp_mapping[$m]['mapping_2'];
+                           }
                          }
+                         echo '<td class="roomtype" data-toggle="tooltip" title="'.$temp[0]['room'][$i]['roomtype'].'" roomtype="'.$roomtype.'">'.$mapping_result.' <i class="fa fa-info-circle" aria-hidden="true"></i></td>';
                        }
-                     }
+                       echo '</tr></thead><tbody>';
+                       for($i=0;$i<=$count_hotel;$i++){
+                          if($i==0){
+                          echo '<tr><td><input type="radio" name="hotel" index="'.$i.'" checked>'.$temp[$i]['name'].'</td>';
+                          }else{
+                          echo '<tr><td><input type="radio" name="hotel" index="'.$i.'">'.$temp[$i]['name'].'</td>';
+                          }
+                         echo '<td><span>Star</span> '.$temp[$i]['star'].' Stars</td>';
+                         echo '<td><span>Location</span>'.$temp[$i]['location'.$lang].'</td>';
+                         for($j=0;$j<=$count_roomtype;$j++){
+                           $slug = str_replace(' ','-',$temp[$i]['room'][$j]['roomtype']);
+                           if($slug == 'Twin-room'){
+                             echo '<td class="hotel-'.$slug.'-price" '.$slug.'-price="'.$temp[$i]['room'][$j]['price'].'">'.number_format($package['tour_startPrice']+$temp[$i]['room'][$j]['price']).'</td>';
+                           }else{
+                             echo '<td class="hotel-'.$slug.'-price" '.$slug.'-price="'.$temp[$i]['room'][$j]['price'].'">+'.number_format($temp[$i]['room'][$j]['price']).'</td>';
+                           }
+                         }
+                         echo '</tr>';
+                       }
+                       echo '</tbody></table></div><div class="col-md-12"><div class="checkbox-box"><input class="extension-day" type="checkbox"><span> Extension Day<b><ul>';
+                      for($i=0;$i<=$count_hotel;$i++){
+                        if($i==0){
+                          echo "<li class='show' price='[";
+                          for($j=0;$j<=$count_roomtype;$j++){
+                            echo '{"roomtype":"'.$temp[$i]['room'][$j]['roomtype'].'","price":'.$temp[$i]['room'][$j]['extension'].'}';
+                            if($j != $count_roomtype){
+                              echo ',';
+                            }
+                          }
+                          echo "]'>Increase ".$temp[$i]['room'][0]['extension']." ".$package['tour_currency']." per day. ";
+                          for($j=1;$j<=$count_roomtype;$j++){
+                            echo $temp[$i]['room'][$j]['roomtype'].' pay '.$temp[$i]['room'][$j]['extension'].' '.$package['tour_currency'].'</li>';
+                          }
+                        }else{
+                          echo "<li price='[";
+                          for($j=0;$j<=$count_roomtype;$j++){
+                            echo '{"roomtype":"'.$temp[$i]['room'][$j]['roomtype'].'","price":'.$temp[$i]['room'][$j]['extension'].'}';
+                            if($j != $count_roomtype){
+                              echo ',';
+                            }
+                          }
+                          echo "]'>Increase ".$temp[$i]['room'][0]['extension']." ".$package['tour_currency']." per day. ";
+                          for($j=1;$j<=$count_roomtype;$j++){
+                            echo $temp[$i]['room'][$j]['roomtype'].' pay '.$temp[$i]['room'][$j]['extension'].' '.$package['tour_currency'].'</li>';
+                          }
+                        }
+                      }
+                    }
                      ?>
-              </tbody>
-              </table>
+									</ul>
+								</b>
+              </span>
+            </div>
+					</div>
+            <div class="form-group">
+              <h3>Spacial Request</h3>
+              <textarea></textarea>
             </div>
           </div>
           <div class="form-group room">
@@ -296,7 +363,7 @@
     <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i></button>
     </div>
     <div class="modal-body text-center">
-    <img src="<?=base_url()?>assets/images/ico-success.png" alt="">
+    <img src="<?=base_url()?>assets/images/ico-alert.png" alt="">
     <h4>Infomations</h4>
     <p id="alert-warning"></p>
     </div>
@@ -311,15 +378,32 @@
   </body>
   <script>
     $(document).ready(function(){
-      $('.hotel-Twin-room-price').html($('#initial-hotel-price').val());
-    $('.room').hide();
+      $('.room').hide();
     });
+
+    $( function() {
+	    $('[data-toggle="tooltip"]').tooltip({
+	      position: {
+	        my: "center bottom-20",
+	        at: "center top",
+	        using: function( position, feedback ) {
+	          $( this ).css( position );
+	          $( "<div>" )
+	            .addClass( "arrow" )
+	            .addClass( feedback.vertical )
+	            .addClass( feedback.horizontal )
+	            .appendTo( this );
+	        }
+	      }
+	    });
+	  });
 
     $('select[name="daytrip"]').change(function(){
       $price = $(this).find(':selected').attr('price');
       $('#initial-hotel-price').val($price);
     $('.room').show();
       set_hotel(1);
+    $('.amount').find('span').eq(0).html(1);
     route();
     });
 
@@ -353,16 +437,32 @@
     });
 
     $('input:radio[name=hotel]').change(function(){
+    $count_extension = $('#hotel li').length;
+    $hotel = $('input:radio[name=hotel]');
+    $count_radio = $hotel.length;
+    $checked = $('input:radio[name=hotel]:checked');
+    $pointer = $hotel.index($checked);
+    $('#hotel li').removeClass('show');
+    $('#hotel li:eq('+$pointer+')').addClass('show');
     $('.amount').find('span').eq(0).html(1);
     route();
+    set_max();
     });
 
     $('.hotel-list').change(function(){
-    sum_amount();
+      sum_amount();
     });
 
     $('.tour-option').change(function(){
     sum_amount();
+    });
+
+    $('.extension-day').change(function(){
+      sum_amount();
+    });
+
+    $('input:radio[name=extension-activity]').change(function(){
+      sum_amount();
     });
 
     $('.booking-infopage').click(function(){
@@ -412,6 +512,11 @@
     			}
     			$totaltourist = $('#tourist-total-num').val();
     			$b_detail += '"tourist":[{"total_tourist":'+$totaltourist+'}],';
+          /*******extention-activity***********/
+          $extension_activity_price = $('input:radio[name=extension-activity]:checked').attr('price');
+          if($extension_activity_price > 0){
+            $b_detail += '"extension_activity":["activity":"'+$('input:radio[name=extension-activity]:checked').attr('activity')+'","price":'+numeral($('input:radio[name=extension-activity]:checked').attr('price')).format('0')+'],';
+          }
     			$totalamount = numeral($('.totalamount').html()).format('0');
     			$b_detail += '"total_amount":'+$totalamount+'';
     			$b_detail += '}';
@@ -476,37 +581,43 @@
     $twin_price = $('#initial-hotel-price').val();
     $currency = $('#currency').val();
     $ck_people = parseInt($('#tourist-total-num').val(),10);
-    if($ck_people > 1){
-    	$result += '<div class="list">';
-    	$result += '<div class="col-sm-5"><label>Twin / Tripple room</label></div>';
-    	$result += '<div class="col-sm-4 col-xs-7"><p>'+numeral($twin_price).format('0,0')+' '+$currency+' / people</p></div>';
-    	$result += '<div class="col-sm-3 col-xs-5"><input class="tourist-num " roomtype="Twin-room" type="number" value="0" min="0" max="1" price="'+$twin_price+'"><span class="unit">people</span></div>';
-    	$result += '</div>';
-    }
     $twin_price = parseInt($twin_price.replace(',',''),10);
-    for($i in data){
-    	if(data[$i]['roomtype'] == 'Single room'){
-    		$result += '<div class="list">';
-    		$n_price = $twin_price+parseInt(data[$i]['price'],10);
-    		$result += '<div class="col-sm-5"><label>'+data[$i]['roomtype']+'</label></div>';
-    		$result += '<div class="col-sm-4 col-xs-7"><p>'+numeral($n_price).format('0,0')+' '+$currency+' / prople</p></div>';
-    		$result += '<div class="col-sm-3 col-xs-5"><input class="tourist-num" roomtype="'+data[$i]['roomtype'].replace(' ','-')+'" type="number" value="1" min="0" max="1" price="'+$n_price+'"><span class="unit">people</span></div>';
-    		$result += '</div>';
-    	}else{
-    		$result += '<div class="list">';
-    		$n_price = $twin_price+parseInt(data[$i]['price'],10);
-    		$result += '<div class="col-sm-5"><label>'+data[$i]['roomtype']+'</label></div>';
-    		$result += '<div class="col-sm-4 col-xs-7"><p>'+numeral($n_price).format('0,0')+' '+$currency+' / prople</p></div>';
-    		$result += '<div class="col-sm-3 col-xs-5"><input class="tourist-num" roomtype="'+data[$i]['roomtype'].replace(' ','-')+'" type="number" value="0" min="0" max="1" price="'+$n_price+'"><span class="unit">people</span></div>';
-    		$result += '</div>';
-    	}
+    if($ck_people > 1){
+      for($i in data){
+      	if(data[$i]['roomtype'] == 'Single room'){
+      		$result += '<div class="list">';
+      		$n_price = $twin_price+parseInt(data[$i]['price'],10);
+      		$result += '<div class="col-sm-5"><label>'+data[$i]['roomtype']+'</label></div>';
+      		$result += '<div class="col-sm-4 col-xs-7"><p>'+numeral($n_price).format('0,0')+' '+$currency+' / prople</p></div>';
+      		$result += '<div class="col-sm-3 col-xs-5"><input class="tourist-num" roomtype="'+data[$i]['roomtype'].replace(' ','-')+'" type="number" value="1" min="0" max="1" price="'+$n_price+'"><span class="unit">people</span></div>';
+      		$result += '</div>';
+      	}else{
+      		$result += '<div class="list">';
+      		$n_price = $twin_price+parseInt(data[$i]['price'],10);
+      		$result += '<div class="col-sm-5"><label>'+data[$i]['roomtype']+'</label></div>';
+      		$result += '<div class="col-sm-4 col-xs-7"><p>'+numeral($n_price).format('0,0')+' '+$currency+' / prople</p></div>';
+      		$result += '<div class="col-sm-3 col-xs-5"><input class="tourist-num" roomtype="'+data[$i]['roomtype'].replace(' ','-')+'" type="number" value="0" min="0" max="1" price="'+$n_price+'"><span class="unit">people</span></div>';
+      		$result += '</div>';
+      	}
+      }
+    }else{
+      for($i in data){
+        if(data[$i]['roomtype'] == 'Single room'){
+          $result += '<div class="list">';
+      		$n_price = $twin_price+parseInt(data[$i]['price'],10);
+      		$result += '<div class="col-sm-5"><label>'+data[$i]['roomtype']+'</label></div>';
+      		$result += '<div class="col-sm-4 col-xs-7"><p>'+numeral($n_price).format('0,0')+' '+$currency+' / prople</p></div>';
+      		$result += '<div class="col-sm-3 col-xs-5"><input class="tourist-num" roomtype="'+data[$i]['roomtype'].replace(' ','-')+'" type="number" value="1" min="0" max="1" price="'+$n_price+'"><span class="unit">people</span></div>';
+      		$result += '</div>';
+        }
+      }
     }
     return $result;
     }
 
     function set_hotel($temp){
       switch($temp){
-        case 1:
+          case 1:
           $price = parseInt($('#initial-hotel-price').val().replace(',',''));
           $count_list = $('.hotel-list').length;
           $count_room_type = $('.roomtype').length;
@@ -555,6 +666,19 @@
     	$num = parseInt($('.tourist-num').eq($i).val(),10);
     	$price = parseInt($('.tourist-num').eq($i).attr('price'),10);
     	$total_amount += $num*$price;
+    }
+    if($('.extension-day').prop('checked')){
+      $extension = $('.extension-day:checked');
+      $extension_price = JSON.parse($('.show').attr('price'));
+      for($i=0;$i<$count;$i++){
+        $num = parseInt($('.tourist-num').eq($i).val(),10);
+        $total_amount += $num*$extension_price[$i]['price'];
+      }
+    }
+    $extension_activity_price = $('input:radio[name=extension-activity]:checked').attr('price');
+    for($i=0;$i<$count;$i++){
+      $num = parseInt($('.tourist-num').eq($i).val(),10);
+      $total_amount += $num*$extension_activity_price;
     }
     $('.totalamount').html(numeral($total_amount).format('0,0'));
     }

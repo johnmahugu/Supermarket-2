@@ -173,21 +173,17 @@ html, body {
   height: 100%; }
 
 div.ui-datepicker {
-  font-size: 1em;
-  font-family: Arial, sans-serif !important;
-  width: 22em;
-  padding: 0px; }
+  font-size: 12px;
+  font-family: Arial, sans-serif !important; }
 
 .ui-widget-header {
-  background: #2e3797;
+  background: #f0763d;
   color: white;
-  border: none; }
+  height: 30px; }
 
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
   background: white;
-  color: #2e3797;
-  border: 1px solid white;
-  padding: 10px; }
+  color: #f0763d; }
 
 .ui-widget-header .ui-icon {
   background: url(../images/ui-icon.png); }
@@ -199,14 +195,13 @@ div.ui-datepicker {
   background-position: -48px -192px !important; }
 
 .ui-state-hover, .ui-state-active {
-  background: #2e3797 !important;
-  color: white !important;
-  border: 1px solid white !important; }
+  background: #f8c014 !important;
+  color: white !important; }
 
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
   background: white;
-  color: #2e3797;
-  border: 1px solid #2e3797; }
+  color: #cf503f;
+  border: 1px solid #04254d; }
 
 .ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year {
   height: 20px;
@@ -214,19 +209,6 @@ div.ui-datepicker {
   color: dimgray;
   background: url(../images/select-down.png) white no-repeat right 7px top 6px;
   font-family: Arial, sans-serif !important; }
-
-.ui-corner-all, .ui-corner-bottom,
-.ui-corner-right, .ui-corner-br {
-  border-bottom-right-radius: 0px !important; }
-
-.ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl {
-  border-bottom-left-radius: 0px !important; }
-
-.ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr {
-  border-top-right-radius: 0px !important; }
-
-.ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl {
-  border-top-left-radius: 0px !important; }
 
 .owl-carousel {
   position: relative;
@@ -341,7 +323,6 @@ header {
       header .header-box .contact:nth-of-type(2) {
         padding-top: 2.5px; }
       header .header-box .contact a {
-        color: #ddd;
         vertical-align: middle;
         margin-left: 5px; }
     header .header-box .language-box {
@@ -818,7 +799,7 @@ footer {
 
 .content-box {
   padding: 10px 0;
-  line-height: 1.2em; }
+  line-height: 1.6em; }
   .content-box p {
     padding: 10px 0;
     line-height: 20px; }
@@ -915,7 +896,7 @@ footer {
     height: auto; }
   .form-group textarea {
     height: 80px;
-    resize: none; }
+    resize: vertical; }
   .form-group label {
     margin-top: 10px;
     color: #2e3193; }
@@ -980,6 +961,8 @@ footer {
     .form-group table thead td {
       color: #2e3193;
       padding-bottom: 10px; }
+      .form-group table thead td i {
+        color: lightgray; }
     .form-group table tbody input {
       float: left;
       margin: 0px 5px 0 0 !important;
@@ -1043,7 +1026,7 @@ footer {
   margin-left: -30px;
   position: absolute;
   right: 65px;
-  bottom: 18px;
+  bottom: 17px;
   color: dimgray; }
 
 .list {
@@ -1081,7 +1064,7 @@ footer {
     .list.header-chart > div:last-child {
       text-align: right; }
   .list .unit {
-    bottom: 3px; }
+    bottom: 0px; }
   .list.total-amount {
     background-color: ghostwhite;
     padding: 15px 0; }
@@ -1338,6 +1321,120 @@ footer {
       padding-bottom: 10px;
       border-bottom: 1px solid lightgray; }
 
+div.ui-datepicker {
+  font-size: 1em;
+  font-family: Arial, sans-serif !important;
+  width: 22em;
+  padding: 0px; }
+
+.ui-widget-header {
+  background: #2e3193;
+  color: white;
+  border: none; }
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+  background: white;
+  color: #2e3193;
+  border: 1px solid white;
+  padding: 10px; }
+
+.ui-widget-header .ui-icon {
+  background: url(../images/ui-icon.png); }
+
+.ui-icon-circle-triangle-w {
+  background-position: -80px -192px !important; }
+
+.ui-icon-circle-triangle-e {
+  background-position: -48px -192px !important; }
+
+.ui-state-hover, .ui-state-active {
+  background: #2e3193 !important;
+  color: white !important;
+  border: 1px solid white !important; }
+
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+  background: white;
+  color: #2e3193;
+  border: 1px solid #2e3193; }
+
+.ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year {
+  height: 20px;
+  line-height: 20px;
+  color: dimgray;
+  background: url(../images/select-down.png) white no-repeat right 7px top 6px;
+  font-family: Arial, sans-serif !important; }
+
+.ui-corner-all, .ui-corner-bottom,
+.ui-corner-right, .ui-corner-br {
+  border-bottom-right-radius: 0px !important; }
+
+.ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl {
+  border-bottom-left-radius: 0px !important; }
+
+.ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr {
+  border-top-right-radius: 0px !important; }
+
+.ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl {
+  border-top-left-radius: 0px !important; }
+
+.ui-tooltip, .arrow:after {
+  background: white;
+  border: 1px solid #eee; }
+
+.ui-tooltip {
+  padding: 10px 20px;
+  color: white;
+  border-radius: 0px;
+  font-size: 14px;
+  color: gray;
+  box-shadow: 0 0 1px gray; }
+
+.arrow {
+  width: 70px;
+  height: 16px;
+  overflow: hidden;
+  position: absolute;
+  left: 50%;
+  margin-left: -35px;
+  bottom: -16px; }
+
+.arrow.top {
+  top: -16px;
+  bottom: auto; }
+
+.arrow.left {
+  left: 20%; }
+
+.arrow:after {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: -20px;
+  width: 25px;
+  height: 25px;
+  box-shadow: 6px 5px 9px -9px black;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg); }
+
+.arrow.top:after {
+  bottom: -20px;
+  top: auto; }
+
+#hotel .checkbox-box {
+  margin-top: 0px;
+  padding: 10px; }
+#hotel ul {
+  margin-left: 10px;
+  display: none; }
+  #hotel ul li {
+    display: none; }
+#hotel input[type="checkbox"]:checked + span ul {
+  display: inline-block; }
+
+#multiple tr td:last-child {
+  width: 30%; }
+
 @media only screen and (max-width: 992px) {
   .hilight-box {
     margin-top: 0px; }
@@ -1420,13 +1517,17 @@ footer {
   .login-box-wrapper {
     left: 50%; }
 
+  #multiple tr td:last-child {
+    width: 100%; }
+
   .form-group table thead {
     display: none; }
   .form-group table tbody tr {
     border: 1px solid lightgray;
     display: inline-block;
     margin-bottom: 10px;
-    padding: 10px; }
+    padding: 10px;
+    width: 100%; }
     .form-group table tbody tr td {
       display: block;
       float: left;

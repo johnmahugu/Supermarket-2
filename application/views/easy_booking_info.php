@@ -344,7 +344,7 @@
     <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i></button>
     </div>
     <div class="modal-body text-center">
-    <img src="<?=base_url()?>assets/images/ico-success.png" alt="">
+    <img src="<?=base_url()?>assets/images/ico-alert.png" alt="">
     <h4>Something wrong</h4>
     <p id="alert-warning">เราจะทำการตอบกลับภายใน 24 ชั่วโมงทาง Email</p>
     </div>

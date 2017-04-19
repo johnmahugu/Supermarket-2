@@ -57,6 +57,16 @@ class EasyBookingMD extends CI_Model {
     return $this->db->get();
   }
 
+  function getConditionActivity($tour_nameSlug) {
+    $this->db->select("tour_condition.tc_price,
+    tour_condition.tc_data");
+    $this->db->from('tour');
+    $this->db->join('tour_condition', 'tour.tour_id = tour_condition.tour_id', 'inner');
+    $this->db->where('tour_condition.tc_type', 'option activity');
+    $this->db->where('tour.tour_nameSlug', $tour_nameSlug);
+    return $this->db->get();
+  }
+
   function getNationality() {
     $this->db->select("countries.country_nationality");
     $this->db->from('countries');
@@ -127,5 +137,13 @@ class EasyBookingMD extends CI_Model {
     $this->db->from('client');
     $this->db->where('client.client_email', $email);
     return $this->db->get()->num_rows();
+  }
+
+  function getMappingRoomType(){
+      $this->db->select("mapping.mapping_1,
+      mapping.mapping_2");
+    $this->db->from('mapping');
+    $this->db->where('mapping.mapping_type', 'room type');
+    return $this->db->get();
   }
 }

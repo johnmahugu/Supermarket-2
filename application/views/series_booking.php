@@ -332,7 +332,7 @@
             <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i></button>
           </div>
           <div class="modal-body text-center">
-            <img src="<?=base_url()?>assets/images/ico-success.png" alt="">
+            <img src="<?=base_url()?>assets/images/ico-alert.png" alt="">
             <h4>Infomations</h4>
             <p id="alert-warning"></p>
           </div>
