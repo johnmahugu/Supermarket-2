@@ -534,8 +534,16 @@
     					$b_detail += '],';
     				}
     			}
-    			$datestart = $('#datestart').val();
-    			$datefinish = $('#datefinish').val();
+    			$temp_datestart = $('#datestart').val().split("/");
+          $d = $temp_datestart[0];
+          $m = $temp_datestart[1];
+          $y = $temp_datestart[2];
+          $datestart = $y+'-'+$m+'-'+$d;
+    			$temp_datefinish = $('#datefinish').val().split("/");
+          $d = $temp_datestart[0];
+          $m = $temp_datestart[1];
+          $y = $temp_datestart[2];
+          $datefinish = $y+'-'+$m+'-'+$d;
     			$b_detail += '"date":[{"start":"'+$datestart+'","end":"'+$datefinish+'"}],';
     			$tour_option = $('input.tour-option:checked');
     			if($tour_option.length > 0){

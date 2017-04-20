@@ -285,7 +285,7 @@
                 <label for="">Telephone Number *</label><br>
                 <input type="text"><br>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-6 hide">
                 <label for="">Passport Image *</label><br>
                 <div class="upload">
                   <img src="<?=base_url()?>assets/images/ico-passport.png" alt="passport image">
@@ -365,6 +365,7 @@
   <script>
     $booking_mode = 'normal booking';
     $(document).ready(function() {
+      $(".hide").hide();
     	$count = $('.msg').size();
     	for($i=0;$i<$count;$i++){
     		$('.msg').eq($i).hide();

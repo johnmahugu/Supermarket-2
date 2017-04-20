@@ -127,7 +127,7 @@
             }
             ?></h1>
           <br>
-          <p><?=date_format(date_create($datestart),"j F Y");?> - <?=date_format(date_create($datefinish),"j F Y");?></p>
+          <p><?=date_format(date_create($booking_timerange[0]['from']),"j F Y");?> - <?=date_format(date_create($booking_timerange[$last_btr]['to']),"j F Y");?></p>
         </div>
       </div>
     </div>
@@ -284,6 +284,13 @@
                 <label for="">Telephone Number *</label><br>
                 <input type="text"><br>
               </div>
+              <div class="col-md-6 hide">
+                <label for="">Passport Image *</label><br>
+                <div class="upload">
+                  <img src="<?=base_url()?>assets/images/ico-passport.png" alt="passport image">
+                  <input pointer="img[<?=$i+1?>]" name="passportImg[]" class="img" type="file"><br>
+                </div>
+              </div>
               <div class="col-md-6">
                 <label for="">Passport No. *</label><br>
                 <input type="text"><br>
@@ -357,6 +364,7 @@
   <script>
     $booking_mode = 'normal booking';
     $(document).ready(function() {
+      $(".hide").hide();
     	$count = $('.msg').size();
     	for($i=0;$i<$count;$i++){
     		$('.msg').eq($i).hide();
@@ -414,71 +422,74 @@
     	if($booking_mode == 'normal booking' && $('#userId').val() != ''){
     		$status = true;
     		$b_detail = '{"touristinfo":[';
+        $is_first = true;
     		$('.tourist input').each(
-    			function(i,v){
-    				switch(i){
-    					case 0:
-    						if(v.value == ''){
-    							$status = false;
-    							$('#alert-warning').html('Please fill each tourist name and surname.');
-    							$('#popup').modal('show');
-    							return false;
-    						}
-    					break;
-    					case 1:
-    						if(v.value == ''){
-    							$status = false;
-    							$('#alert-warning').html('Please fill each tourist telephone number.');
-    							$('#popup').modal('show');
-    							return false;
-    						}
-    					break;
-    					case 2:
-    					break;
-    					case 3:
-    						if(v.value == ''){
-    							$status = false;
-    							$('#alert-warning').html('Please fill each tourist passport number.');
-    							$('#popup').modal('show');
-    							return false;
-    						}
-    					break;
-    					case 4:
-    						if(v.value == ''){
-    							$status = false;
-    							$('#alert-warning').html('Please fill each tourist date of birth.');
-    							$('#popup').modal('show');
-    							return false;
-    						}
-    					break;
-    				}
-    				$index = i%5;
-    				switch($index){
-    					case 0:
-    						if(i!=0){
-    							$b_detail += ',';
-    						}
-    						$b_detail += '{"fullname":"'+v.value+'",';
-    					break;
-    					case 1:
-    						$b_detail += '"tel":"'+v.value+'",';
-    					break;
-    					case 2:
-    						if(v.value == ""){
-    							$b_detail += '"passportImg":"'+$('#session-passportImg').attr('session-path')+'",';
-    						}else{
-    							$b_detail += '"passportImg":"'+v.value+'",';
-    						}
-    					break;
-    					case 3:
-    						$b_detail += '"passportNo":"'+v.value+'",';
-    					break;
-    					case 4:
-    						$dob = new Date(v.value).format('yyyy-mm-dd');
-    						$b_detail += '"dob":"'+$dob+'"}';
-    					break;
-    				}
-    			}
+            function(i,v){
+      				switch(i){
+      					case 0:
+      						if(v.value == ''){
+      							$status = false;
+      							$('#alert-warning').html('Please fill each tourist name and surname.');
+      							$('#popup').modal('show');
+      							return false;
+      						}
+      					break;
+      					case 1:
+      						if(v.value == ''){
+      							$status = false;
+      							$('#alert-warning').html('Please fill each tourist telephone number.');
+      							$('#popup').modal('show');
+      							return false;
+      						}
+      					break;
+      					case 2:
+      					break;
+      					case 3:
+                  if(v.value == ''){
+                    $status = false;
+                    $('#alert-warning').html('Please fill each tourist passport number.');
+                    $('#popup').modal('show');
+                    return false;
+                  }
+      					break;
+                case 4:
+                  if(v.value == ''){
+                    $status = false;
+                    $('#alert-warning').html('Please fill each tourist date of birth.');
+                    $('#popup').modal('show');
+                    return false;
+                  }
+                break;
+      				}
+              $index = i%5;
+    					switch($index){
+    						case 0:
+    							if(i!=0){
+    								$b_detail += ',';
+    							}
+    							$b_detail += '{"fullname":"'+v.value+'",';
+    						break;
+    						case 1:
+    							$b_detail += '"tel":"'+v.value+'",';
+    						break;
+    						case 2:
+    							if(v.value == ""){
+                    if($is_first == true){
+                      $b_detail += '"passportImg":"'+$('#session-passportImg').attr('session-path')+'",';
+                      $is_first = false;
+                    }
+    							}else{
+    								$b_detail += '"passportImg":"'+v.value+'",';
+    							}
+    						break;
+    						case 3:
+    							$b_detail += '"passportNo":"'+v.value+'",';
+    						break;
+    						case 4:
+    							$b_detail += '"dob":"'+v.value+'"}';
+    						break;
+    					}
+          }
     		);
     		$b_detail += ']}';
     		$('input[name=booking-tourist-detail]').val($b_detail);
