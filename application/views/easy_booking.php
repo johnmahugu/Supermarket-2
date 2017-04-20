@@ -229,9 +229,9 @@
                        echo '</tr></thead><tbody>';
                        for($i=0;$i<=$count_hotel;$i++){
                           if($i==0){
-                          echo '<tr><td><input type="radio" name="hotel" index="'.$i.'" checked>'.$temp[$i]['name'].'</td>';
+                          echo '<tr><td><input class="hotel-list" type="radio" name="hotel" index="'.$i.'" checked>'.$temp[$i]['name'].'</td>';
                           }else{
-                          echo '<tr><td><input type="radio" name="hotel" index="'.$i.'">'.$temp[$i]['name'].'</td>';
+                          echo '<tr><td><input class="hotel-list" type="radio" name="hotel" index="'.$i.'">'.$temp[$i]['name'].'</td>';
                           }
                          echo '<td><span>Star</span> '.$temp[$i]['star'].' Stars</td>';
                          echo '<td><span>Location</span>'.$temp[$i]['location'.$lang].'</td>';
@@ -282,7 +282,7 @@
 					</div>
             <div class="form-group">
               <h3>Spacial Request</h3>
-              <textarea></textarea>
+              <textarea class="spacial-request"></textarea>
             </div>
           </div>
           <div class="form-group room">
@@ -360,11 +360,10 @@
     </div>
     </div>
     <input id="tour-nameSlug" type="hidden" value="<?php echo $package['tour_nameSlug']?>">
-    <input id="initial-hotel-price" type="hidden" value="<?=number_format($package['tour_startPrice'])?>">
     <input id="currency" type="hidden" value="<?=$package['tour_currency']?>">
     <input id="daterange" type="hidden" value="<?=str_replace("\"","'",$price_range)?>">
     <input id="dayplus" type="hidden" value="<?=$package['tour_dayNight']?>">
-    <input id="datestart" type="hidden" value="">
+    <input id="datestart" type="hidden" value="" price="<?=$package['tour_startPrice']?>">
     <input id="datefinish" type="hidden" value="">
   </body>
   <script>
@@ -422,6 +421,11 @@
       $datefinish = $d+'/'+$m+'/'+$y;
       $('#datestart').val($datestart);
       $('#datefinish').val($datefinish);
+      getPrice();
+      $('.room').show();
+      set_hotel(1);
+      $('.amount').find('span').eq(0).html(1);
+      route();
     });
 
     $( function() {
@@ -441,18 +445,9 @@
 	    });
 	  });
 
-    $('select[name="daytrip"]').change(function(){
-      $price = $(this).find(':selected').attr('price');
-      $('#initial-hotel-price').val($price);
-    $('.room').show();
-      set_hotel(1);
-    $('.amount').find('span').eq(0).html(1);
-    route();
-    });
-
     $('#tourist-total-num').change(function(){
       $('#total-tourist').html($(this).val());
-    $total = parseInt($(this).val(),10);
+      $total = parseInt($(this).val(),10);
       switch(true){
         case ($total == 0 || $total < 0):
           $(this).val(1);
@@ -513,8 +508,8 @@
     	$('#alert-warning').html("Twin room can't stay alone.");
     	$('#popup').modal('show');
     }else{
-    	$daytrip = $('select[name="daytrip"]').find(':selected').attr('price');
-    	if($daytrip == undefined){
+    	$daytrip = $('#datestart').val();
+    	if($daytrip == ''){
     		$('#alert-warning').html('Plese select your interested day trip');
     		$('#popup').modal('show');
     	}else{
@@ -539,8 +534,8 @@
     					$b_detail += '],';
     				}
     			}
-    			$datestart = $('select[name="daytrip"]').find(':selected').attr('datestart');
-    			$datefinish = $('select[name="daytrip"]').find(':selected').attr('datefinish');
+    			$datestart = $('#datestart').val();
+    			$datefinish = $('#datefinish').val();
     			$b_detail += '"date":[{"start":"'+$datestart+'","end":"'+$datefinish+'"}],';
     			$tour_option = $('input.tour-option:checked');
     			if($tour_option.length > 0){
@@ -555,24 +550,46 @@
     			}
     			$totaltourist = $('#tourist-total-num').val();
     			$b_detail += '"tourist":[{"total_tourist":'+$totaltourist+'}],';
-          /*******extention-activity***********/
           $extension_activity_price = $('input:radio[name=extension-activity]:checked').attr('price');
           if($extension_activity_price > 0){
             $b_detail += '"extension_activity":{"activity":"'+$('input:radio[name=extension-activity]:checked').attr('activity')+'","price":'+numeral($('input:radio[name=extension-activity]:checked').attr('price')).format('0')+'},';
+          }
+          if($('.extension-day').prop('checked')){
+            $b_detail += '"extension_day":"selected",';
+          }
+          if($('.spacial-request').val() != ''){
+            $b_detail += '"spacial_request":"'+$('.spacial-request').val()+'",';
           }
     			$totalamount = numeral($('.totalamount').html()).format('0');
     			$b_detail += '"total_amount":'+$totalamount+'';
     			$b_detail += '}';
     			$('input[name="booking-detail"]').val($b_detail);
-          alert($b_detail);
-          //document.forms['to-booking-info'].submit();
+          document.forms['to-booking-info'].submit();
     		}
     	}
     }
     });
 
+    function getPrice(){
+      $slug = $('#tour-nameSlug').val();
+      $daytrip = $('#datestart').val();
+      $.ajax({
+        type: 'POST',
+        async: false,
+        url: '/get-price',
+        data:{
+          'slug': $slug,
+          'daytrip': $daytrip
+        },
+        success:function(data){
+          $('#datestart').attr('price',data);
+          $count_room_type = $('.roomtype').length;
+        }
+      });
+    }
+
     function route(){
-    $daytrip = $('select[name="daytrip"]').find(':selected').attr('price');
+    $daytrip = $('#datestart').val();
     $index_hotel = $('input:radio[name=hotel]:checked').attr('index');
     $status_daytrip = false;
     if($daytrip != undefined){
@@ -622,7 +639,7 @@
 
     function listRoom(data){
     $result = '';
-    $twin_price = $('#initial-hotel-price').val();
+    $twin_price = $('#datestart').attr('price');
     $currency = $('#currency').val();
     $ck_people = parseInt($('#tourist-total-num').val(),10);
     $twin_price = parseInt($twin_price.replace(',',''),10);
@@ -662,7 +679,7 @@
     function set_hotel($temp){
       switch($temp){
           case 1:
-          $price = parseInt($('#initial-hotel-price').val().replace(',',''));
+          $price = parseInt($('#datestart').attr('price'));
           $count_list = $('.hotel-list').length;
           $count_room_type = $('.roomtype').length;
           for($i=0;$i<$count_list;$i++){
@@ -696,13 +713,19 @@
     function sum_amount(){
     $total_amount = 0;
     $count = $('.tour-option:checked').length;
+    $count_tourist = $('.tourist-num').length;
     for($i=0;$i<$count;$i++){
     	$condition = $('.tour-option:checked').eq($i).attr('condition');
     	if($condition == 'increase'){
-    		$('.tour-option:checked').eq($i).attr('condition');
-    		$total_amount += parseInt($('.tour-option:checked').eq($i).attr('price'),10);
+        for($j=0;$j<$count_tourist;$j++){
+          $num = parseInt($('.tourist-num').eq($j).val(),10);
+      		$total_amount += parseInt($('.tour-option:checked').eq($i).attr('price'),10)*$num;
+        }
     	}else{
-    		$total_amount -= parseInt($('.tour-option:checked').eq($i).attr('price'),10);
+        for($j=0;$j<$count_tourist;$j++){
+          $num = parseInt($('.tourist-num').eq($j).val(),10);
+      		$total_amount -= parseInt($('.tour-option:checked').eq($i).attr('price'),10)*$num;
+        }
     	}
     }
     $count = $('.tourist-num').length;
@@ -714,9 +737,14 @@
     if($('.extension-day').prop('checked')){
       $extension = $('.extension-day:checked');
       $extension_price = JSON.parse($('.show').attr('price'));
-      for($i=0;$i<$count;$i++){
-        $num = parseInt($('.tourist-num').eq($i).val(),10);
-        $total_amount += $num*$extension_price[$i]['price'];
+      if($count>1){
+        for($i=0;$i<$count;$i++){
+          $num = parseInt($('.tourist-num').eq($i).val(),10);
+          $total_amount += $num*$extension_price[$i]['price'];
+        }
+      }else{
+        $num = parseInt($('.tourist-num').eq(0).val(),10);
+        $total_amount += $num*$extension_price[1]['price'];
       }
     }
     $extension_activity_price = $('input:radio[name=extension-activity]:checked').attr('price');

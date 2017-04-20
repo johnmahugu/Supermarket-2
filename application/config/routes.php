@@ -23,6 +23,7 @@ $route['series-booking-info']       = 'SeriesBookingCL/series_booking_info';
 $route['series-booking-submit']     = 'SeriesBookingCL/series_booking_submit';
 $route['check-email']               = 'SeriesBookingCL/check_email';
 $route['easy-booking']              = 'EasyBookingCL/easy_booking';
+$route['get-price'] = 'EasyBookingCL/get_price';
 $route['get-hotel-room']            = 'EasyBookingCL/get_hotel_room';
 $route['easy-booking-info']         = 'EasyBookingCL/easy_booking_info';
 $route['easy-booking-submit']       = 'EasyBookingCL/easy_booking_submit';

@@ -54,6 +54,25 @@ class EasyBookingCL extends CI_Controller {
     $data['booking_detail'] = $booking_detail;
     $this->load->view('easy_booking_info', $data);
   }
+  function get_price() {
+    $slug = $this->input->post('slug');
+    $temp = explode("/",$this->input->post('daytrip'));
+    $d = $temp[0];
+    $m = $temp[1];
+    $y = $temp[2];
+    $daytrip = date('Y-m-d',strtotime($y.'-'.$m.'-'.$d));
+    $query = $this->EasyBookingMD->getPrice($slug);
+    $temp = json_decode($query->row()->tour_priceRange,true);
+    $count_temp = count($temp)-1;
+    for($i=0;$i<=$count_temp;$i++){
+      $datestart = date('Y-m-d',strtotime($temp[$i]['from']));
+      $datefinish = date('Y-m-d',strtotime($temp[$i]['to']));
+      if(($daytrip >= $datestart) && ($daytrip <= $datefinish)){
+        echo $temp[$i]['price'];
+        break;
+      }
+    }
+  }
   function get_hotel_room() {
     $slug         = $this->input->post('slug');
     $index        = $this->input->post('index');
