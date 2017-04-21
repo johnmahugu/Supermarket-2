@@ -31,7 +31,7 @@ class HomepageCL extends CI_Controller {
     $data['hilight_price_range'] = $data['hilight_package']->row()->tour_priceRange;
     /**************Pagination Configuration******************/
     $config['base_url']          = base_url() . 'index.php/' . $this->uri->segment(1);
-    $config['per_page']          = 3;
+    $config['per_page']          = 6;
     $config['cur_tag_open']      = '<a class="current">';
     $config['cur_tag_close']     = '</a>';
     $count_allrow                = $this->HomepageMD->getPackage($this->country, 'sp', '', '');
@@ -61,7 +61,7 @@ class HomepageCL extends CI_Controller {
     $data['hilight_price_range'] = $data['hilight_package']->row()->tour_priceRange;
     /**************Pagination Configuration******************/
     $config['base_url']          = base_url() . 'index.php/' . $this->uri->segment(1);
-    $config['per_page']          = 3;
+    $config['per_page']          = 6;
     $config['cur_tag_open']      = '<a class="current">';
     $config['cur_tag_close']     = '</a>';
     $count_allrow                = $this->HomepageMD->getPackage($this->country, 'sp', '', '');

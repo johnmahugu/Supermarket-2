@@ -192,22 +192,7 @@
           </div>
           <div class="content-box">
             <ul>
-              <?php
-                for($i=0;$i<=$last_rbf;$i++){
-                ?>
-              <li>
-                <h3>Day <?=$i+1;?></h3>
-                <p><?=$route_briefing[$i]['route'];
-                  if($route_briefing[$i]['hotel'] != ''){?>
-                  <span>Stay at <?=strtoupper($route_briefing[$i]['hotel']);?></span>
-                </p>
-                <?php
-                  }
-                  ?>
-              </li>
-              <?php
-                }
-                ?>
+              <?=$package['tour_briefing']?>
             </ul>
           </div>
         </div>

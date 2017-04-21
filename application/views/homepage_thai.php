@@ -401,10 +401,18 @@
       		$offset = 0;
       	}
       	$result = getPackage($base_url, $type, $region, $province, $continent, $country, $season, $keysearch, $ref_url, $offset);
-      	$('.tour-package').html('');
-      	$('.pagination').html('');
-      	$('.tour-package').html($result['list_package']);
-      	$('.pagination').html($result['pagination_links']);
+        if($result != ''){
+          $('.tour-package').html('');
+        	$('.pagination').html('');
+        	$('.tour-package').html($result['list_package']);
+        	$('.pagination').html($result['pagination_links']);
+        }else{
+          $result = getPackage($base_url, $type, $region, $province, $continent, $country, $season, $keysearch, $ref_url, 0);
+          $('.tour-package').html('');
+        	$('.pagination').html('');
+        	$('.tour-package').html($result['list_package']);
+        	$('.pagination').html($result['pagination_links']);
+        }
 
       	function getPackage($base_url, $type, $region, $province, $continent, $country, $season, $keysearch, $ref_url, $offset){
       		$result = '';
