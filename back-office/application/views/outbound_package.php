@@ -177,7 +177,7 @@
 						<div class="col-md-5 col-sm-7">
 							<div class="input-inline">
 								<div class="digi-box">
-									<p><?=$c_package?>&nbsp;Packages</p>
+									<p id="c_package"><?=$c_package?>&nbsp;Packages</p>
 								</div>
 								<div class="input-box">
 									<label class="filter">Continent</label>
@@ -279,6 +279,9 @@ function filter(){
 	if($('select[name="country"]').val() != null && $('select[name="country"]').val() != 'All Country'){
 		$country = $('select[name="country"]').val();
 	}
+
+	$('#c_package').html("0&nbsp;Packages");
+
 	$result = getPackage($base_url, $type, $region, $province, $continent, $country);
 
 	$('.tour-package').html('');
@@ -311,6 +314,7 @@ function filter(){
 		if($.trim(data['package'])){
 			$result = new Array();
 			$result['list_package'] = '';
+			$('#c_package').html(data['package'].length+"&nbsp;Packages");
 			for($i=0;$i<data['package'].length;$i++){
 				$date_range = JSON.parse(data['package'][$i].tour_priceRange);
 				$last_btr = $date_range.length-1;

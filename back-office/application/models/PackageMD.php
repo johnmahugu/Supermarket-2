@@ -11,7 +11,7 @@ class PackageMD extends CI_Model {
   }
 
   function getPackage($country, $type) {
-    $this->db->select("
+    self::$db->select("
 			tour.tour_id,
 			tour.tour_nameTH,
 			tour.tour_nameEN,
@@ -26,70 +26,67 @@ class PackageMD extends CI_Model {
 			image.img_source,
 			countries.country_name
 		");
-    $this->db->from('tour');
-    $this->db->join('image', 'tour.tour_imgCover = image.img_refid', 'inner');
-    $this->db->join('tour_address', 'tour.tour_id = tour_address.tour_id', 'inner');
-    $this->db->join('address', 'tour_address.address_id = address.address_id', 'inner');
-    $this->db->join('countries', 'address.country_id = countries.country_id', 'inner');
-    $this->db->where('image.img_type', 'tour cover');
-    $this->db->where('tour.tour_type', $type);
-    $this->db->where('CURDATE() BETWEEN tour.tour_openBooking AND tour.tour_closeBooking');
+    self::$db->from('tour');
+    self::$db->join('image', 'tour.tour_imgCover = image.img_refid', 'inner');
+    self::$db->join('tour_address', 'tour.tour_id = tour_address.tour_id', 'inner');
+    self::$db->join('address', 'tour_address.address_id = address.address_id', 'inner');
+    self::$db->join('countries', 'address.country_id = countries.country_id', 'inner');
+    self::$db->where('image.img_type', 'tour cover');
+    self::$db->where('tour.tour_type', $type);
+    self::$db->where('tour.tour_closeBooking >=', 'CURDATE()', FALSE);
     if ($country == 'thailand') {
-      $this->db->where('tour.tour_nationality', 'thailand domestic tour');
+      self::$db->where('tour.tour_nationality', 'thailand domestic tour');
     } else {
-      $this->db->where('tour.tour_nationality !=', 'thailand domestic tour');
+      self::$db->where('tour.tour_nationality !=', 'thailand domestic tour');
     }
-    $this->db->group_by('tour.tour_id');
-    return $this->db->get();
+    self::$db->group_by('tour.tour_id');
+    return self::$db->get();
   }
 
   function getFilter($type, $country, $region, $province, $continent) {
-    $this->db->select("
-			tour.tour_id,
-			tour.tour_nameTH,
-			tour.tour_nameEN,
-			tour.tour_nameSlug,
-			IF(tour.tour_type = 'sp', 'SERIES PACKAGE', 'EASY PACKAGE') AS tour_type,
-			tour.tour_imgCover,
-			tour.tour_pdf,
-			tour.tour_dayNight,
-			tour.tour_startPrice,
-			tour.tour_priceRange,
-			tour.tour_currency,
-			image.img_source,
-			countries.country_name
+    self::$db->select("
+      tour.tour_id,
+      tour.tour_nameTH,
+      tour.tour_nameEN,
+      tour.tour_nameSlug,
+      IF(tour.tour_type = 'sp', 'SERIES PACKAGE', 'EASY PACKAGE') AS tour_type,
+      tour.tour_imgCover,
+      tour.tour_pdf,
+      tour.tour_dayNight,
+      tour.tour_startPrice,
+      tour.tour_priceRange,
+      tour.tour_currency,
+      image.img_source,
+      countries.country_name
 		");
-    $this->db->from('tour');
-    $this->db->join('image', 'tour.tour_imgCover = image.img_refid', 'inner');
-    $this->db->join('tour_address', 'tour.tour_id = tour_address.tour_id', 'inner');
-    $this->db->join('address', 'tour_address.address_id = address.address_id', 'inner');
-    $this->db->join('countries', 'address.country_id = countries.country_id', 'inner');
-    $this->db->join('continents', 'address.continent_id = continents.continent_id', 'inner');
-    $this->db->join('geography', 'address.geography_id = geography.geography_id');
-    $this->db->where('image.img_type', 'tour cover');
-    $this->db->where('tour.tour_type', $type);
-    $this->db->where('CURDATE() BETWEEN tour.tour_openBooking AND tour.tour_closeBooking');
-
+    self::$db->from('tour');
+    self::$db->join('image', 'tour.tour_imgCover = image.img_refid', 'inner');
+    self::$db->join('tour_address', 'tour.tour_id = tour_address.tour_id', 'inner');
+    self::$db->join('address', 'tour_address.address_id = address.address_id', 'inner');
+    self::$db->join('countries', 'address.country_id = countries.country_id', 'inner');
+    self::$db->join('continents', 'address.continent_id = continents.continent_id', 'inner');
+    self::$db->join('geography', 'address.geography_id = geography.geography_id');
+    self::$db->where('image.img_type', 'tour cover');
+    self::$db->where('tour.tour_type', $type);
+    self::$db->where('tour.tour_closeBooking >=', 'CURDATE()', FALSE);
     if ($region != '') {
-      $this->db->where('geography.geography_nameEN', $region);
+      self::$db->where('geography.geography_nameEN', $region);
     }
     if ($province != '') {
-      $this->db->where('address.address_province', $province);
+      self::$db->where('address.address_province', $province);
     }
     if ($continent != '') {
-      $this->db->where('continents.continent_name', $continent);
+      self::$db->where('continents.continent_name', $continent);
     }
-    if ($country != '') {
-      if ($country == 'thailand') {
-        $this->db->where('tour.tour_nationality', 'thailand domestic tour');
-      } else if ($country == 'international') {
-        $this->db->where('tour.tour_nationality !=', 'thailand domestic tour');
-      } else {
-        $this->db->where('countries.country_name', $country);
-      }
+    if ($country == 'thailand') {
+      self::$db->where('tour.tour_nationality', 'thailand domestic tour');
+    } else if ($country == 'international') {
+      self::$db->where('tour.tour_nationality !=', 'thailand domestic tour');
+    } else {
+      self::$db->where('countries.country_name', $country);
     }
-
-    return $this->db->get();
+    self::$db->group_by('tour.tour_id');
+    return self::$db->get();
   }
 
   function disablePackage($tour_nameSlug) {

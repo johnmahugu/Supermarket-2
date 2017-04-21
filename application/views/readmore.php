@@ -136,16 +136,8 @@
               <p><?=$package['tour_type'];?></p>
             </div>
             <div class="description">
-              <?php
-                if($package['tour_currency'] == 'THB'){
-                ?>
-              <p>Price: <?=number_format($package['tour_startPrice']);?> Baht<br>
+              <p>Price: $<?=number_format($package['tour_startPrice']);?> <?=$package['tour_currency']?><br>
                 <?php
-                  }else{
-                  ?>
-              <p>Price: $<?=number_format($package['tour_startPrice']);?><br>
-                <?php
-                  }
                   $est_date = explode(",",$package['tour_dayNight']);
                   ?>
                 <span><?=$est_date[0];?> Day <?=$est_date[1];?> Night</span>
@@ -165,17 +157,7 @@
               ?>
             <tr>
               <td><?=date_format(date_create($booking_timerange[$i]['from']),"j M Y");?> - <?=date_format(date_create($booking_timerange[$i]['to']),"j M Y");?></td>
-              <?php
-                if($package['tour_currency'] == 'THB'){
-                ?>
-              <td><?=number_format($booking_timerange[$i]['price']);?> Baht</td>
-              <?php
-                }else{
-                ?>
-              <td>$<?=number_format($booking_timerange[$i]['price']);?></td>
-              <?php
-                }
-                ?>
+              <td>$<?=number_format($booking_timerange[$i]['price']);?> <?=$package['tour_currency']?></td>
             </tr>
             <?php
               }
@@ -196,17 +178,7 @@
               <?=$package['tour_overview'];?>
             </h2>
             <h3 class="hilight-red">
-              <?php
-                if($package['tour_currency'] == 'THB'){
-                ?>
-              Start at <?=number_format($package['tour_startPrice']);?> Baht
-              <?php
-                }else{
-                ?>
-              Start at $<?=number_format($package['tour_startPrice']);?>
-              <?php
-                }
-                ?>
+              Start at <?=number_format($package['tour_startPrice']);?> <?=$package['tour_currency']?>
             </h3>
           </div>
           <div class="title-line top-mg">

@@ -163,11 +163,7 @@
                   		$open_booking = date_format(date_create($booking_timerange[$i]['from']),"d M Y");
                   		$close_booking = date_format(date_create($booking_timerange[$i]['to']),"d M Y");
                   		echo '<td>'.$open_booking." - ".$close_booking.'</td>';
-                  		if($package['tour_currency'] == 'THB'){
-                  			echo '<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.number_format($booking_timerange[$i]['price']).' Baht</td>';
-                  		}else{
-                  			echo '<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$'.number_format($booking_timerange[$i]['price']).'</td>';
-                  		}
+                  		echo '<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.number_format($booking_timerange[$i]['price']).' '.$package['tour_currency'].'</td>';
                   		echo '</option>';
                   	}
                   }
@@ -191,19 +187,11 @@
               <?php
                 if($row['tc_condition'] == 'decrease'){
                 	$result = "<b class='discount'> discount ";
-                	if($package['tour_currency'] == 'THB'){
-                		$result .= number_format($row['tc_price'])." Baht</b>";
-                	}else{
-                		$result .= "$".number_format($row['tc_price'])."</b>";
-                	}
+                  $result .= number_format($row['tc_price'])." ".$package['tour_currency']."</b>";
                 	echo $result;
                 }else{
                 	$result = "<b> add ";
-                	if($package['tour_currency'] == 'THB'){
-                		$result .= number_format($row['tc_price'])." Baht</b>";
-                	}else{
-                		$result .= "$".number_format($row['tc_price'])."</b>";
-                	}
+                  $result .= number_format($row['tc_price'])." ".$package['tour_currency']."</b>";
                 	echo $result;
                 }
                 ?></span>
@@ -282,8 +270,7 @@
               <div class="list total-amount">
                 <div class="col-sm-5"><label>Total amount</label></div>
                 <div class="col-sm-4">
-                  <p id="total-amount" class="total">0</p>
-                  <?php if($package['tour_currency'] == 'THB'){echo 'Baht';}else{echo 'Dollar';}?>
+                  <p id="total-amount" class="total">0</p><?=$package['tour_currency']?>
                 </div>
               </div>
             </div>
