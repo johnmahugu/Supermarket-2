@@ -1,0 +1,215 @@
+$lgray:#37bbf3;
+$dgray:#313942;
+
+$pcolor:#2e3797;
+$scolor:#37bbf3;
+
+@media only screen and (max-width : 992px){
+	header .header-bar .menu li{
+		padding: 0px;
+		a{
+			padding: 5px 15px;
+		}
+	}
+
+	.clear.md{
+        display: block;
+    } 
+}
+
+@media only screen and (max-width : 767px){
+	.login-box {
+		.bg{
+			height: 60px;
+			background: url(../images/img-loginpage.png) no-repeat right center;
+			background-size: 50%;
+			background-color: $pcolor;
+		}
+		.form-group{
+			max-width: 350px;
+		}
+	}
+
+	header .header-bar .menu{
+	    .menu-btn{display: inline-block !important;}
+	    > ul{
+	    	position: absolute;
+		    width: 100%;
+		    min-height: 100%;
+		    top: 0;
+		    bottom: 0;
+		    right: 0;
+		    background-color: $dgray;
+		    display: none;
+		    padding: 20px;
+		    overflow-y:scroll; 
+		    li{
+		    	display: block;
+		    	margin: 7.5% 0;
+		    	> a,a{
+			    	border: none;
+			    	color: white;
+			    	font-size: 26px;
+			    }
+			    &:hover > a,&.current > a{
+		    		border: none;
+		    		color: white;
+		    	}
+			    &:last-of-type{
+			    	color: lightgray;
+			    	padding: 5% 20px;
+			    	ul{
+				    	position: inherit;
+				    	background: transparent;
+				    	border: none;
+				    	display: block;
+				    	li{
+				    		padding: 0px;
+				    		&:hover{
+				    			background-color: transparent;
+				    		}
+				    	}
+				    }
+			    }
+		    } 
+		    &:hover > li a{
+				border: none !important;
+			    color: white !important;
+			}
+	    }
+	    &.open{
+	    	.menu-btn{
+	    		position: absolute;
+	    		z-index: 1000;
+	    		bottom: 0;
+	    		left: 0;
+	    		right: 0;
+	    		margin: auto;
+	    		background-color: $dgray;
+	    		text-align: center;
+	    		color: lightgray;
+	    		border: none;
+	    		border-radius: 0px;
+	    		padding: 15px 0;
+	    	}
+	    	ul{
+	    		display: block;
+	    		z-index: 999;
+	    	}
+	    }
+	}
+
+	.body-wrapper{
+		main{
+			margin-right: 0px;
+		}
+		aside{
+			position: absolute;
+			top:65px;
+			z-index: 100;
+		}
+	} 
+
+	.card-menu{
+		justify-content: center;
+	}
+
+	.title-bar-wrapper {
+		.btn{
+			display: block;
+			float: none;
+			margin: 20px auto 0px auto;
+			max-width: 300px;
+			&.label-level{
+				margin-top: 20px;
+			}
+			&.btn.full{
+				margin-top: 0px;
+			}
+		} 
+	}
+
+	.clear.sm{
+        display: block;
+    }
+
+    .header-card{
+		display: none;
+	}
+
+	.list-card{
+		&.top{
+			.content{
+				br{display: none;}
+				&.flight{
+					b{
+						display: inline-block;
+						color: gray;
+						margin-right: 10px;
+					}
+					> div:nth-of-type(4){
+						border-top: 1px solid lightgray;
+						padding-top: 10px;
+					}
+				}
+			}
+		}
+	}
+	
+}
+
+@media only screen and (max-width : 480px) {
+	body{
+		font-size: 80%;
+	}
+	.list-card{
+		display: inline-block;
+		padding: 20px 10px;
+		.input-inline{
+			width: 100%;
+			margin: auto;
+			padding: 20px 15px 0 15px;
+			.btn{width: 100%;}
+		}
+		.list{
+			display: inline-block;
+			width: 100%;
+		}
+		&.top{
+			padding: 20px 10px;
+		}
+		.content{
+			& + .input-inline{
+				padding-left: 0px;
+			}
+		}
+		.date-modified{
+			text-align: center;
+			margin-top: 10px;
+		}
+		.icon{
+			margin-left: 10px;
+			& + h2{
+				display: block;
+				width: calc(100% - 75px);
+				float: right;
+				margin-top: 20px;
+			}
+		} 
+		&.card-header .header-card + hr{
+			margin-top: 5px;
+		}
+	}
+	.modal-dialog .modal-footer{
+		justify-content: center;
+	}
+
+	.clear.xs{
+        display: block;
+    }
+}
+
+@media only screen and (max-width : 320px) {
+    
+}
+

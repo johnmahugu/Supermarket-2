@@ -69,7 +69,8 @@ class HomepageMD extends CI_Model {
 				INNER JOIN countries ON address.country_id = countries.country_id
 				WHERE
 				image.img_type = 'tour cover' AND
-				tour.tour_isHilight = 1
+				tour.tour_isHilight = 1 AND
+        tour.tour_closeBooking >= (SELECT CURDATE())
 				GROUP BY
 				tour.tour_id
 				";
