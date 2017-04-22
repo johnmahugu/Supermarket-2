@@ -158,14 +158,18 @@
                 <option disabled selected>Select day trip</option>
                 <?php
                   for($i=0;$i<=$last_btr;$i++){
-                  	if(date('Y-m-d') <= $booking_timerange[$i]['to']){
-                  		echo '<option datestart="'.$booking_timerange[$i]['from'].'" datefinish="'.$booking_timerange[$i]['to'].'" value="'.$booking_timerange[$i]['price'].'">';
+                    $date1 = new DateTime($booking_timerange[$i]['from']);
+                    $date1->modify('-'.$package['tour_advanceBooking'].' day');
+                    $date1 = $date1->format('Y-m-d');
+                    $date2 = (new DateTime)->format('Y-m-d');
+                    if($date2 <= $date1){
+                      echo '<option datestart="'.$booking_timerange[$i]['from'].'" datefinish="'.$booking_timerange[$i]['to'].'" value="'.$booking_timerange[$i]['price'].'">';
                   		$open_booking = date_format(date_create($booking_timerange[$i]['from']),"d M Y");
                   		$close_booking = date_format(date_create($booking_timerange[$i]['to']),"d M Y");
                   		echo '<td>'.$open_booking." - ".$close_booking.'</td>';
                   		echo '<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.number_format($booking_timerange[$i]['price']).' '.$package['tour_currency'].'</td>';
                   		echo '</option>';
-                  	}
+                    }
                   }
                   ?>
               </select>

@@ -16,7 +16,8 @@ class SeriesBookingMD extends CI_Model {
 			tour.tour_startPrice,
 			tour.tour_priceRange,
 			tour.tour_currency,
-			countries.country_name
+			countries.country_name,
+      tour.tour_advanceBooking
 		");
     $this->db->from('tour');
     $this->db->join('tour_address', 'tour.tour_id = tour_address.tour_id', 'inner');

@@ -149,12 +149,18 @@
           <table class="tour-date">
             <?php
               for($i=0;$i<=$last_btr;$i++){
+                $date1 = new DateTime($booking_timerange[$i]['from']);
+                $date1->modify('-'.$package['tour_advanceBooking'].' day');
+                $date1 = $date1->format('Y-m-d');
+                $date2 = (new DateTime)->format('Y-m-d');
+                if($date2 <= $date1){
               ?>
             <tr>
               <td><?=date_format(date_create($booking_timerange[$i]['from']),"j M Y");?> - <?=date_format(date_create($booking_timerange[$i]['to']),"j M Y");?></td>
               <td>$<?=number_format($booking_timerange[$i]['price']);?> <?=$package['tour_currency']?></td>
             </tr>
             <?php
+                }
               }
               ?>
           </table>

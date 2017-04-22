@@ -28,7 +28,8 @@ class ReadmoreMD extends CI_Model {
 			tour.tour_priceRange,
 			tour.tour_currency,
 			image.img_source,
-			countries.country_name
+			countries.country_name,
+      tour.tour_advanceBooking
 		");
     $this->db->from('tour');
     $this->db->join('image', 'tour.tour_imgCover = image.img_refid', 'inner');
