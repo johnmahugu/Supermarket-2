@@ -11,11 +11,6 @@
   	$booking_timerange = json_decode($price_range,true);
   	$last_btr = count($booking_timerange)-1;
   }
-  /*************List route******************/
-  if(isset($briefing)){
-  	$route_briefing = json_decode($briefing,true);
-  	$last_rbf = count($route_briefing)-1;
-  }
   ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -175,7 +170,7 @@
           </div>
           <div class="content-box">
             <h2 class="title-text">
-              <?=$package['tour_overview'];?>
+              <?=$package['tour_overview'.$lang];?>
             </h2>
             <h3 class="hilight-red">
               Start at <?=number_format($package['tour_startPrice']);?> <?=$package['tour_currency']?>
@@ -185,14 +180,14 @@
             <h2>Tour Detail</h2>
           </div>
           <div class="content-box readmore">
-            <?=$package['tour_desc'];?>
+            <?=$package['tour_desc'.$lang]?>
           </div>
           <div class="title-line top-mg">
             <h2>Tour Briefing</h2>
           </div>
           <div class="content-box">
             <ul>
-              <?=$package['tour_briefing']?>
+              <?=$package['tour_briefing'.$lang]?>
             </ul>
           </div>
         </div>

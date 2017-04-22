@@ -62,4 +62,18 @@ class PackageCL extends CI_Controller {
 			echo 'Fall';
 		}
 	}
+
+	function edit_domestic_package() {
+		/********************Initial valiable********************/
+		$tour_nameSlug = $this->input->get('tour');
+		/********************Initial Filter**********************/
+		$data['province'] = $this->PackageMD->getProvince();
+		$data['region'] = $this->PackageMD->getRegion();
+		/*****************Export package data********************/
+		$data['agency'] = $this->PackageMD->getAgency();
+		$query= $this->PackageMD->editPackage($tour_nameSlug);
+		$data['package'] = $query;
+		$data['price_range']    = $query->row()->tour_priceRange;
+		$this->load->view('edit_domestic_package',$data);
+	}
 }

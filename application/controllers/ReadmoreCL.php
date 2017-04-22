@@ -25,7 +25,6 @@ class ReadmoreCL extends CI_Controller {
     }
     $data['package']     = $query;
     $data['price_range'] = $query->row()->tour_priceRange;
-    $data['briefing']    = $query->row()->tour_briefing;
     $this->load->view('readmore', $data);
   }
 }

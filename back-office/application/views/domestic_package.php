@@ -235,7 +235,7 @@
 								<p class="date"><?=date_format(date_create($booking_timerange[$i][0]['from']),"j F Y");?> - <?=date_format(date_create($booking_timerange[$i][$last_btr[$i]]['to']),"j F Y");?></p>
 								<div class="btn-wrapper">
 									<a href="disable-package?tour=<?=$row['tour_nameSlug']?>" class="btn gray">Delete</a>
-									<a href="#" class="btn"> Edit </a>
+									<a href="edit-domestic-package?tour=<?=$row['tour_nameSlug']?>" class="btn"> Edit </a>
 								</div>
 							</div>
 						</div>
