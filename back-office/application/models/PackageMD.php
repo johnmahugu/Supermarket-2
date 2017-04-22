@@ -100,7 +100,7 @@ class PackageMD extends CI_Model {
     return self::$db->trans_status();
   }
 
-  function editPAckage($tour_nameSlug) {
+  function editPackage($tour_nameSlug) {
     self::$db->select("
 			tour.tour_id,
 			tour.tour_nameTH,
@@ -122,6 +122,7 @@ class PackageMD extends CI_Model {
 			tour.tour_currency,
 			image.img_source,
 			countries.country_name,
+      continents.continent_name,
       address.address_province,
       geography.geography_nameEN,
       agent.agent_code
@@ -132,6 +133,7 @@ class PackageMD extends CI_Model {
     self::$db->join('address', 'tour_address.address_id = address.address_id', 'inner');
     self::$db->join('countries', 'address.country_id = countries.country_id', 'inner');
     self::$db->join('geography', 'address.geography_id = geography.geography_id', 'inner');
+    self::$db->join('continents', 'address.continent_id = continents.continent_id', 'inner');
     self::$db->join('agent', 'tour.tour_agentId = agent.agent_id', 'inner');
     self::$db->where('image.img_type', 'tour cover');
     self::$db->where('tour.tour_nameSlug', $tour_nameSlug);

@@ -11,32 +11,42 @@ class PackageCL extends CI_Controller {
   }
 
 	function domestic_package() {
+		/********************Initital valiable*******************/
+		$tour_type = $this->input->get('type');
+		$this->session->set_flashdata('f1', $tour_type);
 		/********************Initial Filter**********************/
 		$data['province'] = $this->PackageMD->getProvince();
 		$data['region'] = $this->PackageMD->getRegion();
 		/*********************Normal Package*********************/
-		$query = $this->PackageMD->getPackage('thailand','sp');
+		$query = $this->PackageMD->getPackage('thailand',$tour_type);
 		$data['package'] = $query;
 		$count = $query->num_rows();
 		$data['c_package'] = $count;
-		for ($i = 0; $i <= $count; $i++) {
-      $data['price_range'][$i] = $query->row($i)->tour_priceRange;
-    }
+		if($count > 0){
+			for ($i = 0; $i <= $count; $i++) {
+	      $data['price_range'][$i] = $query->row($i)->tour_priceRange;
+	    }
+		}
 		$this->load->view('domestic_package',$data);
 	}
 
 	function outbound_package() {
+		/********************Initital valiable*******************/
+		$tour_type = $this->input->get('type');
+		$this->session->set_flashdata('f1', $tour_type);
 		/********************Initial Filter**********************/
 		$data['continent'] = $this->PackageMD->getContinent();
 		$data['country'] = $this->PackageMD->getCountry();
 		/*********************Normal Package*********************/
-		$query = $this->PackageMD->getPackage('international','sp');
+		$query = $this->PackageMD->getPackage('international',$tour_type);
 		$data['package'] = $query;
 		$count = $query->num_rows();
 		$data['c_package'] = $count;
-		for ($i = 0; $i <= $count; $i++) {
-      $data['price_range'][$i] = $query->row($i)->tour_priceRange;
-    }
+		if($count > 0){
+			for ($i = 0; $i <= $count; $i++) {
+	      $data['price_range'][$i] = $query->row($i)->tour_priceRange;
+	    }
+		}
 		$this->load->view('outbound_package',$data);
 	}
 
@@ -75,5 +85,19 @@ class PackageCL extends CI_Controller {
 		$data['package'] = $query;
 		$data['price_range']    = $query->row()->tour_priceRange;
 		$this->load->view('edit_domestic_package',$data);
+	}
+
+	function edit_outbound_package() {
+		/********************Initial valiable********************/
+		$tour_nameSlug = $this->input->get('tour');
+		/********************Initial Filter**********************/
+		$data['continent'] = $this->PackageMD->getContinent();
+		$data['country'] = $this->PackageMD->getCountry();
+		/*****************Export package data********************/
+		$data['agency'] = $this->PackageMD->getAgency();
+		$query= $this->PackageMD->editPackage($tour_nameSlug);
+		$data['package'] = $query;
+		$data['price_range']    = $query->row()->tour_priceRange;
+		$this->load->view('edit_outbound_package',$data);
 	}
 }

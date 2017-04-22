@@ -158,7 +158,7 @@ if(isset($price_range)){
 					<div class="row">
 						<div class="col-xs-12">
 							<h1>Edit Join Group Tour</h1>
-							<p>Domestic | Supermarket Tours</p><br>
+							<p>Outbound | Supermarket Tours</p><br>
 						</div>
 						<div class="col-sm-6 col-xs-12">
 							<input type="text" placeholder="<?=$package['tour_nameTH']?>">
@@ -171,15 +171,15 @@ if(isset($price_range)){
 					<div class="row top-mg">
 						<div class="col-md-4 col-sm-6">
 							<div class="input-box">
-								<label class="filter">Region</label>
-                <select name="region">
+								<label class="filter">Continent</label>
+                <select name="continent">
                 <?php
-                  if(isset($region)){
-                    foreach($region->result_array() as $row){
-                      if($package['geography_nameEN'] == $row['geography_nameEN']){
-                        echo "<option value=".$row['geography_nameEN']." selected>".$row['geography_nameEN']."</option>";
+                  if(isset($continent)){
+                    foreach($continent->result_array() as $row){
+                      if($package['continent_name'] == $row['continent_name']){
+                        echo "<option value=".$row['continent_name']." selected>".$row['continent_name']."</option>";
                       }else{
-                        echo "<option value=".$row['geography_nameEN'].">".$row['geography_nameEN']."</option>";
+                        echo "<option value=".$row['continent_name'].">".$row['continent_name']."</option>";
                       }
                     }
                   }
@@ -189,15 +189,15 @@ if(isset($price_range)){
 						</div>
 						<div class="col-md-4 col-sm-6">
 							<div class="input-box">
-								<label class="filter">Province</label>
-                <select name="province">
+								<label class="filter">Country</label>
+                <select name="country">
 	              <?php
-	                if(isset($province)){
-	                	foreach($province->result_array() as $row){
-                      if($package['address_province'] == $row['province_nameEN']){
-                        echo "<option value=".$row['province_nameEN']." selected>".$row['province_nameEN']."</option>";
+	                if(isset($country)){
+	                	foreach($country->result_array() as $row){
+                      if($package['country_name'] == $row['country_name']){
+                        echo "<option value=".$row['country_name']." selected>".$row['country_name']."</option>";
                       }else{
-                        echo "<option value=".$row['province_nameEN'].">".$row['province_nameEN']."</option>";
+                        echo "<option value=".$row['country_name'].">".$row['country_name']."</option>";
                       }
 	                	}
 	                }

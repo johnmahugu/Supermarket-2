@@ -3,7 +3,7 @@
 	$filestorage = 'http://travelshop-center.tk:80/';
 	/**********Catch resubmission form*********/
 	if(!isset($_GET["redi"])){
-		header('Location: domestic-package?redi=s');
+		header('Location: domestic-package?type='.$this->session->flashdata('f1').'&redi=s');
 	}
   /*****************Session*****************/
   $lang = 'EN';
@@ -126,11 +126,11 @@
 				<hr>
 			</div>
 			<ul>
-				<a href="tm-domestic-easy-main.html">
+				<a href="domestic-package?type=ep">
 					<li>Private Group Tours</li>
 				</a>
-				<a href="domestic-package">
-					<li class="current">Join Group Tours</li>
+				<a href="domestic-package?type=sp">
+					<li>Join Group Tours</li>
 				</a>
 				<a href="tm-domestic-locationdata.html">
 					<li>Location Data</li>
@@ -141,10 +141,10 @@
 				<hr>
 			</div>
 			<ul>
-				<a href="tm-outbound-easy-main.html">
+				<a href="outbound-package?type=ep">
 					<li>Private Group Tours</li>
 				</a>
-				<a href="outbound-package">
+				<a href="outbound-package?type=sp">
 					<li>Join Group Tours</li>
 				</a>
 				<a href="tm-outbound-locationdata.html">
@@ -250,11 +250,15 @@
 		</main>
 	</div>
 	<input id="isTourCountry" type="hidden" value="thailand">
-	<input id="isTourType" type="hidden" value="sp">
+	<input id="isTourType" type="hidden" value="<?=$this->session->flashdata('f1')?>">
 </body>
 <script src="assets/js/script.js"></script>
 <script>
 $base_url = 'http://travelshop-center.tk:80/';
+
+$(document).ready(function(){
+	$('a[href="domestic-package?type='+$('#isTourType').val()+'"]').find('li').eq(0).addClass('current');
+});
 
 $('select').change(function(){
 	filter();

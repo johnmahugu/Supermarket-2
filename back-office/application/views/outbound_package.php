@@ -3,7 +3,7 @@
 	$filestorage = 'http://travelshop-center.tk:80/';
 	/**********Catch resubmission form*********/
 	if(!isset($_GET["redi"])){
-		header('Location: outbound-package?redi=s');
+		header('Location: outbound-package?type='.$this->session->flashdata('f1').'&redi=s');
 	}
   /*****************Session*****************/
   $lang = 'EN';
@@ -126,10 +126,10 @@
 				<hr>
 			</div>
 			<ul>
-				<a href="tm-domestic-easy-main.html">
+				<a href="domestic-package?type=ep">
 					<li>Private Group Tours</li>
 				</a>
-				<a href="domestic-package">
+				<a href="domestic-package?type=sp">
 					<li>Join Group Tours</li>
 				</a>
 				<a href="tm-domestic-locationdata.html">
@@ -141,11 +141,11 @@
 				<hr>
 			</div>
 			<ul>
-				<a href="tm-outbound-easy-main.html">
+				<a href="outbound-package?type=ep">
 					<li>Private Group Tours</li>
 				</a>
-				<a href="outbound-package">
-					<li class="current">Join Group Tours</li>
+				<a href="outbound-package?type=sp">
+					<li>Join Group Tours</li>
 				</a>
 				<a href="tm-outbound-locationdata.html">
 					<li>Location Data</li>
@@ -235,7 +235,7 @@
 								<p class="date"><?=date_format(date_create($booking_timerange[$i][0]['from']),"j F Y");?> - <?=date_format(date_create($booking_timerange[$i][$last_btr[$i]]['to']),"j F Y");?></p>
 								<div class="btn-wrapper">
 									<a href="disable-package?tour=<?=$row['tour_nameSlug']?>" class="btn gray">Delete</a>
-									<a href="edit-package?tour=<?=$row['tour_nameSlug']?>" class="btn"> Edit </a>
+									<a href="edit-outbound-package?tour=<?=$row['tour_nameSlug']?>" class="btn"> Edit </a>
 								</div>
 							</div>
 						</div>
@@ -250,11 +250,15 @@
 		</main>
 	</div>
   <input id="isTourCountry" type="hidden" value="international">
-  <input id="isTourType" type="hidden" value="sp">
+  <input id="isTourType" type="hidden" value="<?=$this->session->flashdata('f1')?>">
 </body>
 <script src="assets/js/script.js"></script>
 <script>
 $base_url = 'http://travelshop-center.tk:80/';
+
+$(document).ready(function(){
+	$('a[href="outbound-package?type='+$('#isTourType').val()+'"]').find('li').eq(0).addClass('current');
+});
 
 $('select').change(function(){
 	filter();
