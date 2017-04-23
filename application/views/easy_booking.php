@@ -183,6 +183,9 @@
             }
             echo '</div>';
             }
+            if($package['tour_privateGroup'] == 1){
+              echo '<input id="private-group" type="checkbox"> Private Group';
+            }
             ?>
           <div class="form-group" id="multiple">
 					<h3>Select an activity of interest</h3>
@@ -365,12 +368,53 @@
     <input id="dayplus" type="hidden" value="<?=$package['tour_dayNight']?>">
     <input id="datestart" type="hidden" value="" price="<?=$package['tour_startPrice']?>">
     <input id="datefinish" type="hidden" value="">
+    <input id="isDoublePack" type="hidden" value="<?=$package['tour_doublePack']?>">
+    <input id="isPrivateGroup" type="hidden" value="<?=$package['tour_privateGroup']?>">
+    <input id="discountRate" type="hidden" value='<?=$package['tour_discountRate']?>'>
   </body>
   <script>
     $(document).ready(function(){
+      $isDoublePack = $('#isDoublePack').val();
+      if($isDoublePack == 1){
+        double_pack(true);
+      }
       $('.room').hide();
       listDate();
     });
+
+    function double_pack($detection){
+      $isDoublePack = $('#isDoublePack').val();
+      if($isDoublePack == 1){
+        $temp = parseInt($('#tourist-total-num').val());
+        $mod = $temp%2;
+        if($temp%2 === 0){
+        }else{
+          if($detection){
+            $('#tourist-total-num').val($temp+1);
+          }else{
+            $('#tourist-total-num').val($temp-1);
+          }
+        }
+        $('#total-tourist').html($('#tourist-total-num').val());
+        route();
+        set_max($('#tourist-total-num').val());
+        sum_amount();
+      }
+    }
+
+    function check_doublePack(){
+      $isDoublePack = $('#isDoublePack').val();
+      if($isDoublePack == 1){
+        $temp = parseInt($('#tourist-total-num').val());
+        if($temp%2 == 1){
+          return false;
+        }else{
+          return true;
+        }
+      }else{
+        return true;
+      }
+    }
 
     $listDate = Array();
 
@@ -426,6 +470,7 @@
       set_hotel(1);
       $('.amount').find('span').eq(0).html(1);
       route();
+      set_max();
     });
 
     $( function() {
@@ -504,77 +549,82 @@
     });
 
     $('.booking-infopage').click(function(){
-    if(!check_room()){
-    	$('#alert-warning').html("Twin room can't stay alone.");
-    	$('#popup').modal('show');
-    }else{
-    	$daytrip = $('#datestart').val();
-    	if($daytrip == ''){
-    		$('#alert-warning').html('Plese select your interested day trip');
-    		$('#popup').modal('show');
-    	}else{
-    		$tourist_num = parseInt($('.amount').find('span').eq(0).html(),10);
-    		$total_tourist = parseInt($('#total-tourist').html(),10);
-    		if($tourist_num != $total_tourist){
-    			$('#alert-warning').html('Plese select room');
-    			$('#popup').modal('show');
-    		}else{
-    			$b_detail = '{"room":[';
-    			$count = $('.tourist-num').length-1;
-    			for($i=0;$i<=$count;$i++){
-    				$roomtype = $('.roomtype').eq($i).attr('roomtype');
-    				$tourist_num = $('.tourist-num').eq($i).val();
-    				if($tourist_num > 0){
-    					$b_detail += '{"roomtype":"'+$roomtype+'","tourist_num":'+$tourist_num+'}';
-    					if($i != $count){
-    						$b_detail += ',';
-    					}
-    				}
-    				if($i == $count){
-    					$b_detail += '],';
-    				}
-    			}
-    			$temp_datestart = $('#datestart').val().split("/");
-          $d = $temp_datestart[0];
-          $m = $temp_datestart[1];
-          $y = $temp_datestart[2];
-          $datestart = $y+'-'+$m+'-'+$d;
-    			$temp_datefinish = $('#datefinish').val().split("/");
-          $d = $temp_datestart[0];
-          $m = $temp_datestart[1];
-          $y = $temp_datestart[2];
-          $datefinish = $y+'-'+$m+'-'+$d;
-    			$b_detail += '"date":[{"start":"'+$datestart+'","end":"'+$datefinish+'"}],';
-    			$tour_option = $('input.tour-option:checked');
-    			if($tour_option.length > 0){
-    				$b_detail += '"option":[';
-    				$tour_option.each(function(i){
-    					$b_detail += '{"condition":"'+$('.tour-option').attr('condition')+'","price":"'+numeral($('.tour-option').attr('price')).format('0')+'"}';
-    					if(i != $tour_option.length-1){
-    						$b_detail += ',';
-    					}
-    				});
-    				$b_detail += '],';
-    			}
-    			$totaltourist = $('#tourist-total-num').val();
-    			$b_detail += '"tourist":[{"total_tourist":'+$totaltourist+'}],';
-          $extension_activity_price = $('input:radio[name=extension-activity]:checked').attr('price');
-          if($extension_activity_price > 0){
-            $b_detail += '"extension_activity":{"activity":"'+$('input:radio[name=extension-activity]:checked').attr('activity')+'","price":'+numeral($('input:radio[name=extension-activity]:checked').attr('price')).format('0')+'},';
-          }
-          if($('.extension-day').prop('checked')){
-            $b_detail += '"extension_day":"selected",';
-          }
-          if($('.spacial-request').val() != ''){
-            $b_detail += '"spacial_request":"'+$('.spacial-request').val()+'",';
-          }
-    			$totalamount = numeral($('.totalamount').html()).format('0');
-    			$b_detail += '"total_amount":'+$totalamount+'';
-    			$b_detail += '}';
-    			$('input[name="booking-detail"]').val($b_detail);
-          document.forms['to-booking-info'].submit();
-    		}
-    	}
+      if(!check_doublePack()){
+        $('#alert-warning').html("This tour is double pack. Plese fill even number only");
+        $('#popup').modal('show');
+      }else{
+        if(!check_room()){
+        	$('#alert-warning').html("Twin room can't stay alone.");
+        	$('#popup').modal('show');
+        }else{
+        	$daytrip = $('#datestart').val();
+        	if($daytrip == ''){
+        		$('#alert-warning').html('Plese select your interested day trip');
+        		$('#popup').modal('show');
+        	}else{
+        		$tourist_num = parseInt($('.amount').find('span').eq(0).html(),10);
+        		$total_tourist = parseInt($('#total-tourist').html(),10);
+        		if($tourist_num != $total_tourist){
+        			$('#alert-warning').html('Plese select room');
+        			$('#popup').modal('show');
+        		}else{
+        			$b_detail = '{"room":[';
+        			$count = $('.tourist-num').length-1;
+        			for($i=0;$i<=$count;$i++){
+        				$roomtype = $('.roomtype').eq($i).attr('roomtype');
+        				$tourist_num = $('.tourist-num').eq($i).val();
+        				if($tourist_num > 0){
+        					$b_detail += '{"roomtype":"'+$roomtype+'","tourist_num":'+$tourist_num+'}';
+        					if($i != $count){
+        						$b_detail += ',';
+        					}
+        				}
+        				if($i == $count){
+        					$b_detail += '],';
+        				}
+        			}
+        			$temp_datestart = $('#datestart').val().split("/");
+              $d = $temp_datestart[0];
+              $m = $temp_datestart[1];
+              $y = $temp_datestart[2];
+              $datestart = $y+'-'+$m+'-'+$d;
+        			$temp_datefinish = $('#datefinish').val().split("/");
+              $d = $temp_datestart[0];
+              $m = $temp_datestart[1];
+              $y = $temp_datestart[2];
+              $datefinish = $y+'-'+$m+'-'+$d;
+        			$b_detail += '"date":[{"start":"'+$datestart+'","end":"'+$datefinish+'"}],';
+        			$tour_option = $('input.tour-option:checked');
+        			if($tour_option.length > 0){
+        				$b_detail += '"option":[';
+        				$tour_option.each(function(i){
+        					$b_detail += '{"condition":"'+$('.tour-option').attr('condition')+'","price":"'+numeral($('.tour-option').attr('price')).format('0')+'"}';
+        					if(i != $tour_option.length-1){
+        						$b_detail += ',';
+        					}
+        				});
+        				$b_detail += '],';
+        			}
+        			$totaltourist = $('#tourist-total-num').val();
+        			$b_detail += '"tourist":[{"total_tourist":'+$totaltourist+'}],';
+              $extension_activity_price = $('input:radio[name=extension-activity]:checked').attr('price');
+              if($extension_activity_price > 0){
+                $b_detail += '"extension_activity":{"activity":"'+$('input:radio[name=extension-activity]:checked').attr('activity')+'","price":'+numeral($('input:radio[name=extension-activity]:checked').attr('price')).format('0')+'},';
+              }
+              if($('.extension-day').prop('checked')){
+                $b_detail += '"extension_day":"selected",';
+              }
+              if($('.spacial-request').val() != ''){
+                $b_detail += '"spacial_request":"'+$('.spacial-request').val()+'",';
+              }
+        			$totalamount = numeral($('.totalamount').html()).format('0');
+        			$b_detail += '"total_amount":'+$totalamount+'';
+        			$b_detail += '}';
+        			$('input[name="booking-detail"]').val($b_detail);
+              document.forms['to-booking-info'].submit();
+        		}
+        	}
+      }
     }
     });
 
@@ -761,6 +811,84 @@
       $total_amount += $num*$extension_activity_price;
     }
     $('.totalamount').html(numeral($total_amount).format('0,0'));
+
+    $isPrivateGroup = $('#isPrivateGroup').val();
+    $statusPrivate = $('#private-group');
+    if($isPrivateGroup == 1){
+      if($statusPrivate.is(":checked")){
+        $count_list = $('.tourist-num').length;
+        $tourist_num = 0;
+        for($i=0;$i<$count_list;$i++){
+          if(parseInt($('.tourist-num').eq($i).val(),10) != undefined){
+            $tourist_num += parseInt($('.tourist-num').eq($i).val(),10);
+          }
+        }
+        $discountRate = JSON.parse($('#discountRate').val());
+        $c_discountRate = $discountRate.length;
+        $index = 0;
+        for($i=0;$i<$c_discountRate;$i++){
+          if($tourist_num <= $discountRate[$i]['pax']){
+            $index = $discountRate[$i]['pax'];
+            $increase = $tourist_num*$discountRate[$i]['price'];
+            $total_amount = parseInt(numeral($('.totalamount').html()).format('0'));
+            $('.totalamount').html(numeral($total_amount+$increase).format('0,0'));
+            break;
+          }
+        }
+      }
+    }
+    }
+
+    $('#private-group').change(function (){
+      private_group();
+    });
+
+    function private_group(){
+      $isPrivateGroup = $('#isPrivateGroup').val();
+      $statusPrivate = $('#private-group');
+      if($isPrivateGroup == 1){
+        if($statusPrivate.is(":checked")){
+          $count_list = $('.tourist-num').length;
+        	$tourist_num = 0;
+        	for($i=0;$i<$count_list;$i++){
+        		if(parseInt($('.tourist-num').eq($i).val(),10) != undefined){
+        			$tourist_num += parseInt($('.tourist-num').eq($i).val(),10);
+        		}
+        	}
+          $discountRate = JSON.parse($('#discountRate').val());
+          $c_discountRate = $discountRate.length;
+          $index = 0;
+          for($i=0;$i<$c_discountRate;$i++){
+            if($tourist_num <= $discountRate[$i]['pax']){
+              $index = $discountRate[$i]['pax'];
+              $increase = $tourist_num*$discountRate[$i]['price'];
+              $total_amount = parseInt(numeral($('.totalamount').html()).format('0'));
+              $('.totalamount').html(numeral($total_amount+$increase).format('0,0'));
+              break;
+            }
+          }
+        }else{
+          $count_list = $('.tourist-num').length;
+        	$tourist_num = 0;
+        	for($i=0;$i<$count_list;$i++){
+        		if(parseInt($('.tourist-num').eq($i).val(),10) != undefined){
+        			$tourist_num += parseInt($('.tourist-num').eq($i).val(),10);
+        		}
+        	}
+          $discountRate = JSON.parse($('#discountRate').val());
+          $c_discountRate = $discountRate.length;
+          $index = 0;
+          for($i=0;$i<$c_discountRate;$i++){
+            if($tourist_num <= $discountRate[$i]['pax']){
+              $index = $discountRate[$i]['pax'];
+              $increase = $tourist_num*$discountRate[$i]['price'];
+              $total_amount = parseInt(numeral($('.totalamount').html()).format('0'));
+              $('.totalamount').html(numeral($total_amount-$increase).format('0,0'));
+              break;
+            }
+          }
+        }
+      }
     }
 
     function check_room(){

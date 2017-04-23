@@ -53,6 +53,8 @@ $route['default_controller'] = 'packageCL';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
+$route[''] = 'PackageCL/domestic_package';
+
 $route['domestic-package'] = 'PackageCL/domestic_package';
 $route['outbound-package'] = 'PackageCL/outbound_package';
 $route['filter-tour'] = 'PackageCL/filter';
