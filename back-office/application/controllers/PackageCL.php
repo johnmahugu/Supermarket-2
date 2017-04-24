@@ -63,7 +63,7 @@ class PackageCL extends CI_Controller {
 		echo json_encode($data);
 	}
 
-	function disable_package() {
+	function delete_package() {
 		$tour_nameSlug = $this->input->get('tour');
 		$query = $this->PackageMD->disablePackage($tour_nameSlug);
 		if($query == 1) {
@@ -76,6 +76,8 @@ class PackageCL extends CI_Controller {
 	function edit_domestic_package() {
 		/********************Initial valiable********************/
 		$tour_nameSlug = $this->input->get('tour');
+		$tour_type = $this->input->get('type');
+		$this->session->set_flashdata('f1', $tour_type);
 		/********************Initial Filter**********************/
 		$data['province'] = $this->PackageMD->getProvince();
 		$data['region'] = $this->PackageMD->getRegion();
@@ -90,6 +92,8 @@ class PackageCL extends CI_Controller {
 	function edit_outbound_package() {
 		/********************Initial valiable********************/
 		$tour_nameSlug = $this->input->get('tour');
+		$tour_type = $this->input->get('type');
+		$this->session->set_flashdata('f1', $tour_type);
 		/********************Initial Filter**********************/
 		$data['continent'] = $this->PackageMD->getContinent();
 		$data['country'] = $this->PackageMD->getCountry();

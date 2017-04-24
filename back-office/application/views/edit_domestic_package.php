@@ -72,7 +72,7 @@ if(isset($price_range)){
 			</div>
 			<ul>
 				<a href="tm-std-main.html">
-					<li class="current">Standard Tours</li>
+					<li>Standard Tours</li>
 				</a>
 				<a href="tm-mc-easy-main.html">
 					<li>Easy Packages</li>
@@ -117,10 +117,10 @@ if(isset($price_range)){
 				<hr>
 			</div>
 			<ul>
-				<a href="tm-domestic-easy-main.html">
+				<a href="domestic-package?type=ep">
 					<li>Private Group Tours</li>
 				</a>
-				<a href="domestic-package">
+				<a href="domestic-package?type=sp">
 					<li>Join Group Tours</li>
 				</a>
 				<a href="tm-domestic-locationdata.html">
@@ -132,10 +132,10 @@ if(isset($price_range)){
 				<hr>
 			</div>
 			<ul>
-				<a href="tm-outbound-easy-main.html">
+				<a href="outbound-package?type=ep">
 					<li>Private Group Tours</li>
 				</a>
-				<a href="outbound-package">
+				<a href="outbound-package?type=sp">
 					<li>Join Group Tours</li>
 				</a>
 				<a href="tm-outbound-locationdata.html">
@@ -161,10 +161,10 @@ if(isset($price_range)){
 							<p>Domestic | Supermarket Tours</p><br>
 						</div>
 						<div class="col-sm-6 col-xs-12">
-							<input type="text" placeholder="<?=$package['tour_nameTH']?>">
+							<input type="text" value="<?=$package['tour_nameTH']?>">
 						</div>
 						<div class="col-sm-6 col-xs-12">
-							<input type="text" placeholder="<?=$package['tour_nameEN']?>">
+							<input type="text" value="<?=$package['tour_nameEN']?>">
 						</div>
 					</div>
 
@@ -207,7 +207,7 @@ if(isset($price_range)){
 						</div>
 						<div class="col-md-4 col-sm-6">
 							<label>Starter Price</label><br>
-							<input type="number" placeholder="<?=number_format($package['tour_startPrice'])?>"><span class="unit"><?=$package['tour_currency']?></span>
+							<input id="start-price" type="text" value="<?=intval($package['tour_startPrice'])?>"><span class="unit"><?=$package['tour_currency']?></span>
 						</div>
 					</div>
 				</div>
@@ -440,6 +440,34 @@ if(isset($price_range)){
 </body>
 <script src="assets/js/script.js"></script>
 <script>
+$(document).ready(function(){
+  $('a[href="domestic-package?type='+$('#isTourType').val()+'"]').find('li').eq(0).addClass('current');
+  $start_price = $('#start-price').val();
+  $('#start-price').val(numberWithSpaces($start_price));
+});
+
+$('#start-price').click(function(){
+  $start_price = $(this).val().replace(' ','');
+  $('#start-price').val($start_price);
+});
+
+$('#start-price').blur(function(){
+  $start_price = $('#start-price').val();
+  if($.isNumeric($start_price.replace(' ',''))){
+    $('#start-price').val(numberWithSpaces($start_price));
+  }else{
+    alert('Invalid number');
+    $('#start-price').val(this.defaultValue);
+    $('#start-price').focus();
+  }
+});
+
+function numberWithSpaces(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+
+
+
   CKEDITOR.replace( 'desen',{
 		toolbar :[{ name: 'paragraph', items : [ 'Bold','BulletedList']}],
 	});

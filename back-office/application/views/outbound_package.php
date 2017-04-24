@@ -234,8 +234,8 @@
 							<div class="description">
 								<p class="date"><?=date_format(date_create($booking_timerange[$i][0]['from']),"j F Y");?> - <?=date_format(date_create($booking_timerange[$i][$last_btr[$i]]['to']),"j F Y");?></p>
 								<div class="btn-wrapper">
-									<a href="disable-package?tour=<?=$row['tour_nameSlug']?>" class="btn gray">Delete</a>
-									<a href="edit-outbound-package?tour=<?=$row['tour_nameSlug']?>" class="btn"> Edit </a>
+									<a href="delete-package?tour=<?=$row['tour_nameSlug']?>" class="btn gray">Delete</a>
+									<a href="edit-outbound-package?tour=<?=$row['tour_nameSlug']?>&type=<?=$this->session->flashdata('f1')?>" class="btn"> Edit </a>
 								</div>
 							</div>
 						</div>
@@ -334,8 +334,8 @@ function filter(){
 				$result['list_package'] += '<div class="description">';
 				$result['list_package'] += '<p class="date">'+$open_booking.format("d mmmm yyyy")+' - '+$close_booking.format("d mmmm yyyy")+'</p>';
 				$result['list_package'] += '<div class="btn-wrapper">';
-				$result['list_package'] += '<a href="'+data['package'][$i].tour_nameSlug+'" class="btn gray">Delete</a>';
-				$result['list_package'] += '<a href="#" class="btn"> Edit </a>';
+				$result['list_package'] += '<a href="delete-package?tour='+data['package'][$i].tour_nameSlug+'" class="btn gray">Delete</a>';
+				$result['list_package'] += '<a href="edit-outbound-package?tour='+data['package'][$i].tour_nameSlug+'&type='+date['package'][$i].tour_type+'" class="btn"> Edit </a>';
 				$result['list_package'] += '</div></div></div></div>';
 			}
 		}

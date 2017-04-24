@@ -383,7 +383,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	          _this3.loadFile(e.target.response);
 	        };
 	        xhr.open('GET', imageSrc);
-	        xhr.responseType = 'blob';
 	        xhr.send();
 	      }
 	    }
