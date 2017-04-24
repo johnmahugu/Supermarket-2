@@ -34,6 +34,9 @@
     <link rel="stylesheet" href="<?=base_url()?>assets/css/style.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.4/numeral.min.js"></script>
     <script src="<?=base_url()?>assets/js/date.format.js"></script>
+    <link rel="stylesheet" href="assets/owl-carousel/owl.carousel.css">
+	<link rel="stylesheet" href="assets/owl-carousel/owl.theme.css">
+  <script src="assets/owl-carousel/owl.carousel.js"></script>
   </head>
   <body>
     <header>
@@ -212,12 +215,13 @@
             </h2>
           </div>
         </div>
+        <div class="hilight-slide owl-theme">
         <?php
           if(isset($hilight_package)){
           	$i = 0;
           	foreach($hilight_package->result_array() as $row){
           ?>
-        <div class="col-md-4 col-sm-6">
+        <div class="item">
           <div class="tour-box">
             <div class="img">
               <img src="<?=base_url()?><?=$row['img_source'];?>" alt="tour image cover">
@@ -246,6 +250,7 @@
           }
           }
           ?>
+        </div>
       </div>
       <div class="tours-program-box row">
         <div class="col-xs-12">
@@ -332,6 +337,30 @@
   </body>
   <script>
   $base_url = '<?=base_url()?>';
+
+  $('document').ready(function(){
+  $(".hilight-slide").owlCarousel({
+        pagination : false,
+      navigation: true,
+      items:3,
+      autoPlay: 5000,
+      nav:true,
+      navigationText: ["&#xf104","&#xf105"],
+      responsiveClass:true,
+      responsive:{
+          480:{
+              items:1,
+          },
+          768:{
+              items:2,
+          },
+          1000:{
+              items:3,
+              loop:false
+          }
+            }
+          });
+      });
 
       $('#series-package-selector').click(function(){
       	$('#isTourType').val('sp');
