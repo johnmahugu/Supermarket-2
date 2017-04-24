@@ -611,6 +611,9 @@
               if($extension_activity_price > 0){
                 $b_detail += '"extension_activity":{"activity":"'+$('input:radio[name=extension-activity]:checked').attr('activity')+'","price":'+numeral($('input:radio[name=extension-activity]:checked').attr('price')).format('0')+'},';
               }
+              if($('#private-group').is(":checked")){
+                $b_detail += '"private-group":"true",';
+              }
               if($('.extension-day').prop('checked')){
                 $b_detail += '"extension_day":"selected",';
               }

@@ -431,7 +431,7 @@ if(isset($price_range)){
 	        </div>
 	        <div class="modal-footer">
 	        	<button type="button" class="btn" data-dismiss="modal" >Cancel</button>
-		        <input type="submit" value="Set" class="btn" >
+		        <input id="gen-schedule" type="submit" value="Set" class="btn" >
 	        </div>
 	      </div>
 	    </div>
@@ -445,6 +445,14 @@ $(document).ready(function(){
   $start_price = $('#start-price').val();
   $('#start-price').val(numberWithSpaces($start_price));
 });
+
+$('#gen-schedule').click(function(){
+  alert('AA');
+});
+
+function listGenSchedule(){
+
+}
 
 $('#start-price').click(function(){
   $start_price = $(this).val().replace(' ','');
@@ -506,7 +514,6 @@ function numberWithSpaces(x) {
     $('.list-card .btn.no-border.light').click(function() {
 		var addform = $(this).closest('.content').find('.form-group').last().html();
 		$(this).closest('.content').find('.form-group').last().after('<div class="form-group"><div class="col-md-3 col-sm-6 form-inline"><label>From</label><span><input type="text" class="date from" value="Select Date" readonly="readonly"></span></div><div class="col-md-3 col-sm-6 form-inline"><label>To</label><span><input type="text" class="date to" value="Select Date" readonly="readonly" disabled></span></div><div class="col-md-3 col-md-offset-1 col-sm-8 form-inline"><label>Price</label><span><input type="number"><span class="unit">THB</span></span></div><div class="col-md-2 col-sm-4"><div class="btn no-border gray">Delete</div></div></div>');
-
 	});
 
     $('body').on('focus',".date.from", function(){

@@ -276,6 +276,10 @@
               <?php }
                 }
                 ?>
+              <div class="form-group">
+      					<h3>Spacial Request</h3>
+      					<textarea id="spacial-request"></textarea>
+      				</div>
               <hr>
               <div class="list total-amount">
                 <div class="col-sm-5"><label>Total amount</label></div>
@@ -578,13 +582,19 @@
         					$b_detail += '],';
         				}
         				$totaltourist = $('#tourist-total-num').val();
-        				$b_detail += '"tourist":[{"total_tourist":"'+$totaltourist+'"}],';
+        				$b_detail += '"tourist":[{"total_tourist":'+$totaltourist+'}],';
+                if($('#private-group').is(":checked")){
+                  $b_detail += '"private-group":"true",';
+                }
+                if($('#spacial-request').val() != ''){
+                  $b_detail += '"special-request":"'+$('#spacial-request').val()+'",';
+                }
         				$totalamount = numeral($('#total-amount').html()).format('0');
         				$b_detail += '"total_amount":'+$totalamount+'';
         				$b_detail += '}';
         				$jsonData = JSON.stringify($b_detail);
         				$('input[name=booking-detail]').val($jsonData);
-        				document.forms['to-booking-info'].submit();
+                document.forms['to-booking-info'].submit();
         			}else{
         				$('#alert-warning').html('Please fill in all tourist');
         				$('#popup').modal('show');

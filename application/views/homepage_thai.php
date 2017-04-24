@@ -224,7 +224,8 @@
           	$i = 0;
           	foreach($hilight_package->result_array() as $row){
           ?>
-        <div class="col-md-4 col-sm-6">
+      <div class="hilight-slide owl-theme">
+        <div class="item">
           <div class="tour-box">
             <div class="img">
               <img src="<?=base_url()?><?=$row['img_source'];?>" alt="tour image cover">
@@ -248,6 +249,7 @@
             </div>
           </div>
         </div>
+      </div>
         <?php
           $i++;
           }

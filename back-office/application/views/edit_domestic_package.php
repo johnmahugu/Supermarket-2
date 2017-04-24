@@ -416,11 +416,11 @@ if(isset($price_range)){
 				<div class="row">
 					<div class="col-md-4 col-sm-6">
 						<label>Start Date</label>
-						<input type="text" class="date set">
+						<input id="gen-schedule-start" type="text" class="date set">
 					</div>
 					<div class="col-md-4 col-sm-6">
 						<label>Due Date</label>
-						<input type="text" class="date set">
+						<input id="gen-schedule-finish" type="text" class="date set">
 					</div>
 					<div class="col-md-4 col-sm-12">
 						<label>Duration</label>
@@ -436,7 +436,7 @@ if(isset($price_range)){
 	      </div>
 	    </div>
   	</div>
-
+    <input id="isTourType" type="hidden" value="<?=$this->session->flashdata('f1')?>">
 </body>
 <script src="assets/js/script.js"></script>
 <script>

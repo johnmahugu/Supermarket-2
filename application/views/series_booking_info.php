@@ -14,6 +14,7 @@
   $package = $package->row_array(0);
   $b_detail = json_decode($booking_detail,true);
   $totaltourist = $b_detail['tourist'][0]['total_tourist'];
+  echo $totaltourist;
   $datestart = $b_detail['date'][0]['start'];
   $datefinish = $b_detail['date'][0]['end'];
   if(isset($price_range)){
@@ -437,9 +438,9 @@
     					case 1:
     						if(v.value == ''){
     							$status = false;
-    							$('#alert-warning').html('Please fill each tourist telephone number.');
-    							$('#popup').modal('show');
-    							return false;
+      						$('#alert-warning').html('Please fill each tourist telephone number.');
+      						$('#popup').modal('show');
+      						return false;
     						}
     					break;
     					case 2:
@@ -634,12 +635,6 @@
     							}
     						break;
     						case 2:
-    							if(v.value == ''){
-    								//$status = false;
-    								$('#alert-warning').html('Please fill each tourist passport image.');
-    								$('#popup').modal('show');
-    								//return false;
-    							}
     						break;
     						case 3:
     							if(v.value == ''){
