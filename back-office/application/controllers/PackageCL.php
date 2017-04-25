@@ -86,7 +86,28 @@ class PackageCL extends CI_Controller {
 		$query= $this->PackageMD->editPackage($tour_nameSlug);
 		$data['package'] = $query;
 		$data['price_range']    = $query->row()->tour_priceRange;
-		$this->load->view('edit_domestic_package',$data);
+		if($tour_type == 'sp'){
+			$this->load->view('edit_domestic_series_package',$data);
+		}else{
+			echo 'AA';
+		}
+	}
+
+	function edit_domestic_package_condition() {
+		/********************Initial valiable********************/
+		$tour_nameSlug = $this->input->get('tour');
+		$tour_type = $this->input->get('type');
+		$this->session->set_flashdata('f1', $tour_type);
+		/********************Initial Filter**********************/
+		$data['province'] = $this->PackageMD->getProvince();
+		$data['region'] = $this->PackageMD->getRegion();
+		$query= $this->PackageMD->editPackage($tour_nameSlug);
+		$data['package'] = $query;
+		if($tour_type == 'sp'){
+			$this->load->view('edit_outbound_series_package_condition',$data);
+		}else{
+			echo 'AA';
+		}
 	}
 
 	function edit_outbound_package() {
@@ -102,6 +123,27 @@ class PackageCL extends CI_Controller {
 		$query= $this->PackageMD->editPackage($tour_nameSlug);
 		$data['package'] = $query;
 		$data['price_range']    = $query->row()->tour_priceRange;
-		$this->load->view('edit_outbound_package',$data);
+		if($tour_type == 'sp'){
+			$this->load->view('edit_outbound_series_package',$data);
+		}else{
+			echo 'AA';
+		}
+	}
+
+	function edit_outbound_package_condition() {
+		/********************Initial valiable********************/
+		$tour_nameSlug = $this->input->get('tour');
+		$tour_type = $this->input->get('type');
+		$this->session->set_flashdata('f1', $tour_type);
+		/********************Initial Filter**********************/
+		$data['continent'] = $this->PackageMD->getContinent();
+		$data['country'] = $this->PackageMD->getCountry();
+		$query= $this->PackageMD->editPackage($tour_nameSlug);
+		$data['package'] = $query;
+		if($tour_type == 'sp'){
+			$this->load->view('edit_outbound_series_package_condition',$data);
+		}else{
+			echo 'AA';
+		}
 	}
 }

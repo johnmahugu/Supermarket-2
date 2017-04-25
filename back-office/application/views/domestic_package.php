@@ -231,6 +231,20 @@
 									<span><?=$est_date[0];?> Day <?=$est_date[1];?> Night</span></p>
 								</div>
 							</div>
+							<div class="checkbox-wrapper">
+								<?php
+								if($row['tour_public'] == 1){
+									echo '<p><input type="checkbox" checked> <span>Publish</span></p>';
+								}else{
+									echo '<p><input type="checkbox"> <span>Publish</span></p>';
+								}
+								if($row['tour_hilight'] == 1){
+									echo '<p><input type="checkbox" checked> <span>Highlight</span></p>';
+								}else{
+									echo '<p><input type="checkbox"> <span>Highlight</span></p>';
+								}
+								?>
+							</div>
 							<div class="description">
 								<p class="date"><?=date_format(date_create($booking_timerange[$i][0]['from']),"j F Y");?> - <?=date_format(date_create($booking_timerange[$i][$last_btr[$i]]['to']),"j F Y");?></p>
 								<div class="btn-wrapper">

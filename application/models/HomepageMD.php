@@ -33,6 +33,7 @@ class HomepageMD extends CI_Model {
     $this->db->where('image.img_type', 'tour cover');
     $this->db->where('tour.tour_type', $type);
     $this->db->where('CURDATE() BETWEEN tour.tour_openBooking AND tour.tour_closeBooking');
+    $this->db->where('tour.tour_public','1');
     if ($country == 'thailand') {
       $this->db->where('tour.tour_nationality', 'thailand domestic tour');
     } else {
@@ -71,7 +72,7 @@ class HomepageMD extends CI_Model {
 				INNER JOIN countries ON address.country_id = countries.country_id
 				WHERE
 				image.img_type = 'tour cover' AND
-				tour.tour_isHilight = 1 AND
+				tour.tour_hilight = 1 AND
         tour.tour_closeBooking >= (SELECT CURDATE())
 				GROUP BY
 				tour.tour_id

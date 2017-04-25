@@ -60,4 +60,6 @@ $route['outbound-package'] = 'PackageCL/outbound_package';
 $route['filter-tour'] = 'PackageCL/filter';
 $route['delete-package'] = 'PackageCL/delete_package';
 $route['edit-domestic-package'] = 'PackageCL/edit_domestic_package';
+$route['edit-domestic-package-condition'] = 'PackageCL/edit_domestic_package_condition';
 $route['edit-outbound-package'] = 'PackageCL/edit_outbound_package';
+$route['edit-outbound-package-condition'] = 'PackageCL/edit_outbound_package_condition';

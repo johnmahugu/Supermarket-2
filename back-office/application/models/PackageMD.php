@@ -24,7 +24,9 @@ class PackageMD extends CI_Model {
 			tour.tour_priceRange,
 			tour.tour_currency,
 			image.img_source,
-			countries.country_name
+			countries.country_name,
+      tour.tour_public,
+      tour.tour_hilight
 		");
     self::$db->from('tour');
     self::$db->join('image', 'tour.tour_imgCover = image.img_refid', 'inner');

@@ -43,8 +43,10 @@ class HomepageCL extends CI_Controller {
     $query                    = $this->HomepageMD->getPackage($this->session->userdata('country'), 'sp', $config['per_page'], $this->uri->segment(2));
     $data['package']          = $query;
     $count                    = $query->num_rows();
-    for ($i = 0; $i <= $count; $i++) {
-      $data['price_range'][$i] = $query->row($i)->tour_priceRange;
+    if($count>0){
+      for ($i = 0; $i <= $count; $i++) {
+        $data['price_range'][$i] = $query->row($i)->tour_priceRange;
+      }
     }
     $this->load->view('homepage_thai', $data);
   }
@@ -73,8 +75,10 @@ class HomepageCL extends CI_Controller {
     $query                    = $this->HomepageMD->getPackage($this->session->userdata('country'), 'sp', $config['per_page'], $this->uri->segment(2));
     $data['package']          = $query;
     $count                    = $query->num_rows();
-    for ($i = 0; $i <= $count; $i++) {
-      $data['price_range'][$i] = $query->row($i)->tour_priceRange;
+    if($count>0){
+      for ($i = 0; $i <= $count; $i++) {
+        $data['price_range'][$i] = $query->row($i)->tour_priceRange;
+      }
     }
     $this->load->view('homepage_international', $data);
   }

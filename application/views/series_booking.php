@@ -209,9 +209,41 @@
             echo '</div>';
             }
             if($package['tour_privateGroup'] == 1){
-              echo '<input id="private-group" type="checkbox"> Private Group';
-            }
             ?>
+
+          <div class="form-group">
+					<h3><input type="checkbox" id="private-group"> <span>Private Group</span></h3>
+					<div class="col-md-8" id="joinchart">
+						<table>
+							<thead>
+								<tr>
+									<td>Amount Tourist</td>
+									<td>Increase</td>
+								</tr>
+							</thead>
+							<tbody>
+                <?php
+                $discountRate = json_decode($package['tour_discountRate'],true);
+                $c_discountRate = count($discountRate)-1;
+                for($i=0;$i<=$c_discountRate;$i++){
+                  if($i != $c_discountRate){
+                    echo '<tr>';
+                    echo '<td>< '.$discountRate[$i]['pax'].' people</td><td>'.$discountRate[$i]['price'].'</td>';
+                    echo '</tr>';
+                  }else{
+                    echo '<tr>';
+                    echo '<td>> '.$discountRate[$i]['pax'].' people</td><td>'.$discountRate[$i]['price'].'</td>';
+                    echo '</tr>';
+                  }
+                }
+                 ?>
+							</tbody>
+						</table>
+					</div>
+				</div>
+        <?
+      }
+        ?>
           <div class="form-group">
             <h3>Select Room Type</h3>
             <div class="form-group">

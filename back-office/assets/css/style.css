@@ -940,6 +940,9 @@ header {
   .list-card h2 {
     color: #2e3797;
     font-weight: 500; }
+  .list-card u {
+    text-decoration: none;
+    color: black; }
   .list-card .digi-box {
     padding: 10px 15px 10px 0; }
   .list-card .input-inline {
@@ -1194,7 +1197,7 @@ i {
 .tour-box {
   max-width: 320px;
   width: 100%;
-  height: 400px;
+  height: 450px;
   margin-bottom: 20px;
   background-color: white;
   display: inline-block;
@@ -1247,9 +1250,27 @@ i {
       justify-content: center; }
       .tour-box .description .btn-wrapper .btn {
         width: 120px;
-        margin: 10px; }
+        margin: 10px 10px 0 10px; }
     .tour-box .description hr {
       margin: 0px 0px 5px 0px; }
+  .tour-box .checkbox-wrapper {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 5px;
+    border-bottom: 1px solid gainsboro; }
+    .tour-box .checkbox-wrapper p {
+      width: 50%;
+      text-align: center;
+      display: inline-block;
+      padding: 8px;
+      background-color: #f6f8fa; }
+      .tour-box .checkbox-wrapper p + p {
+        border-left: 1px solid gainsboro; }
+    .tour-box .checkbox-wrapper span {
+      transition: 0.5s all ease;
+      margin-left: 5px; }
+    .tour-box .checkbox-wrapper input:checked + span {
+      color: #2e3797; }
   .tour-box.readmore {
     margin-top: -40px;
     height: auto;

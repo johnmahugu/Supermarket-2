@@ -158,7 +158,7 @@ if(isset($price_range)){
 					<div class="row">
 						<div class="col-xs-12">
 							<h1>Edit Join Group Tour</h1>
-							<p>Domestic | Supermarket Tours</p><br>
+							<p>Outbound | Supermarket Tours</p><br>
 						</div>
 						<div class="col-sm-6 col-xs-12">
 							<input type="text" value="<?=$package['tour_nameTH']?>">
@@ -171,15 +171,15 @@ if(isset($price_range)){
 					<div class="row top-mg">
 						<div class="col-md-4 col-sm-6">
 							<div class="input-box">
-								<label class="filter">Region</label>
-                <select name="region">
+								<label class="filter">Continent</label>
+                <select name="continent">
                 <?php
-                  if(isset($region)){
-                    foreach($region->result_array() as $row){
-                      if($package['geography_nameEN'] == $row['geography_nameEN']){
-                        echo "<option value=".$row['geography_nameEN']." selected>".$row['geography_nameEN']."</option>";
+                  if(isset($continent)){
+                    foreach($continent->result_array() as $row){
+                      if($package['continent_name'] == $row['continent_name']){
+                        echo "<option value=".$row['continent_name']." selected>".$row['continent_name']."</option>";
                       }else{
-                        echo "<option value=".$row['geography_nameEN'].">".$row['geography_nameEN']."</option>";
+                        echo "<option value=".$row['continent_name'].">".$row['continent_name']."</option>";
                       }
                     }
                   }
@@ -189,15 +189,15 @@ if(isset($price_range)){
 						</div>
 						<div class="col-md-4 col-sm-6">
 							<div class="input-box">
-								<label class="filter">Province</label>
-                <select name="province">
+								<label class="filter">Country</label>
+                <select name="country">
 	              <?php
-	                if(isset($province)){
-	                	foreach($province->result_array() as $row){
-                      if($package['address_province'] == $row['province_nameEN']){
-                        echo "<option value=".$row['province_nameEN']." selected>".$row['province_nameEN']."</option>";
+	                if(isset($country)){
+	                	foreach($country->result_array() as $row){
+                      if($package['country_name'] == $row['country_name']){
+                        echo "<option value=".$row['country_name']." selected>".$row['country_name']."</option>";
                       }else{
-                        echo "<option value=".$row['province_nameEN'].">".$row['province_nameEN']."</option>";
+                        echo "<option value=".$row['country_name'].">".$row['country_name']."</option>";
                       }
 	                	}
 	                }
@@ -219,7 +219,7 @@ if(isset($price_range)){
 							<a href="tm-domestic-series-new.html" class="btn current">TOUR INFO</a>
 						</div>
 						<div class="col-sm-6 no-pd">
-							<a href="edit_domestic_condition_package" class="btn no-setting">CONDITION</a>
+							<a href="edit-outbound-package-condition?tour=<?=$package['tour_nameSlug']?>&type=<?=$this->session->flashdata('f1')?>" class="btn no-setting">CONDITION</a>
 						</div>
 					</div>
 				</div>
@@ -416,11 +416,11 @@ if(isset($price_range)){
 				<div class="row">
 					<div class="col-md-4 col-sm-6">
 						<label>Start Date</label>
-						<input id="gen-schedule-start" type="text" class="date set">
+						<input type="text" class="date set">
 					</div>
 					<div class="col-md-4 col-sm-6">
 						<label>Due Date</label>
-						<input id="gen-schedule-finish" type="text" class="date set">
+						<input type="text" class="date set">
 					</div>
 					<div class="col-md-4 col-sm-12">
 						<label>Duration</label>
@@ -431,7 +431,7 @@ if(isset($price_range)){
 	        </div>
 	        <div class="modal-footer">
 	        	<button type="button" class="btn" data-dismiss="modal" >Cancel</button>
-		        <input type="submit" value="Set" class="btn" >
+		        <input id="gen-schedule" type="submit" value="Set" class="btn" >
 	        </div>
 	      </div>
 	    </div>
@@ -441,10 +441,18 @@ if(isset($price_range)){
 <script src="assets/js/script.js"></script>
 <script>
 $(document).ready(function(){
-  $('a[href="domestic-package?type='+$('#isTourType').val()+'"]').find('li').eq(0).addClass('current');
+  $('a[href="outbound-package?type='+$('#isTourType').val()+'"]').find('li').eq(0).addClass('current');
   $start_price = $('#start-price').val();
   $('#start-price').val(numberWithSpaces($start_price));
 });
+
+$('#gen-schedule').click(function(){
+  alert('AA');
+});
+
+function listGenSchedule(){
+
+}
 
 $('#start-price').click(function(){
   $start_price = $(this).val().replace(' ','');
@@ -466,8 +474,6 @@ function numberWithSpaces(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
-
-
   CKEDITOR.replace( 'desen',{
 		toolbar :[{ name: 'paragraph', items : [ 'Bold','BulletedList']}],
 	});
@@ -481,7 +487,6 @@ function numberWithSpaces(x) {
 	CKEDITOR.replace( 'briefth',{
 		toolbar :[{ name: 'paragraph', items : [ 'Bold','Italic','BulletedList']}],
 	});
-
 
 	$('.image-editor.cover').cropit({
       	exportZoom: 2,
@@ -509,7 +514,6 @@ function numberWithSpaces(x) {
     $('.list-card .btn.no-border.light').click(function() {
 		var addform = $(this).closest('.content').find('.form-group').last().html();
 		$(this).closest('.content').find('.form-group').last().after('<div class="form-group"><div class="col-md-3 col-sm-6 form-inline"><label>From</label><span><input type="text" class="date from" value="Select Date" readonly="readonly"></span></div><div class="col-md-3 col-sm-6 form-inline"><label>To</label><span><input type="text" class="date to" value="Select Date" readonly="readonly" disabled></span></div><div class="col-md-3 col-md-offset-1 col-sm-8 form-inline"><label>Price</label><span><input type="number"><span class="unit">THB</span></span></div><div class="col-md-2 col-sm-4"><div class="btn no-border gray">Delete</div></div></div>');
-
 	});
 
     $('body').on('focus',".date.from", function(){
