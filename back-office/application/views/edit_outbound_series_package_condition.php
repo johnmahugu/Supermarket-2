@@ -7,7 +7,38 @@ if(isset($price_range)){
   $booking_timerange = json_decode($price_range,true);
   $last_btr = count($booking_timerange)-1;
 }
- ?>
+$sr = 0;
+$sr_price = '';
+$cwd = 0;
+$cwd_price = '';
+$cwod = 0;
+$cwod_price = '';
+$c = 0;
+$c_price = '';
+foreach($condition->result_array() as $row){
+	if($row['tc_type'] == 'room'){
+    $temp = json_decode($row['tc_data'],true);
+		switch($temp[0]['roomtype']){
+			case 'Single room':
+			$sr++;
+      $sr_price = intval($row['tc_price']);
+			break;
+			case 'Children 2 - 12 year old (with bed)':
+			$cwd++;
+      $cwd_price = intval($row['tc_price']);
+			break;
+			case 'Children 2 - 12 year old (with out bed)':
+			$cwod++;
+      $cwod_price = intval($row['tc_price']);
+			break;
+			case 'Children < 2 year old':
+			$c++;
+      $c_price = intval($row['tc_price']);
+			break;
+		}
+	}
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -213,16 +244,60 @@ if(isset($price_range)){
 					<hr>
 					<div class="row">
 						<div class="col-md-3 col-sm-4 col-xs-6">
-							<p><input type="checkbox" name="option">Tour Options</p>
+							<p>
+								<?php
+								$count = 0;
+								foreach($condition->result_array() as $row){
+									if($row['tc_type'] == 'option'){
+										$count++;
+									}
+								}
+								if($count>0){
+									echo '<input type="checkbox" name="option" checked>Tour Options';
+								}else{
+									echo '<input type="checkbox" name="option">Tour Options';
+								}
+								 ?>
+							</p>
 						</div>
 						<div class="col-md-3 col-sm-4 col-xs-6">
-							<p><input type="checkbox" name="multiple">Multiple Options</p>
+							<p>
+								<?php
+								$count = 0;
+								foreach($condition->result_array() as $row){
+									if($row['tc_type'] == 'option activity'){
+										$count++;
+									}
+								}
+								if($count>0){
+									echo '<input type="checkbox" name="multiple" checked>Multiple Options';
+								}else{
+									echo '<input type="checkbox" name="multiple">Multiple Options';
+								}
+								 ?>
+							</p>
 						</div>
 						<div class="col-md-3 col-sm-4 col-xs-6">
-							<p><input type="checkbox" name="pv">Private Group</p>
+							<p>
+								<?php
+								if($package['tour_privateGroup'] == '1'){
+									echo '<input type="checkbox" name="pv" checked>Private Group';
+								}else{
+									echo '<input type="checkbox" name="pv">Private Group';
+								}
+								 ?>
+							</p>
 						</div>
 						<div class="col-md-3 col-sm-4 col-xs-6">
-							<p><input type="checkbox" name="pax">Pax Condition</p>
+							<p>
+								<?php
+								if($package['tour_doublePack'] == 1){
+									echo '<input type="checkbox" name="pax" checked>Pax Condition';
+								}else{
+									echo '<input type="checkbox" name="pax">Pax Condition';
+								}
+								 ?>
+							</p>
 						</div>
 					</div>
 				</div>
@@ -244,55 +319,103 @@ if(isset($price_range)){
 							<h2>Room Condition</h2>
 						</div>
 						<div class="content">
-							<div class="form-group cb-nonselect">
-								<div class="col-md-4 col-sm-6">
-									<input type="checkbox">
+                  <?php
+                  if($sr>0){
+                    echo '<div class="form-group"><div class="col-md-4 col-sm-6">';
+                    echo '<input type="checkbox" checked>';
+                  }else{
+                    echo '<div class="form-group cb-nonselect"><div class="col-md-4 col-sm-6">';
+                    echo '<input type="checkbox">';
+                  }
+                   ?>
 									<p>Single Room</p>
 								</div>
 								<div class="col-md-4 col-sm-6 form-inline">
 									<label>Add</label>
 									<span>
-										<input type="number" placeholder="Price" disabled>
-										<span class="unit">THB</span>
+                    <?php
+                    if($sr>0){
+                      echo '<input type="number" placeholder="Price"  value="'.$sr_price.'">';
+                    }else{
+                      echo '<input type="number" placeholder="Price"disabled>';
+                    }
+                    ?>
+										<span class="unit"><?=$package['tour_currency']?></span>
 									</span>
 								</div>
 							</div>
-							<div class="form-group cb-nonselect">
-								<div class="col-md-4 col-sm-6">
-									<input type="checkbox">
+                  <?php
+                  if($cwd>0){
+                    echo '<div class="form-group"><div class="col-md-4 col-sm-6">';
+                    echo '<input type="checkbox" checked>';
+                  }else{
+                    echo '<div class="form-group cb-nonselect"><div class="col-md-4 col-sm-6">';
+                    echo '<input type="checkbox">';
+                  }
+                   ?>
 									<p>Children 2 - 12 yrs (with bed)</p>
 								</div>
 								<div class="col-md-4 col-sm-6 form-inline">
 									<label>Add</label>
 									<span>
-										<input type="number" placeholder="Price" disabled>
-										<span class="unit">THB</span>
+                    <?php
+                    if($cwd>0){
+                      echo '<input type="number" placeholder="Price"  value="'.$cwd_price.'">';
+                    }else{
+                      echo '<input type="number" placeholder="Price"disabled>';
+                    }
+                    ?>
+										<span class="unit"><?=$package['tour_currency']?></span>
 									</span>
 								</div>
 							</div>
-							<div class="form-group cb-nonselect">
-								<div class="col-md-4 col-sm-6">
-									<input type="checkbox">
+                  <?php
+                  if($cwod>0){
+                    echo '<div class="form-group"><div class="col-md-4 col-sm-6">';
+                    echo '<input type="checkbox" checked>';
+                  }else{
+                    echo '<div class="form-group cb-nonselect"><div class="col-md-4 col-sm-6">';
+                    echo '<input type="checkbox">';
+                  }
+                   ?>
 									<p>Children 2 - 12 yrs (without bed)</p>
 								</div>
 								<div class="col-md-4 col-sm-6 form-inline">
 									<label>Add</label>
 									<span>
-										<input type="number" placeholder="Price" disabled>
-										<span class="unit">THB</span>
+                    <?php
+                    if($cwod>0){
+                      echo '<input type="number" placeholder="Price"  value="'.$cwod_price.'">';
+                    }else{
+                      echo '<input type="number" placeholder="Price"disabled>';
+                    }
+                    ?>
+										<span class="unit"><?=$package['tour_currency']?></span>
 									</span>
 								</div>
 							</div>
-							<div class="form-group cb-nonselect">
-								<div class="col-md-4 col-sm-6">
-									<input type="checkbox">
+                  <?php
+                  if($c>0){
+                    echo '<div class="form-group"><div class="col-md-4 col-sm-6">';
+                    echo '<input type="checkbox" checked>';
+                  }else{
+                    echo '<div class="form-group cb-nonselect"><div class="col-md-4 col-sm-6">';
+                    echo '<input type="checkbox">';
+                  }
+                   ?>
 									<p>Children < 2 yrs</p>
 								</div>
 								<div class="col-md-4 col-sm-6 form-inline">
 									<label>Add</label>
 									<span>
-										<input type="number" placeholder="Price" disabled>
-										<span class="unit">THB</span>
+                    <?php
+                    if($c>0){
+                      echo '<input type="number" placeholder="Price"  value="'.$c_price.'">';
+                    }else{
+                      echo '<input type="number" placeholder="Price"disabled>';
+                    }
+                    ?>
+										<span class="unit"><?=$package['tour_currency']?></span>
 									</span>
 								</div>
 							</div>
@@ -303,34 +426,38 @@ if(isset($price_range)){
 							<h2>Tour Options</h2>
 						</div>
 						<div class="content">
-							<div class="form-group">
-								<div class="col-md-4">
-									<input type="text" placeholder="Option Name">
-								</div>
-								<div class="col-md-3 form-inline">
-									<label>Condition</label>
-									<span>
-										<select>
-											<option>Pay increase</option>
-											<option>Discount</option>
-										</select>
-									</span>
-								</div>
-								<div class="col-md-3">
-									<input type="number" placeholder="Price">
-									<span class="unit">THB</span>
-								</div>
-								<div class="col-md-2">
-									<div class="btn no-border gray">Delete</div>
-								</div>
-							</div>
-							<div class="btn-wrapper">
-								<div class="col-xs-12">
-									<div class="btn no-border light"><i class="fa fa-plus" aria-hidden="true"></i> Add Condition</div>
-								</div>
-							</div>
-						</div>
-					</div>
+              <?php
+              foreach($condition->result_array() as $row){
+              	if($row['tc_type'] == 'option'){
+                  echo '<div class="form-group"><div class="col-md-4">';
+                  echo '<input type="text" placeholder="Option Name" value="'.$row['tc_data'].'">';
+                  echo '</div><div class="col-md-3 form-inline"><label>Condition</label><span>';
+                  echo '<select>';
+                  if($row['tc_condition'] == 'increase'){
+                    echo '<option selected>Increase</option>';
+                    echo '<option>Decrease</option>';
+                  }else{
+                    echo '<option selected>Decrease</option>';
+                    echo '<option>Increase</option>';
+                  }
+                  echo '</select>';
+                  echo '</span></div>';
+                  echo '<div class="col-md-3">';
+                  echo '<input type="number" placeholder="Price" value="'.intval($row['tc_price']).'">';
+                  echo '<span class="unit">THB</span>';
+                  echo '</div><div class="col-md-2"><div class="btn no-border gray">Delete</div></div></div>';
+                }
+              }
+               ?>
+               <div class="btn-wrapper">
+                 <div class="col-xs-12">
+                   <div class="btn no-border light">
+                     <i class="fa fa-plus" aria-hidden="true"></i> Add Condition
+                   </div>
+                </div>
+              </div>
+             </div>
+           </div>
 					<div class="list-card card-header hide" id="multiple">
 						<div class="header">
 							<h2>Multiple Options Condition</h2>
@@ -380,30 +507,30 @@ if(isset($price_range)){
 								<div class="col-md-6 form-inline">
 									<label>Select Private Group</label>
 									<span>
-										<input type="number" placeholder="Pay increase">
-										<span class="unit">THB</span>
+										<input type="number" placeholder="Pay increase" value="<?=$package['tour_privateGroupPrice']?>">
+										<span class="unit"><?=$package['tour_currency']?></span>
 									</span>
 								</div>
 							</div>
 							<hr>
 							<div class="form-group">
-								<div class="col-md-4 form-inline">
-									<label>Up to</label>
-									<span>
-										<input type="number">
-										<span class="unit">Pax</span>
-									</span>
-								</div>
-								<div class="col-md-4 form-inline">
-									<label>Pay increase</label>
-									<span>
-										<input type="number">
-										<span class="unit">THB</span>
-									</span>
-								</div>
-								<div class="col-md-4">
-									<div class="btn no-border gray">Delete</div>
-								</div>
+                <?php
+                $discountRate = json_decode($package['tour_discountRate'],true);
+                $c_discountRate = count($discountRate);
+                for($i=0;$i<$c_discountRate;$i++){
+                  echo '<div class="col-md-4 form-inline"><label>Up to</label><span>';
+                  echo '<input type="number" value="'.$discountRate[$i]['pax'].'">';
+                  echo '<span class="unit">Pax</span>';
+                  echo '</span></div>';
+                  echo '<div class="col-md-4 form-inline">';
+                  echo '<label>Pay increase</label><span>';
+                  echo '<input type="number" value="'.$discountRate[$i]['price'].'">';
+                  echo '<span class="unit">'.$package['tour_currency'].'</span>';
+                  echo '</span>';
+                  echo '</div>';
+                  echo '<div class="col-md-4"><div class="btn no-border gray">Delete</div></div>';
+                }
+                 ?>
 							</div>
 							<div class="btn-wrapper">
 								<div class="col-xs-12">

@@ -21,7 +21,9 @@ class EasyBookingMD extends CI_Model {
       tour.tour_advanceBooking,
       tour.tour_privateGroup,
       tour.tour_discountRate,
-      tour.tour_doublePack
+      tour.tour_doublePack,
+      tour.tour_privateGroupPrice,
+      tour.tour_privateGroupMinimum
 		");
     $this->db->from('tour');
     $this->db->join('tour_address', 'tour.tour_id = tour_address.tour_id', 'inner');
@@ -70,7 +72,8 @@ class EasyBookingMD extends CI_Model {
   }
 
   function getConditionActivity($tour_nameSlug) {
-    $this->db->select("tour_condition.tc_price,
+    $this->db->select("tour_condition.tc_title,
+    tour_condition.tc_price,
     tour_condition.tc_data");
     $this->db->from('tour');
     $this->db->join('tour_condition', 'tour.tour_id = tour_condition.tour_id', 'inner');

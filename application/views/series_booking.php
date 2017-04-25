@@ -187,6 +187,7 @@
             if($condition->num_rows() > 0){
             	echo '<div class="form-group"><h3>Tour package option</h3>';
             	foreach($condition->result_array() AS $row){
+                if($row['tc_type'] == 'option'){
             ?>
           <div class="col-md-6">
             <div class="checkbox-box">
@@ -205,12 +206,30 @@
             </div>
           </div>
           <?php
+        }
             }
-            echo '</div>';
+            echo '</div></div>';
             }
+            $is_first = true;
+            foreach($condition->result_array() AS $row){
+              if($row['tc_type'] == 'option activity'){
+                if($is_first){
+                  $is_first = false;
+                  echo '<div class="form-group" id="multiple">';
+                  if($row['tc_title'] != ''){
+                    echo '<h3>'.$row['tc_title'].'</h3>';
+                  }
+                  echo '<div class="col-md-12"><table><tbody><tr><td><input type="radio" name="extension-activity" price="0" checked>Do Not Participate</td>';
+                  echo '<td>No Charge</td></tr>';
+                }
+                echo '<tr><td><input type="radio" name="extension-activity" activity="'.$row['tc_data'].'" price="'.$row['tc_price'].'">'.$row['tc_data'].'</td>';
+                echo '<td><span>Increase</span>Add '.number_format($row['tc_price']).' '.$package['tour_currency'].'</td>';
+                echo '</tr>';
+              }
+            }
+            echo '</tbody></table></div></div>';
             if($package['tour_privateGroup'] == 1){
             ?>
-
           <div class="form-group">
 					<h3><input type="checkbox" id="private-group"> <span>Private Group</span></h3>
 					<div class="col-md-8" id="joinchart">
@@ -262,33 +281,11 @@
               </div>
               <?php
                 foreach($room->result_array() as $row){
-                	$choose_condition = json_decode($row['tc_chooseCondition'], TRUE);
                 	$room_condition = json_decode($row['tc_data'], TRUE);
                 	$last_rc = count($room_condition);
                 	for($i=0;$i<$last_rc;$i++){
-                		if(count($choose_condition)>1){
-                			for($j=1;$j<count($choose_condition);$j++){
-                ?>
-              <div class="list" room-type="<?=$room_condition[$i]['roomtype']?>" choose-condition-from="<?=$choose_condition[$j]['from']?>" choose-condition-to="<?=$choose_condition[$j]['to']?>">
-                <div class="col-sm-5"><label><?=$room_condition[$i]['roomtype']?><br>
-                  <?php if($room_condition[$i]['roomdetail'] != ''){ ?>
-                  <span>(
-                  <?php echo $room_condition[$i]['roomdetail']; ?>
-                  )</span>
-                  <?php } ?>
-                  </label>
-                </div>
-                <div class="col-sm-4 col-xs-7">
-                  <input type="hidden" value="<?=$row['tc_price'];?>">
-                  <p class="priceroom"><?=number_format($package['tour_startPrice']+$row['tc_price']);?></p>
-                  <p>&nbsp;/ person</p>
-                </div>
-                <div class="col-sm-3 col-xs-5"><input class="tourist-num" type="number" value="0" min="0" max="1"><span class="unit">person</span></div>
-              </div>
-              <?php }
-                }
-                ?>
-              <div class="list" room-type="<?=$room_condition[$i]['roomtype']?>" choose-condition-from="<?=$choose_condition[$i]['from']?>" choose-condition-to="<?=$choose_condition[$i]['to']?>">
+              ?>
+              <div class="list" room-type="<?=$room_condition[$i]['roomtype']?>">
                 <div class="col-sm-5"><label><?=$room_condition[$i]['roomtype']?><br>
                   <?php if($room_condition[$i]['roomdetail'] != ''){ ?>
                   <span>(
@@ -359,6 +356,8 @@
       <input id="isDoublePack" type="hidden" value="<?=$package['tour_doublePack']?>">
       <input id="isPrivateGroup" type="hidden" value="<?=$package['tour_privateGroup']?>">
       <input id="discountRate" type="hidden" value='<?=$package['tour_discountRate']?>'>
+      <input id="privateGroupPrice" type="hidden" value="<?=$package['tour_privateGroupPrice']?>">
+      <input id="privateGroupMinimum" type="hidden" value="<?=$package['tour_privateGroupMinimum']?>">
     </footer>
     <!-- Modal -->
     <div class="modal fade" id="popup" role="dialog">
@@ -390,36 +389,19 @@
     		if($('.list').eq($i).attr('room-type') != 'Single room' && typeof($('.list').eq($i).attr('room-type')) != 'undefined'){
     			$('.list').eq($i).hide();
     		}
-    		if($('.list').eq($i).attr('choose-condition-from') != undefined && $('.list').eq($i).attr('choose-condition-from') != ''){
-    			if($is_first == false){
-    				$('.list').eq($i).find('input').eq(1).val(0);
-    				$('.list').eq($i).hide();
-    			}else{
-    				$is_first = false;
-    			}
-    		}
     	}
       $isDoublePack = $('#isDoublePack').val();
       if($isDoublePack == 1){
         double_pack(true);
       }
-    	sum_amount();
+      set_room(2);
+      set_max($('#tourist-total-num').val());
+      sum_amount();
     });
     /**************************Control zone*******************************/
     $('select[name="daytrip"]').change(function(){
     	$datestart = $(this).find(':selected').attr('datestart');
     	$datefinish = $(this).find(':selected').attr('datefinish');
-    	$count_list = $('.list').length;
-    	for($i=0;$i<$count_list;$i++){
-    		if($('.list').eq($i).attr('choose-condition-from') != undefined && $('.list').eq($i).attr('choose-condition-from') != ''){
-    			if($('.list').eq($i).attr('choose-condition-from') >= $datestart && $('.list').eq($i).attr('choose-condition-to') <= $datefinish){
-    				$('.list').eq($i).show();
-    			}else{
-    				$('.list').eq($i).find('input').eq(1).val(0);
-    				$('.list').eq($i).hide();
-    			}
-    		}
-    	}
     	$price_starting = $(this).val();
     	$index = 0;
     	$('.priceroom').eq($index).text(numeral($price_starting).format('0,0'));
@@ -561,6 +543,10 @@
     	sum_amount();
     });
 
+    $('input:radio[name=extension-activity]').change(function(){
+      sum_amount();
+    });
+
     /*****************Submit form to booking-info page*************/
     $('.booking-infopage').click(function(){
     	$status_room = false;
@@ -698,13 +684,14 @@
     function sum_amount(){
     	$count_list = $('.list').length;
     	$sum = 0;
+      $extension_activity_price = parseInt($('input:radio[name=extension-activity]:checked').attr('price'));
     	for($i=0;$i<$count_list;$i++){
-    		if($('.list').eq($i).find('input').eq(1).val() != undefined && $('.priceroom').eq(0).text() != undefined){
-    			$sum += (numeral($('.priceroom').eq($i-1).text()).format('0'))*($('.list').eq($i).find('input').eq(1).val());
+    		if($('.list').eq($i).find('input').eq(1).val() != undefined && $('.priceroom').eq(0).text() != undefined && $('.list').eq($i).find('input').eq(1).val() > 0){
+          $sum += (numeral($('.priceroom').eq($i-1).text()).format('0'))*($('.list').eq($i).find('input').eq(1).val());
+          $sum += $extension_activity_price*($('.list').eq($i).find('input').eq(1).val());
     		}
     	}
     	$('#total-amount').html(numeral($sum).format('0,0'));
-
       $isPrivateGroup = $('#isPrivateGroup').val();
       $statusPrivate = $('#private-group');
       if($isPrivateGroup == 1){
@@ -748,6 +735,10 @@
     function double_pack($detection){
       $isDoublePack = $('#isDoublePack').val();
       if($isDoublePack == 1){
+        if($('#privateGroupMinimum').val() > 0){
+          $('#tourist-total-num').val($('#privateGroupMinimum').val());
+          $('#tourist-total-num').prop('min',$('#privateGroupMinimum').val());
+        }
         $temp = parseInt($('#tourist-total-num').val());
         $mod = $temp%2;
         if($temp%2 === 0){
@@ -759,9 +750,6 @@
           }
         }
         $('#total-tourist').html($('#tourist-total-num').val());
-        set_room(2);
-        set_max($('#tourist-total-num').val());
-        sum_amount();
       }
     }
 
@@ -802,8 +790,9 @@
             if($tourist_num <= $discountRate[$i]['pax']){
               $index = $discountRate[$i]['pax'];
               $increase = $tourist_num*$discountRate[$i]['price'];
+              $pgp = parseInt($('#privateGroupPrice').val());
               $total_amount = parseInt(numeral($('#total-amount').html()).format('0'));
-              $('#total-amount').html(numeral($total_amount+$increase).format('0,0'));
+              $('#total-amount').html(numeral(($total_amount+$increase)+$pgp).format('0,0'));
               break;
             }
           }
@@ -822,8 +811,9 @@
             if($tourist_num <= $discountRate[$i]['pax']){
               $index = $discountRate[$i]['pax'];
               $increase = $tourist_num*$discountRate[$i]['price'];
+              $pgp = parseInt($('#privateGroupPrice').val());
               $total_amount = parseInt(numeral($('#total-amount').html()).format('0'));
-              $('#total-amount').html(numeral($total_amount-$increase).format('0,0'));
+              $('#total-amount').html(numeral(($total_amount-$increase)-$pgp).format('0,0'));
               break;
             }
           }

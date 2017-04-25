@@ -122,6 +122,7 @@ class PackageMD extends CI_Model {
 			tour.tour_priceRange,
       tour.tour_openBooking,
 			tour.tour_currency,
+      tour.tour_privateGroup,
 			image.img_source,
 			countries.country_name,
       continents.continent_name,
@@ -140,6 +141,55 @@ class PackageMD extends CI_Model {
     self::$db->where('image.img_type', 'tour cover');
     self::$db->where('tour.tour_nameSlug', $tour_nameSlug);
     self::$db->group_by('tour.tour_id');
+    return self::$db->get();
+  }
+
+  function editPackageCondition($tour_nameSlug){
+    self::$db->select("
+			tour.tour_id,
+			tour.tour_nameTH,
+			tour.tour_nameEN,
+			tour.tour_nameSlug,
+			tour.tour_startPrice,
+			tour.tour_priceRange,
+      tour.tour_openBooking,
+			tour.tour_currency,
+      tour.tour_privateGroup,
+			countries.country_name,
+      continents.continent_name,
+      address.address_province,
+      geography.geography_nameEN,
+      agent.agent_code,
+      tour.tour_doublePack,
+      tour_privateGroupPrice,
+      tour_discountRate
+		");
+    self::$db->from('tour');
+    self::$db->join('image', 'tour.tour_imgCover = image.img_refid', 'inner');
+    self::$db->join('tour_address', 'tour.tour_id = tour_address.tour_id', 'inner');
+    self::$db->join('address', 'tour_address.address_id = address.address_id', 'inner');
+    self::$db->join('countries', 'address.country_id = countries.country_id', 'inner');
+    self::$db->join('geography', 'address.geography_id = geography.geography_id', 'inner');
+    self::$db->join('continents', 'address.continent_id = continents.continent_id', 'inner');
+    self::$db->join('tour_condition', 'tour.tour_id = tour_condition.tour_id', 'inner');
+    self::$db->join('agent', 'tour.tour_agentId = agent.agent_id', 'inner');
+    self::$db->where('image.img_type', 'tour cover');
+    self::$db->where('tour.tour_nameSlug', $tour_nameSlug);
+    self::$db->group_by('tour.tour_id');
+    return self::$db->get();
+  }
+
+  function editCondition($tour_nameSlug){
+    self::$db->select("
+      tour_condition.tc_condition,
+      tour_condition.tc_price,
+      tour_condition.tc_type,
+      tour_condition.tc_data,
+      tour_condition.tc_order
+		");
+    self::$db->from('tour');
+    self::$db->join('tour_condition', 'tour.tour_id = tour_condition.tour_id', 'inner');
+    self::$db->where('tour.tour_nameSlug', $tour_nameSlug);
     return self::$db->get();
   }
 

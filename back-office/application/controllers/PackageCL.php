@@ -101,7 +101,7 @@ class PackageCL extends CI_Controller {
 		/********************Initial Filter**********************/
 		$data['province'] = $this->PackageMD->getProvince();
 		$data['region'] = $this->PackageMD->getRegion();
-		$query= $this->PackageMD->editPackage($tour_nameSlug);
+		$query= $this->PackageMD->editPackageCondition($tour_nameSlug);
 		$data['package'] = $query;
 		if($tour_type == 'sp'){
 			$this->load->view('edit_outbound_series_package_condition',$data);
@@ -138,8 +138,9 @@ class PackageCL extends CI_Controller {
 		/********************Initial Filter**********************/
 		$data['continent'] = $this->PackageMD->getContinent();
 		$data['country'] = $this->PackageMD->getCountry();
-		$query= $this->PackageMD->editPackage($tour_nameSlug);
+		$query= $this->PackageMD->editPackageCondition($tour_nameSlug);
 		$data['package'] = $query;
+		$data['condition'] = $this->PackageMD->editCondition($tour_nameSlug);
 		if($tour_type == 'sp'){
 			$this->load->view('edit_outbound_series_package_condition',$data);
 		}else{

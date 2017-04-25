@@ -20,7 +20,9 @@ class SeriesBookingMD extends CI_Model {
       tour.tour_advanceBooking,
       tour.tour_privateGroup,
       tour.tour_discountRate,
-      tour.tour_doublePack
+      tour.tour_doublePack,
+      tour.tour_privateGroupPrice,
+      tour.tour_privateGroupMinimum
 		");
     $this->db->from('tour');
     $this->db->join('tour_address', 'tour.tour_id = tour_address.tour_id', 'inner');
@@ -33,9 +35,7 @@ class SeriesBookingMD extends CI_Model {
 
   function getRoom($tour_nameSlug) {
     $this->db->select("
-			tour_condition.tc_condition,
 			tour_condition.tc_price,
-			tour_condition.tc_chooseCondition,
 			tour_condition.tc_data
 		");
     $this->db->from('tour');
@@ -46,12 +46,11 @@ class SeriesBookingMD extends CI_Model {
   }
 
   function getCondition($tour_nameSlug) {
-    $this->db->select("tour_condition.tc_condition,
-			tour_condition.tc_price,
-			tour_condition.tc_data");
+    $this->db->select("
+      tour_condition.*");
     $this->db->from('tour');
     $this->db->join('tour_condition', 'tour.tour_id = tour_condition.tour_id', 'inner');
-    $this->db->where('tour_condition.tc_type !=', 'room');
+    $this->db->where('(tour_condition.tc_type = "option" OR tour_condition.tc_type = "option activity")');
     $this->db->where('tour.tour_nameSlug', $tour_nameSlug);
     return $this->db->get();
   }
