@@ -409,7 +409,7 @@
     <input id="isPrivateGroup" type="hidden" value="<?=$package['tour_privateGroup']?>">
     <input id="discountRate" type="hidden" value='<?=$package['tour_discountRate']?>'>
     <input id="privateGroupPrice" type="hidden" value="<?=$package['tour_privateGroupPrice']?>">
-    <input id="privateGroupMinimum" type="hidden" value="<?=$package['tour_privateGroupMinimum']?>">
+    <input id="minimum" type="hidden" value="<?=$package['tour_minimum']?>">
   </body>
   <script>
     $(document).ready(function(){
@@ -419,15 +419,15 @@
       }
       $('.room').hide();
       listDate();
+      if($('#minimum').val() > 0){
+        $('#tourist-total-num').val($('#minimum').val());
+        $('#tourist-total-num').prop('min',$('#minimum').val());
+      }
     });
 
     function double_pack($detection){
       $isDoublePack = $('#isDoublePack').val();
       if($isDoublePack == 1){
-        if($('#privateGroupMinimum').val() > 0){
-          $('#tourist-total-num').val($('#privateGroupMinimum').val());
-          $('#tourist-total-num').prop('min',$('#privateGroupMinimum').val());
-        }
         $temp = parseInt($('#tourist-total-num').val());
         $mod = $temp%2;
         if($temp%2 === 0){

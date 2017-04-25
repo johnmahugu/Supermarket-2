@@ -162,7 +162,8 @@ class PackageMD extends CI_Model {
       agent.agent_code,
       tour.tour_doublePack,
       tour_privateGroupPrice,
-      tour_discountRate
+      tour_discountRate,
+      tour_minimum
 		");
     self::$db->from('tour');
     self::$db->join('image', 'tour.tour_imgCover = image.img_refid', 'inner');
@@ -181,11 +182,7 @@ class PackageMD extends CI_Model {
 
   function editCondition($tour_nameSlug){
     self::$db->select("
-      tour_condition.tc_condition,
-      tour_condition.tc_price,
-      tour_condition.tc_type,
-      tour_condition.tc_data,
-      tour_condition.tc_order
+      tour_condition.*
 		");
     self::$db->from('tour');
     self::$db->join('tour_condition', 'tour.tour_id = tour_condition.tour_id', 'inner');

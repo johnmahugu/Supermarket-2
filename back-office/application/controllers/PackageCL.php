@@ -103,8 +103,9 @@ class PackageCL extends CI_Controller {
 		$data['region'] = $this->PackageMD->getRegion();
 		$query= $this->PackageMD->editPackageCondition($tour_nameSlug);
 		$data['package'] = $query;
+		$data['condition'] = $this->PackageMD->editCondition($tour_nameSlug);
 		if($tour_type == 'sp'){
-			$this->load->view('edit_outbound_series_package_condition',$data);
+			$this->load->view('edit_domestic_series_package_condition',$data);
 		}else{
 			echo 'AA';
 		}

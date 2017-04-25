@@ -22,7 +22,7 @@ class SeriesBookingMD extends CI_Model {
       tour.tour_discountRate,
       tour.tour_doublePack,
       tour.tour_privateGroupPrice,
-      tour.tour_privateGroupMinimum
+      tour.tour_minimum
 		");
     $this->db->from('tour');
     $this->db->join('tour_address', 'tour.tour_id = tour_address.tour_id', 'inner');

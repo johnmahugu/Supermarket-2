@@ -291,7 +291,11 @@ foreach($condition->result_array() as $row){
 						<div class="col-md-3 col-sm-4 col-xs-6">
 							<p>
 								<?php
-								if($package['tour_doublePack'] == 1){
+                $status = 0;
+                if($package['tour_doublePack'] == 1){
+                  $status++;
+                }
+								if($status > 0){
 									echo '<input type="checkbox" name="pax" checked>Pax Condition';
 								}else{
 									echo '<input type="checkbox" name="pax">Pax Condition';
@@ -306,10 +310,10 @@ foreach($condition->result_array() as $row){
 				<div class="row">
 					<div class="card-btn-tab">
 						<div class="col-sm-6 no-pd">
-							<a href="tm-domestic-series-new.html" class="btn">TOUR INFO</a>
+							<a href="edit-outbound-package?tour=<?=$package['tour_nameSlug']?>&type=<?=$this->session->flashdata('f1')?>" class="btn">TOUR INFO</a>
 						</div>
 						<div class="col-sm-6 no-pd">
-							<a href="tm-domestic-series-new-condition.html" class="btn current">CONDITION</a>
+							<a href="edit-outbound-package-condition?tour=<?=$package['tour_nameSlug']?>&type=<?=$this->session->flashdata('f1')?>" class="btn current">CONDITION</a>
 						</div>
 					</div>
 				</div>
@@ -427,8 +431,10 @@ foreach($condition->result_array() as $row){
 						</div>
 						<div class="content">
               <?php
+              $count = 0;
               foreach($condition->result_array() as $row){
               	if($row['tc_type'] == 'option'){
+                  $count++;
                   echo '<div class="form-group"><div class="col-md-4">';
                   echo '<input type="text" placeholder="Option Name" value="'.$row['tc_data'].'">';
                   echo '</div><div class="col-md-3 form-inline"><label>Condition</label><span>';
@@ -448,7 +454,22 @@ foreach($condition->result_array() as $row){
                   echo '</div><div class="col-md-2"><div class="btn no-border gray">Delete</div></div></div>';
                 }
               }
+                if($count == 0){
+  								echo '<div class="form-group"><div class="col-md-4">';
+  								echo '<input type="text" placeholder="Option Name">';
+  								echo '</div><div class="col-md-3 form-inline"><label>Condition</label><span>';
+  								echo '<select>';
+  								echo '<option selected>Increase</option>';
+  								echo '<option>Decrease</option>';
+  								echo '</select>';
+  								echo '</span></div>';
+  								echo '<div class="col-md-3">';
+  								echo '<input type="number" placeholder="Price">';
+  								echo '<span class="unit">'.$package['tour_currency'].'</span>';
+  								echo '</div><div class="col-md-2"><div class="btn no-border gray">Delete</div></div></div>';
+  							}
                ?>
+             </div>
                <div class="btn-wrapper">
                  <div class="col-xs-12">
                    <div class="btn no-border light">
@@ -465,31 +486,48 @@ foreach($condition->result_array() as $row){
 						<div class="content">
 							<div class="form-group">
 								<div class="col-md-9">
-									<input type="text" placeholder="Description">
-								</div>
-								<div class="col-md-3 form-inline">
-									<label>Condition</label>
-									<span>
-										<select>
-											<option>Pay increase</option>
-											<option>Discount</option>
-										</select>
-									</span>
-								</div>
-							</div>
-							<hr>
-							<div class="form-group">
-								<div class="col-md-6">
-									<input type="text" placeholder="Option Name">
-								</div>
-								<div class="col-md-3">
-									<input type="number" placeholder="Price">
-									<span class="unit">THB</span>
-								</div>
-								<div class="col-md-2 col-md-offset-1">
-									<div class="btn no-border gray">Delete</div>
-								</div>
-							</div>
+                  <?php
+                  $count = 0;
+                  $is_first = true;
+                  foreach($condition->result_array() as $row){
+                  	if($row['tc_type'] == 'option activity'){
+                      if($is_first){
+                        $count++;
+                        $is_first = false;
+                        echo '<input type="text" placeholder="Description" value="'.$row['tc_title'].'"></div>';
+                        echo '<div class="col-md-3 form-inline"><label>Condition</label><span><select>';
+                        if($row['tc_condition'] == 'increase'){
+                          echo '<option selected>Increase</option>';
+                          echo '<option>Decrease</option>';
+                        }else{
+                          echo '<option>Increase</option>';
+                          echo '<option selected>Decrease</option>';
+                        }
+                        echo '</select></span></div></div><hr>';
+                      }
+                      echo '<div class="form-group"><div class="col-md-6">';
+                      echo '<input type="text" placeholder="Option Name" value="'.$row['tc_data'].'">';
+                      echo '</div><div class="col-md-3">';
+                      echo '<input type="number" placeholder="Price" value="'.intval($row['tc_price']).'">';
+                      echo '<span class="unit">'.$package['tour_currency'].'</span></div>';
+                      echo '<div class="col-md-2 col-md-offset-1"><div class="btn no-border gray">Delete</div>';
+                      echo '</div></div>';
+                    }
+                  }
+                  if($count == 0){
+										echo '<input type="text" placeholder="Description"></div>';
+										echo '<div class="col-md-3 form-inline"><label>Condition</label><span><select>';
+										echo '<option selected>Increase</option>';
+										echo '<option>Decrease</option>';
+										echo '</select></span></div></div><hr><div class="form-group"><div class="col-md-6">';
+										echo '<input type="text" placeholder="Option Name">';
+										echo '</div><div class="col-md-3">';
+										echo '<input type="number" placeholder="Price">';
+										echo '<span class="unit">'.$package['tour_currency'].'</span></div>';
+										echo '<div class="col-md-2 col-md-offset-1"><div class="btn no-border gray">Delete</div>';
+										echo '</div></div>';
+									}
+                 ?>
 							<div class="btn-wrapper">
 								<div class="col-xs-12">
 									<div class="btn no-border light"><i class="fa fa-plus" aria-hidden="true"></i> Add Condition</div>
@@ -507,7 +545,14 @@ foreach($condition->result_array() as $row){
 								<div class="col-md-6 form-inline">
 									<label>Select Private Group</label>
 									<span>
-										<input type="number" placeholder="Pay increase" value="<?=$package['tour_privateGroupPrice']?>">
+                    <?php
+										$price = $package['tour_privateGroupPrice'];
+										if($price > 0){
+											echo '<input type="number" placeholder="Pay increase" value="'.$price.'">';
+										}else{
+											echo '<input type="number" placeholder="Pay increase">';
+										}
+										 ?>
 										<span class="unit"><?=$package['tour_currency']?></span>
 									</span>
 								</div>
@@ -530,6 +575,19 @@ foreach($condition->result_array() as $row){
                   echo '</div>';
                   echo '<div class="col-md-4"><div class="btn no-border gray">Delete</div></div>';
                 }
+                if($c_discountRate == 0){
+									echo '<div class="col-md-4 form-inline"><label>Up to</label><span>';
+                  echo '<input type="number">';
+                  echo '<span class="unit">Pax</span>';
+                  echo '</span></div>';
+                  echo '<div class="col-md-4 form-inline">';
+                  echo '<label>Pay increase</label><span>';
+                  echo '<input type="number">';
+                  echo '<span class="unit">'.$package['tour_currency'].'</span>';
+                  echo '</span>';
+                  echo '</div>';
+                  echo '<div class="col-md-4"><div class="btn no-border gray">Delete</div></div>';
+								}
                  ?>
 							</div>
 							<div class="btn-wrapper">
@@ -544,21 +602,43 @@ foreach($condition->result_array() as $row){
 							<h2>Pax Condition</h2>
 						</div>
 						<div class="content">
-							<div class="form-group cb-nonselect">
-								<div class="col-md-4 col-sm-6">
-									<input type="checkbox">
+                  <?php
+                  if($package['tour_doublePack'] == 1){
+                    echo '<div class="form-group">';
+                    echo '<div class="col-md-4 col-sm-6">';
+                    echo '<input type="checkbox" checked>';
+                  }else{
+                    echo '<div class="form-group cb-nonselect">';
+                    echo '<div class="col-md-4 col-sm-6">';
+                    echo '<input type="checkbox">';
+                  }
+                   ?>
 									<p>Double Pax Condition</p>
 								</div>
 							</div>
-							<div class="form-group cb-nonselect">
-								<div class="col-md-4 col-sm-6">
-									<input type="checkbox">
+              <?php
+              if($package['tour_minimum'] > 0){
+                echo '<div class="form-group">';
+                echo '<div class="col-md-4 col-sm-6">';
+                echo '<input type="checkbox" checked>';
+              }else{
+                echo '<div class="form-group cb-nonselect">';
+                echo '<div class="col-md-4 col-sm-6">';
+                echo '<input type="checkbox">';
+              }
+               ?>
 									<p>Minimum Tourists</p>
 								</div>
 								<div class="col-md-4 col-sm-6 form-inline">
 									<label>Amount</label>
 									<span>
-										<input type="number" placeholder="Price" disabled>
+                    <?php
+                    if($package['tour_minimum'] > 0){
+                      echo '<input type="number" placeholder="Price" value="'.$package['tour_minimum'].'">';
+                    }else{
+                      echo '<input type="number" placeholder="Price" disabled>';
+                    }
+                     ?>
 										<span class="unit">Pax</span>
 									</span>
 								</div>
@@ -566,6 +646,7 @@ foreach($condition->result_array() as $row){
 						</div>
 					</div>
 				</div>
+      </div>
 				<div class="row">
 					<div class="btn-wrapper text-center">
 						<input type="submit" value="Add Package" class="btn bold">
