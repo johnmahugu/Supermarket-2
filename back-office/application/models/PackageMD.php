@@ -180,6 +180,33 @@ class PackageMD extends CI_Model {
     return self::$db->get();
   }
 
+  function updatePackage($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$overviewTH,$overviewEN,$descTH,$descEN,$briefTH,$briefEN,$advanceBooking,$dayNight,$priceRange){
+    self::$db->trans_begin();
+    $data = array(
+      'tour_nameSlug' => $newNameSlug,
+      'tour_nameTH' => $nameTH,
+      'tour_nameEN' => $nameEN,
+      'tour_overviewTH' => $overviewTH,
+      'tour_overviewEN' => $overviewEN,
+      'tour_descTH' => $descTH,
+      'tour_descEN' => $descEN,
+      'tour_briefingTH' => $briefTH,
+      'tour_briefingEN' => $briefEN,
+      'tour_advanceBooking' => $advanceBooking,
+      'tour_dayNight' => $dayNight,
+      'tour_priceRange' => $priceRange
+    );
+    self::$db->where('tour_nameSlug', $oldNameSlug);
+    self::$db->update('tour', $data);
+    if (self::$db->trans_status() === FALSE) {
+      self::$db->trans_rollback();
+      return false;
+    } else {
+      self::$db->trans_commit();
+      return true;
+    }
+  }
+
   function editCondition($tour_nameSlug){
     self::$db->select("
       tour_condition.*

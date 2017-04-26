@@ -646,10 +646,11 @@ foreach($condition->result_array() as $row){
 						</div>
 					</div>
 				</div>
-			</div>
 				<div class="row">
 					<div class="btn-wrapper text-center">
-						<input type="submit" value="Add Package" class="btn bold">
+            <form action="update-domestic-package">
+						  <input type="submit" value="Add Package" class="btn bold">
+            </form>
 					</div>
 				</div>
 			</div>
