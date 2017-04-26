@@ -344,12 +344,22 @@ function filter(){
 				$result['list_package'] += '<p>Start at '+numeral(data['package'][$i].tour_startPrice).format('0,0')+' '+data['package'][$i].tour_currency+'<br>';
 				$est_dayNight = data['package'][$i].tour_dayNight.split(",");
 				$result['list_package'] += '<span>'+$est_dayNight[0]+' Day '+$est_dayNight[1]+' Night</span></p>';
-				$result['list_package'] += '</div></div>';
-				$result['list_package'] += '<div class="description">';
+				$result['list_package'] += '</div></div><div class="checkbox-wrapper">';
+				if(data['package'][$i].tour_public == 1){
+					$result['list_package'] += '<p><input type="checkbox" checked> <span>Publish</span></p>';
+				}else{
+					$result['list_package'] += '<p><input type="checkbox"> <span>Publish</span></p>';
+				}
+				if(data['package'][$i].tour_hilight == 1){
+					$result['list_package'] += '<p><input type="checkbox" checked> <span>Highlight</span></p>';
+				}else{
+					$result['list_package'] += '<p><input type="checkbox"> <span>Highlight</span></p>';
+				}
+				$result['list_package'] += '</div><div class="description">';
 				$result['list_package'] += '<p class="date">'+$open_booking.format("d mmmm yyyy")+' - '+$close_booking.format("d mmmm yyyy")+'</p>';
 				$result['list_package'] += '<div class="btn-wrapper">';
 				$result['list_package'] += '<a href="delete-package?tour='+data['package'][$i].tour_nameSlug+'" class="btn gray">Delete</a>';
-				$result['list_package'] += '<a href="edit-outbound-package?tour='+data['package'][$i].tour_nameSlug+'&type='+date['package'][$i].tour_type+'" class="btn"> Edit </a>';
+				$result['list_package'] += '<a href="edit-outbound-package?tour='+data['package'][$i].tour_nameSlug+'&type='+data['package'][$i].tour_type+'" class="btn"> Edit </a>';
 				$result['list_package'] += '</div></div></div></div>';
 			}
 		}

@@ -29,6 +29,7 @@ if(isset($price_range)){
 	<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="">
+  <form id="update-domestic-package" action="update-domestic-package" method="post" enctype="multipart/form-data">
 	<header>
 		<div class="header-bar">
 			<div class="logo">
@@ -158,13 +159,13 @@ if(isset($price_range)){
 					<div class="row">
 						<div class="col-xs-12">
 							<h1>Edit Join Group Tour</h1>
-							<p>Domestic | Supermarket Tours</p><br>
+							<p>Outbound | Supermarket Tours</p><br>
 						</div>
 						<div class="col-sm-6 col-xs-12">
-							<input type="text" value="<?=$package['tour_nameTH']?>">
+							<input id="nameTH" type="text" value="<?=$package['tour_nameTH']?>">
 						</div>
 						<div class="col-sm-6 col-xs-12">
-							<input type="text" value="<?=$package['tour_nameEN']?>">
+							<input id="nameEN" type="text" value="<?=$package['tour_nameEN']?>">
 						</div>
 					</div>
 
@@ -173,17 +174,17 @@ if(isset($price_range)){
 							<div class="input-box">
 								<label class="filter">Region</label>
                 <select name="region">
-                <?php
-                  if(isset($region)){
-                    foreach($region->result_array() as $row){
-                      if($package['geography_nameEN'] == $row['geography_nameEN']){
-                        echo "<option value=".$row['geography_nameEN']." selected>".$row['geography_nameEN']."</option>";
-                      }else{
-                        echo "<option value=".$row['geography_nameEN'].">".$row['geography_nameEN']."</option>";
-                      }
-                    }
-                  }
-                  ?>
+                  <?php
+                   if(isset($region)){
+                     foreach($region->result_array() as $row){
+                       if($package['geography_nameEN'] == $row['geography_nameEN']){
+                         echo "<option value=".$row['geography_id']." selected>".$row['geography_nameEN']."</option>";
+                       }else{
+                         echo "<option value=".$row['geography_id'].">".$row['geography_nameEN']."</option>";
+                       }
+                     }
+                   }
+                   ?>
                 </select>
 							</div>
 						</div>
@@ -191,23 +192,23 @@ if(isset($price_range)){
 							<div class="input-box">
 								<label class="filter">Province</label>
                 <select name="province">
-	              <?php
-	                if(isset($province)){
-	                	foreach($province->result_array() as $row){
-                      if($package['address_province'] == $row['province_nameEN']){
-                        echo "<option value=".$row['province_nameEN']." selected>".$row['province_nameEN']."</option>";
-                      }else{
-                        echo "<option value=".$row['province_nameEN'].">".$row['province_nameEN']."</option>";
-                      }
-	                	}
-	                }
-	                ?>
+                  <?php
+  	                if(isset($province)){
+  	                	foreach($province->result_array() as $row){
+                        if($package['address_province'] == $row['province_nameEN']){
+                          echo "<option value=".$row['province_nameEN']." selected>".$row['province_nameEN']."</option>";
+                        }else{
+                          echo "<option value=".$row['province_nameEN'].">".$row['province_nameEN']."</option>";
+                        }
+  	                	}
+  	                }
+  	                ?>
 	              </select>
 							</div>
 						</div>
 						<div class="col-md-4 col-sm-6">
 							<label>Starter Price</label><br>
-							<input id="start-price" type="text" value="<?=intval($package['tour_startPrice'])?>"><span class="unit"><?=$package['tour_currency']?></span>
+							<input id="startPrice" type="text" value="<?=intval($package['tour_startPrice'])?>"><span class="unit"><?=$package['tour_currency']?></span>
 						</div>
 					</div>
 				</div>
@@ -219,7 +220,7 @@ if(isset($price_range)){
 							<a href="tm-domestic-series-new.html" class="btn current">TOUR INFO</a>
 						</div>
 						<div class="col-sm-6 no-pd">
-							<a href="edit-domestic-package-condition?tour=<?=$package['tour_nameSlug']?>&type=<?=$this->session->flashdata('f1')?>" class="btn no-setting">CONDITION</a>
+							<a href="edit-outbound-package-condition?tour=<?=$package['tour_nameSlug']?>&type=<?=$this->session->flashdata('f1')?>" class="btn no-setting">CONDITION</a>
 						</div>
 					</div>
 				</div>
@@ -263,20 +264,20 @@ if(isset($price_range)){
 									<input type="text" value="<?=$package['tour_type']?>" disabled>
 									<hr><br>
 									<label><span class="tag">English</span>Overview</label><br>
-									<input type="text" value="<?=$package['tour_overviewEN']?>"><br><br>
+									<input id="overviewEN" type="text" value="<?=$package['tour_overviewEN']?>"><br><br>
 									<label><span class="tag">English</span>Tour Description</label><br>
-									<textarea name="desen" required><?=$package['tour_descEN']?></textarea><br>
+									<textarea id="descEN" name="desen" required><?=$package['tour_descEN']?></textarea><br>
 
 									<label><span class="tag">English</span>Tour Briefing</label><br>
-									<textarea name="briefen" required><?=$package['tour_briefingEN']?></textarea><br>
+									<textarea id="briefEN" name="briefen" required><?=$package['tour_briefingEN']?></textarea><br>
 									<hr><br>
 									<label><span class="tag">Thai</span>Overview</label><br>
-									<input type="text" value="<?=$package['tour_overviewTH']?>"><br><br>
+									<input id="overviewTH" type="text" value="<?=$package['tour_overviewTH']?>"><br><br>
 									<label><span class="tag">Thai</span>Tour Description</label><br>
-									<textarea name="desth" required><?=$package['tour_descTH']?></textarea><br>
+									<textarea id="descTH" name="desth" required><?=$package['tour_descTH']?></textarea><br>
 
 									<label><span class="tag">Thai</span>Tour Briefing</label><br>
-									<textarea name="briefth" required><?=$package['tour_briefingTH']?></textarea><br>
+									<textarea id="briefTH" name="briefth" required><?=$package['tour_briefingTH']?></textarea><br>
 									<hr><br>
 
 									<div class="col-md-6 col-xs-12 text-center">
@@ -296,7 +297,7 @@ if(isset($price_range)){
                   $date2 = new DateTime($package['tour_openBooking']);
                   $diff = $date2->diff($date1);
                    ?>
-									<input type="number" value="<?=$diff->format('%a');?>" min="0">
+									<input id="advanceBooking" type="number" value="<?=$diff->format('%a');?>" min="0">
 									<span class="unit">Day</span>
 								</div>
 							</div>
@@ -337,7 +338,7 @@ if(isset($price_range)){
                 <?
                 for($i=0;$i<=$last_btr;$i++){
                   ?>
-								<div class="form-group">
+								<div class="form-group priceRange">
 									<div class="col-md-3 col-sm-6 form-inline">
 										<label>From</label>
 										<span>
@@ -376,7 +377,24 @@ if(isset($price_range)){
 				</div>
 				<div class="row">
 					<div class="btn-wrapper text-center">
-						<input type="submit" value="Add Package" class="btn bold">
+              <input name="oldNameSlug" type="hidden" required>
+              <input name="newNameSlug" type="hidden" required>
+              <input name="type" type="hidden" value="<?=$this->session->flashdata('f1')?>" required>
+              <input name="region" type="hidden" required>
+              <input name="province" type="hidden" required>
+              <input name="nameTH" type="hidden" required>
+              <input name="nameEN" type="hidden" required>
+              <input name="overviewTH" type="hidden" required>
+              <input name="overviewEN" type="hidden" required>
+              <input name="descTH" type="hidden" required>
+              <input name="descEN" type="hidden" required>
+              <input name="briefTH" type="hidden" required>
+              <input name="briefEN" type="hidden" required>
+              <input name="advanceBooking" type="hidden" required>
+              <input name="dayNight" type="hidden" required>
+              <input name="priceRange" type="hidden" required>
+						  <button id="submit" type="submit" class="btn bold">Add Package</button>
+            </form>
 					</div>
 				</div>
 			</div>
@@ -416,11 +434,11 @@ if(isset($price_range)){
 				<div class="row">
 					<div class="col-md-4 col-sm-6">
 						<label>Start Date</label>
-						<input id="gen-schedule-start" type="text" class="date set">
+						<input type="text" class="date set">
 					</div>
 					<div class="col-md-4 col-sm-6">
 						<label>Due Date</label>
-						<input id="gen-schedule-finish" type="text" class="date set">
+						<input type="text" class="date set">
 					</div>
 					<div class="col-md-4 col-sm-12">
 						<label>Duration</label>
@@ -431,42 +449,117 @@ if(isset($price_range)){
 	        </div>
 	        <div class="modal-footer">
 	        	<button type="button" class="btn" data-dismiss="modal" >Cancel</button>
-		        <input type="submit" value="Set" class="btn" >
+		        <input id="gen-schedule" type="submit" value="Set" class="btn" >
 	        </div>
 	      </div>
 	    </div>
   	</div>
+    <input id="nameSlug" type="hidden" value="<?=$package['tour_nameSlug']?>">
     <input id="isTourType" type="hidden" value="<?=$this->session->flashdata('f1')?>">
 </body>
 <script src="assets/js/script.js"></script>
 <script>
 $(document).ready(function(){
   $('a[href="domestic-package?type='+$('#isTourType').val()+'"]').find('li').eq(0).addClass('current');
-  $start_price = $('#start-price').val();
-  $('#start-price').val(numberWithSpaces($start_price));
+  $start_price = $('#startPrice').val();
+  $('#startPrice').val(numberWithSpaces($start_price));
 });
 
-$('#start-price').click(function(){
+$('#submit').click(function(){
+  submit();
+});
+
+function submit(){
+  $nameSlug = $('#nameSlug').val();
+  $nameTH = $('#nameTH').val();
+  $nameEN = $('#nameEN').val();
+  $newNameSlug = $nameEN.toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+  $region = $('select[name=region]').val();
+  $province = $('select[name=province]').val();
+  $overviewTH = $('#overviewTH').val();
+  $overviewEN = $('#overviewEN').val();
+  $descTH = $('#descTH').val();
+  $descEN = $('#descEN').val();
+  $briefTH = $('#briefTH').val();
+  $briefEN = $('#briefEN').val();
+  $advanceBooking = $('#advanceBooking').val();
+  $startPrice = $('#startPrice').val().replace(' ','');
+  $day = $('select[name=daytrip]').val();
+  $night = $day-1;
+
+  $('input[name=oldNameSlug]').val($nameSlug);
+  $('input[name=newNameSlug]').val($newNameSlug);
+  $('input[name=nameTH]').val($nameTH);
+  $('input[name=nameEN]').val($nameEN);
+  $('input[name=region]').val($region);
+  $('input[name=province]').val($province);
+  $('input[name=overviewTH]').val($overviewTH);
+  $('input[name=overviewEN]').val($overviewEN);
+  $('input[name=descTH]').val($descTH);
+  $('input[name=descEN]').val($descEN);
+  $('input[name=briefTH]').val($briefTH);
+  $('input[name=briefEN]').val($briefEN);
+  $('input[name=advanceBooking]').val($advanceBooking);
+  $('input[name=startPrice]').val($startPrice);
+  $('input[name=dayNight]').val($day+","+$night);
+  $priceRange = $('.priceRange');
+  $from = '';
+  $to = '';
+  $price = '';
+  $result = '[';
+  for($i=0;$i<$priceRange.length;$i++){
+    $($priceRange[$i]).find('input').each(function(i){
+      switch(i%3){
+        case 0:
+          $from = $(this).val();
+        break;
+        case 1:
+          $to = $(this).val();
+        break;
+        case 2:
+          $price = $(this).val();
+        break;
+      }
+    });
+    $result += '{"from":"'+$from+'","to":"'+$to+'","price":'+$price+'},';
+  }
+  $result = $result.substr(0,$result.length-1);
+  $result += ']';
+  $('input[name=priceRange]').val($result);
+  var imageData = $('.image-editor').cropit('export');
+	$('.hidden-image-data').val(imageData);
+}
+
+$('#gen-schedule').click(function(){
+});
+
+function listGenSchedule(){
+}
+
+$('#startPrice').click(function(){
   $start_price = $(this).val().replace(' ','');
-  $('#start-price').val($start_price);
+  $('#startPrice').val($start_price);
 });
 
-$('#start-price').blur(function(){
-  $start_price = $('#start-price').val();
+$('#startPrice').blur(function(){
+  $start_price = $('#startPrice').val();
   if($.isNumeric($start_price.replace(' ',''))){
-    $('#start-price').val(numberWithSpaces($start_price));
+    $('#startPrice').val(numberWithSpaces($start_price));
   }else{
     alert('Invalid number');
-    $('#start-price').val(this.defaultValue);
-    $('#start-price').focus();
+    $('#startPrice').val(this.defaultValue);
+    $('#startPrice').focus();
   }
 });
 
 function numberWithSpaces(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
-
-
 
   CKEDITOR.replace( 'desen',{
 		toolbar :[{ name: 'paragraph', items : [ 'Bold','BulletedList']}],
@@ -481,7 +574,6 @@ function numberWithSpaces(x) {
 	CKEDITOR.replace( 'briefth',{
 		toolbar :[{ name: 'paragraph', items : [ 'Bold','Italic','BulletedList']}],
 	});
-
 
 	$('.image-editor.cover').cropit({
       	exportZoom: 2,
@@ -509,7 +601,6 @@ function numberWithSpaces(x) {
     $('.list-card .btn.no-border.light').click(function() {
 		var addform = $(this).closest('.content').find('.form-group').last().html();
 		$(this).closest('.content').find('.form-group').last().after('<div class="form-group"><div class="col-md-3 col-sm-6 form-inline"><label>From</label><span><input type="text" class="date from" value="Select Date" readonly="readonly"></span></div><div class="col-md-3 col-sm-6 form-inline"><label>To</label><span><input type="text" class="date to" value="Select Date" readonly="readonly" disabled></span></div><div class="col-md-3 col-md-offset-1 col-sm-8 form-inline"><label>Price</label><span><input type="number"><span class="unit">THB</span></span></div><div class="col-md-2 col-sm-4"><div class="btn no-border gray">Delete</div></div></div>');
-
 	});
 
     $('body').on('focus',".date.from", function(){

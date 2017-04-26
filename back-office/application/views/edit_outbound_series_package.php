@@ -196,9 +196,9 @@ if(isset($price_range)){
 	                if(isset($country)){
 	                	foreach($country->result_array() as $row){
                       if($package['country_name'] == $row['country_name']){
-                        echo "<option value=".$row['country_name']." selected>".$row['country_name']."</option>";
+                        echo "<option value=".$row['country_id']." selected>".$row['country_name']."</option>";
                       }else{
-                        echo "<option value=".$row['country_name'].">".$row['country_name']."</option>";
+                        echo "<option value=".$row['country_id'].">".$row['country_name']."</option>";
                       }
 	                	}
 	                }
@@ -382,6 +382,8 @@ if(isset($price_range)){
               <input name="type" type="hidden" value="<?=$this->session->flashdata('f1')?>" required>
               <input name="nameTH" type="hidden" required>
               <input name="nameEN" type="hidden" required>
+              <input name="countryId" type="hidden" required>
+              <input name="continentId" type="hidden" required>
               <input name="overviewTH" type="hidden" required>
               <input name="overviewEN" type="hidden" required>
               <input name="descTH" type="hidden" required>
@@ -477,8 +479,8 @@ function submit(){
     .replace(/\-\-+/g, '-')
     .replace(/^-+/, '')
     .replace(/-+$/, '');
-  $continent = $('select[name=continent]').val();
-  $country = $('select[name=country]').val();
+  $continentId = $('select[name=continent]').val();
+  $countryId = $('select[name=country]').val();
   $overviewTH = $('#overviewTH').val();
   $overviewEN = $('#overviewEN').val();
   $descTH = $('#descTH').val();
@@ -489,11 +491,12 @@ function submit(){
   $startPrice = $('#startPrice').val().replace(' ','');
   $day = $('select[name=daytrip]').val();
   $night = $day-1;
-
   $('input[name=oldNameSlug]').val($nameSlug);
   $('input[name=newNameSlug]').val($newNameSlug);
   $('input[name=nameTH]').val($nameTH);
   $('input[name=nameEN]').val($nameEN);
+  $('input[name=countryId]').val($countryId);
+  $('input[name=continentId]').val($continentId);
   $('input[name=overviewTH]').val($overviewTH);
   $('input[name=overviewEN]').val($overviewEN);
   $('input[name=descTH]').val($descTH);

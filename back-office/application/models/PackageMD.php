@@ -47,19 +47,21 @@ class PackageMD extends CI_Model {
 
   function getFilter($type, $country, $region, $province, $continent) {
     self::$db->select("
-      tour.tour_id,
-      tour.tour_nameTH,
-      tour.tour_nameEN,
-      tour.tour_nameSlug,
-      IF(tour.tour_type = 'sp', 'SERIES PACKAGE', 'EASY PACKAGE') AS tour_type,
-      tour.tour_imgCover,
-      tour.tour_pdf,
-      tour.tour_dayNight,
-      tour.tour_startPrice,
-      tour.tour_priceRange,
-      tour.tour_currency,
-      image.img_source,
-      countries.country_name
+    tour.tour_id,
+    tour.tour_nameTH,
+    tour.tour_nameEN,
+    tour.tour_nameSlug,
+    IF(tour.tour_type = 'sp', 'SERIES PACKAGE', 'EASY PACKAGE') AS tour_type,
+    tour.tour_imgCover,
+    tour.tour_pdf,
+    tour.tour_dayNight,
+    tour.tour_startPrice,
+    tour.tour_priceRange,
+    tour.tour_currency,
+    image.img_source,
+    countries.country_name,
+    tour.tour_public,
+    tour.tour_hilight
 		");
     self::$db->from('tour');
     self::$db->join('image', 'tour.tour_imgCover = image.img_refid', 'inner');
@@ -207,6 +209,40 @@ class PackageMD extends CI_Model {
     }
   }
 
+  function updateDomesticLocation($newNameSlug,$region,$province){
+      self::$db->trans_begin();
+      $query = "UPDATE tour_address ta
+      JOIN address a ON ta.address_id = a.address_id
+      JOIN tour t ON ta.tour_id = t.tour_id
+      SET a.address_province = '".$province."', a.geography_id = '".$region."'
+      WHERE t.tour_nameSlug = '".$newNameSlug."'";
+      self::$db->query($query);
+      if (self::$db->trans_status() === FALSE) {
+        self::$db->trans_rollback();
+        return false;
+      } else {
+        self::$db->trans_commit();
+        return true;
+      }
+  }
+
+  function updateOutboundLocation($newNameSlug,$countryId,$continent){
+    self::$db->trans_begin();
+    $query = "UPDATE tour_address ta
+    JOIN address a ON ta.address_id = a.address_id
+    JOIN tour t ON ta.tour_id = t.tour_id
+    SET a.continent_id = '".$continent."', a.country_id = '".$countryId."'
+    WHERE t.tour_nameSlug = '".$newNameSlug."'";
+    self::$db->query($query);
+    if (self::$db->trans_status() === FALSE) {
+      self::$db->trans_rollback();
+      return false;
+    } else {
+      self::$db->trans_commit();
+      return true;
+    }
+  }
+
   function editCondition($tour_nameSlug){
     self::$db->select("
       tour_condition.*
@@ -224,26 +260,26 @@ class PackageMD extends CI_Model {
   }
 
   function getRegion() {
-    self::$db->select("geography.geography_nameTH, geography.geography_nameEN");
+    self::$db->select("geography.geography_id, geography.geography_nameEN");
     self::$db->from('geography');
     return self::$db->get();
   }
 
   function getProvince() {
-    self::$db->select("province.province_nameTH, province.province_nameEN");
+    self::$db->select("province.province_id, province.province_nameEN");
     self::$db->from('province');
     return self::$db->get();
   }
 
   function getContinent() {
-    self::$db->select("continents.continent_name");
+    self::$db->select("continents.continent_id,continents.continent_name");
     self::$db->from('continents');
     self::$db->order_by('continents.continent_name', 'ASC');
     return self::$db->get();
   }
 
   function getCountry() {
-    self::$db->select("countries.country_name");
+    self::$db->select("countries.country_id,countries.country_name");
     self::$db->from('countries');
     self::$db->order_by('countries.country_name', 'ASC');
     return self::$db->get();

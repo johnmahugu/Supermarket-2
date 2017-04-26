@@ -107,7 +107,7 @@ class PackageCL extends CI_Controller {
 		if($tour_type == 'sp'){
 			$this->load->view('edit_domestic_series_package_condition',$data);
 		}else{
-			echo 'AA';
+			echo 'Someting wrong. Please contact to developer.';
 		}
 	}
 
@@ -126,7 +126,7 @@ class PackageCL extends CI_Controller {
 		if($tour_type == 'sp'){
 			$this->load->view('edit_outbound_series_package',$data);
 		}else{
-			echo 'AA';
+			$this->load->view('edit_outbound_easy_package',$data);
 		}
 	}
 
@@ -155,6 +155,8 @@ class PackageCL extends CI_Controller {
 		$this->session->set_flashdata('f1', $type);
 		$nameTH = $this->input->post('nameTH');
 		$nameEN = $this->input->post('nameEN');
+		$region = $this->input->post('region');
+		$province = $this->input->post('province');
 		$overviewTH = $this->input->post('overviewTH');
 		$overviewEN = $this->input->post('overviewEN');
 		$descTH = $this->input->post('descTH');
@@ -165,13 +167,16 @@ class PackageCL extends CI_Controller {
 		$dayNight = $this->input->post('dayNight');
 		$priceRange = $this->input->post('priceRange');
 		$result = $this->PackageMD->updatePackage($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$overviewTH,$overviewEN,$descTH,$descEN,$briefTH,$briefEN,$advanceBooking,$dayNight,$priceRange);
+		$this->PackageMD->updateDomesticLocation($newNameSlug,$region,$province);
 		$encoded = $_POST['image-data'];
-		$exp = explode(',', $encoded);
-		$a = base64_decode($exp[1]);
-		$file = $newNameSlug.'.jpg';
-		file_put_contents('filestorage/temp/'.$file, $a);
-		$this->upload_filestorage($file);
-		sleep(3);
+		if($encoded != ''){
+			$exp = explode(',', $encoded);
+			$a = base64_decode($exp[1]);
+			$file = $newNameSlug.'.jpg';
+			file_put_contents('filestorage/temp/'.$file, $a);
+			$this->upload_filestorage($file);
+			sleep(3);
+		}
 		redirect('domestic-package?type='.$type, 'refresh');
 	}
 
@@ -191,6 +196,8 @@ class PackageCL extends CI_Controller {
 		$this->session->set_flashdata('f1', $type);
 		$nameTH = $this->input->post('nameTH');
 		$nameEN = $this->input->post('nameEN');
+		$countryId = $this->input->post('countryId');
+		$continentId = $this->input->post('continentId');
 		$overviewTH = $this->input->post('overviewTH');
 		$overviewEN = $this->input->post('overviewEN');
 		$descTH = $this->input->post('descTH');
@@ -201,13 +208,16 @@ class PackageCL extends CI_Controller {
 		$dayNight = $this->input->post('dayNight');
 		$priceRange = $this->input->post('priceRange');
 		$result = $this->PackageMD->updatePackage($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$overviewTH,$overviewEN,$descTH,$descEN,$briefTH,$briefEN,$advanceBooking,$dayNight,$priceRange);
+		$this->PackageMD->updateOutboundLocation($newNameSlug,$countryId,$continentId);
 		$encoded = $_POST['image-data'];
-		$exp = explode(',', $encoded);
-		$a = base64_decode($exp[1]);
-		$file = $newNameSlug.'.jpg';
-		file_put_contents('filestorage/temp/'.$file, $a);
-		$this->upload_filestorage($file);
-		sleep(3);
+		if($encoded != ''){
+			$exp = explode(',', $encoded);
+			$a = base64_decode($exp[1]);
+			$file = $newNameSlug.'.jpg';
+			file_put_contents('filestorage/temp/'.$file, $a);
+			$this->upload_filestorage($file);
+			sleep(3);
+		}
 		redirect('outbound-package?type='.$type, 'refresh');
 	}
 
