@@ -68,3 +68,7 @@ $route['update-outbound-package'] = 'PackageCL/update_outbound_package';
 $route['update-domestic-package-condition'] = 'PackageCL/update_domestic_package_condition';
 $route['update-outbound-package-condition'] = 'PackageCL/update_outbound_package_condition';
 $route['upload-cover'] = 'PackageCL/upload_cover';
+$route['new-domestic-package'] = 'PackageCL/new_domestic_package';
+$route['new-outbound-package'] = 'PackageCL/new_outbound_package';
+$route['insert-domestic-package'] = 'PackageCL/insert_domestic_package';
+$route['insert-outbound-package'] = 'PackageCL/insert_outbound_package';

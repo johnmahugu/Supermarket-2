@@ -170,7 +170,7 @@
 							<p>Domestic | Supermarket Tours</p>
 						</div>
 						<div class="col-sm-4 col-xs-12">
-							<a href="tm-domestic-series-new.html" class="btn">New Packages</a>
+							<a href="new-domestic-package?type=<?=$this->session->flashdata('f1')?>" class="btn">New Packages</a>
 						</div>
 					</div>
 					<div class="row top-mg">
@@ -186,7 +186,7 @@
 		              <?php
 		                if(isset($region)){
 		                foreach($region->result_array() as $row){
-		                	echo "<option value=".$row['geography_nameEN'].">".$row['geography_nameEN']."</option>";
+		                	echo "<option value=".$row['geography_id'].">".$row['geography_nameEN']."</option>";
 		                }
 		                }
 		                ?>
@@ -202,7 +202,7 @@
 	              <?php
 	                if(isset($province)){
 	                	foreach($province->result_array() as $row){
-	                		echo "<option value=".$row['province_nameEN'].">".$row['province_nameEN']."</option>";
+	                		echo "<option value=".$row['province_id'].">".$row['province_nameEN']."</option>";
 	                	}
 	                }
 	                ?>

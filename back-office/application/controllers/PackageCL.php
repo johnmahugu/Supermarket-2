@@ -68,11 +68,7 @@ class PackageCL extends CI_Controller {
 	function delete_package() {
 		$tour_nameSlug = $this->input->get('tour');
 		$query = $this->PackageMD->disablePackage($tour_nameSlug);
-		if($query == 1) {
-			$this->series_package();
-		}else {
-			echo 'Fall';
-		}
+		redirect('outbound-package?type=sp', 'refresh');
 	}
 
 	function edit_domestic_package() {
@@ -86,7 +82,7 @@ class PackageCL extends CI_Controller {
 		$data['agency'] = $this->PackageMD->getAgency();
 		$query= $this->PackageMD->editPackage($tour_nameSlug);
 		$data['package'] = $query;
-		$data['price_range']    = $query->row()->tour_priceRange;
+		$data['price_range'] = $query->row()->tour_priceRange;
 		if($tour_type == 'sp'){
 			$this->load->view('edit_domestic_series_package',$data);
 		}else{
@@ -155,7 +151,7 @@ class PackageCL extends CI_Controller {
 		$this->session->set_flashdata('f1', $type);
 		$nameTH = $this->input->post('nameTH');
 		$nameEN = $this->input->post('nameEN');
-		$region = $this->input->post('region');
+		$regionId = $this->input->post('region');
 		$province = $this->input->post('province');
 		$overviewTH = $this->input->post('overviewTH');
 		$overviewEN = $this->input->post('overviewEN');
@@ -167,7 +163,7 @@ class PackageCL extends CI_Controller {
 		$dayNight = $this->input->post('dayNight');
 		$priceRange = $this->input->post('priceRange');
 		$result = $this->PackageMD->updatePackage($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$overviewTH,$overviewEN,$descTH,$descEN,$briefTH,$briefEN,$advanceBooking,$dayNight,$priceRange);
-		$this->PackageMD->updateDomesticLocation($newNameSlug,$region,$province);
+		$this->PackageMD->updateDomesticLocation($newNameSlug,$regionId,$province);
 		$encoded = $_POST['image-data'];
 		if($encoded != ''){
 			$exp = explode(',', $encoded);
@@ -221,24 +217,114 @@ class PackageCL extends CI_Controller {
 		redirect('outbound-package?type='.$type, 'refresh');
 	}
 
-	function upload_filestorage($fileName){
-		$source = './filestorage/temp/'.$fileName;
-		$ftp_config['hostname'] = 'ftp://travelshop-center.tk';
-    $ftp_config['username'] = 'travelshop';
-    $ftp_config['password'] = 'V2zmx9N33';
-    $ftp_config['debug']    = TRUE;
-		$this->ftp->connect($ftp_config);
-		$destination = '/public_html/filestorage/image/tour/'.$fileName;
-		$this->ftp->upload($source, $destination);
-		$this->ftp->close();
-		@unlink($source);
-	}
-
 	function update_outbound_package_condition(){
 		/********************Initial valiable********************/
 		$tour_nameSlug = $this->input->get('tour');
 		$tour_type = $this->input->get('type');
 		$this->session->set_flashdata('f1', $tour_type);
 		$this->load->view('outbound_package',$data);
+	}
+
+	function new_domestic_package(){
+		/********************Initial valiable********************/
+		$tour_nameSlug = $this->input->get('tour');
+		$tour_type = $this->input->get('type');
+		$this->session->set_flashdata('f1', $tour_type);
+		$data['province'] = $this->PackageMD->getProvince();
+		$data['region'] = $this->PackageMD->getRegion();
+		$data['agency'] = $this->PackageMD->getAgency();
+		if($tour_type == 'sp'){
+			$this->load->view('new_domestic_series_package',$data);
+		}else{
+			$this->load->view('new_domestic_easy_package',$data);
+		}
+	}
+
+	function new_outbound_package(){
+		/********************Initial valiable********************/
+		$tour_nameSlug = $this->input->get('tour');
+		$tour_type = $this->input->get('type');
+		$this->session->set_flashdata('f1', $tour_type);
+		$data['continent'] = $this->PackageMD->getContinent();
+		$data['country'] = $this->PackageMD->getCountry();
+		$data['agency'] = $this->PackageMD->getAgency();
+		if($tour_type == 'sp'){
+			$this->load->view('new_outbound_series_package',$data);
+		}else{
+			$this->load->view('new_outbound_easy_package',$data);
+		}
+	}
+
+	function insert_domestic_package(){
+		$newNameSlug = $this->input->post('nameSlug');
+		$type = $this->input->post('type');
+		$agentId = $this->input->post('agentId');
+		$nameTH = $this->input->post('nameTH');
+		$nameEN = $this->input->post('nameEN');
+		$province = $this->input->post('province');
+		$regionId = $this->input->post('regionId');
+		$overviewTH = $this->input->post('overviewTH');
+		$overviewEN = $this->input->post('overviewEN');
+		$descTH = $this->input->post('descTH');
+		$descEN = $this->input->post('descEN');
+		$briefTH = $this->input->post('briefTH');
+		$briefEN = $this->input->post('briefEN');
+		$startPrice = $this->input->post('startPrice');
+		$advanceBooking = $this->input->post('advanceBooking');
+		$closeBooking = $this->input->post('closeBooking');
+		$dayNight = $this->input->post('dayNight');
+		$priceRange = $this->input->post('priceRange');
+		$this->PackageMD->insertDomesticPackage($newNameSlug,$type,$agentId,$nameTH,$nameEN,$province,$regionId,$overviewTH,$overviewEN,$descTH,$descEN,$briefTH,$briefEN,$startPrice,$advanceBooking,$dayNight,$priceRange,$closeBooking);
+		$encoded = $_POST['image-data'];
+		$exp = explode(',', $encoded);
+		$a = base64_decode($exp[1]);
+		$file = $newNameSlug.'.jpg';
+		file_put_contents('filestorage/temp/'.$file, $a);
+		$this->upload_filestorage($file);
+		sleep(3);
+		redirect('domestic-package?type='.$type, 'refresh');
+	}
+
+	function insert_outbound_package(){
+		$newNameSlug = $this->input->post('nameSlug');
+		$type = $this->input->post('type');
+		$agentId = $this->input->post('agentId');
+		$nameTH = $this->input->post('nameTH');
+		$nameEN = $this->input->post('nameEN');
+		$countryId = $this->input->post('countryId');
+		$continentId = $this->input->post('continentId');
+		$overviewTH = $this->input->post('overviewTH');
+		$overviewEN = $this->input->post('overviewEN');
+		$descTH = $this->input->post('descTH');
+		$descEN = $this->input->post('descEN');
+		$briefTH = $this->input->post('briefTH');
+		$briefEN = $this->input->post('briefEN');
+		$startPrice = $this->input->post('startPrice');
+		$advanceBooking = $this->input->post('advanceBooking');
+		$closeBooking = $this->input->post('closeBooking');
+		$dayNight = $this->input->post('dayNight');
+		$priceRange = $this->input->post('priceRange');
+		$this->PackageMD->insertOutboundPackage($newNameSlug,$type,$agentId,$nameTH,$nameEN,$countryId,$continentId,$overviewTH,$overviewEN,$descTH,$descEN,$briefTH,$briefEN,$startPrice,$advanceBooking,$dayNight,$priceRange,$closeBooking);
+		$encoded = $_POST['image-data'];
+		$exp = explode(',', $encoded);
+		$a = base64_decode($exp[1]);
+		$file = $newNameSlug.'.jpg';
+		file_put_contents('filestorage/temp/'.$file, $a);
+		$this->upload_filestorage($file);
+		sleep(3);
+		redirect('outbound-package?type='.$type, 'refresh');
+	}
+
+	function upload_filestorage($fileName){
+		$source = './filestorage/temp/'.$fileName;
+		$ftp_config['hostname'] = 'ftp://travelshop-center.tk';
+		$ftp_config['username'] = 'travelshop';
+		$ftp_config['password'] = 'V2zmx9N33';
+		$ftp_config['debug']    = TRUE;
+		$this->ftp->connect($ftp_config);
+		$destination = '/public_html/filestorage/image/tour/'.$fileName;
+		$this->ftp->upload($source, $destination);
+		$this->ftp->close();
+		@unlink($source);
 	}
 }

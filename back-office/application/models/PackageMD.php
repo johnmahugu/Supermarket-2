@@ -24,7 +24,6 @@ class PackageMD extends CI_Model {
 			tour.tour_priceRange,
 			tour.tour_currency,
 			image.img_source,
-			countries.country_name,
       tour.tour_public,
       tour.tour_hilight
 		");
@@ -35,7 +34,7 @@ class PackageMD extends CI_Model {
     self::$db->join('countries', 'address.country_id = countries.country_id', 'inner');
     self::$db->where('image.img_type', 'tour cover');
     self::$db->where('tour.tour_type', $type);
-    self::$db->where('tour.tour_closeBooking >=', 'CURDATE()', FALSE);
+    self::$db->where('tour.tour_remove !=', '1');
     if ($country == 'thailand') {
       self::$db->where('tour.tour_nationality', 'thailand domestic tour');
     } else {
@@ -59,7 +58,6 @@ class PackageMD extends CI_Model {
     tour.tour_priceRange,
     tour.tour_currency,
     image.img_source,
-    countries.country_name,
     tour.tour_public,
     tour.tour_hilight
 		");
@@ -67,27 +65,24 @@ class PackageMD extends CI_Model {
     self::$db->join('image', 'tour.tour_imgCover = image.img_refid', 'inner');
     self::$db->join('tour_address', 'tour.tour_id = tour_address.tour_id', 'inner');
     self::$db->join('address', 'tour_address.address_id = address.address_id', 'inner');
-    self::$db->join('countries', 'address.country_id = countries.country_id', 'inner');
-    self::$db->join('continents', 'address.continent_id = continents.continent_id', 'inner');
-    self::$db->join('geography', 'address.geography_id = geography.geography_id');
     self::$db->where('image.img_type', 'tour cover');
     self::$db->where('tour.tour_type', $type);
-    self::$db->where('tour.tour_closeBooking >=', 'CURDATE()', FALSE);
+    self::$db->where('tour.tour_remove !=', '1');
     if ($region != '') {
-      self::$db->where('geography.geography_nameEN', $region);
+      self::$db->where('address.geography_id', $region);
     }
     if ($province != '') {
       self::$db->where('address.address_province', $province);
     }
     if ($continent != '') {
-      self::$db->where('continents.continent_name', $continent);
+      self::$db->where('address.continent_id', $continent);
     }
     if ($country == 'thailand') {
       self::$db->where('tour.tour_nationality', 'thailand domestic tour');
     } else if ($country == 'international') {
       self::$db->where('tour.tour_nationality !=', 'thailand domestic tour');
     } else {
-      self::$db->where('countries.country_name', $country);
+      self::$db->where('address.country_id', $country);
     }
     self::$db->group_by('tour.tour_id');
     return self::$db->get();
@@ -96,7 +91,7 @@ class PackageMD extends CI_Model {
   function disablePackage($tour_nameSlug) {
     self::$db->trans_start();
     $query = "UPDATE tour
-    SET tour.tour_closeBooking = '2000-01-01'
+    SET tour.tour_remove = '1'
     WHERE tour.tour_nameSlug = '".$tour_nameSlug."'
     ";
     self::$db->query($query);
@@ -125,20 +120,15 @@ class PackageMD extends CI_Model {
       tour.tour_openBooking,
 			tour.tour_currency,
       tour.tour_privateGroup,
+      tour.tour_advanceBooking,
 			image.img_source,
-			countries.country_name,
-      continents.continent_name,
-      address.address_province,
-      geography.geography_nameEN,
+      address.*,
       agent.agent_code
 		");
     self::$db->from('tour');
     self::$db->join('image', 'tour.tour_imgCover = image.img_refid', 'inner');
     self::$db->join('tour_address', 'tour.tour_id = tour_address.tour_id', 'inner');
     self::$db->join('address', 'tour_address.address_id = address.address_id', 'inner');
-    self::$db->join('countries', 'address.country_id = countries.country_id', 'inner');
-    self::$db->join('geography', 'address.geography_id = geography.geography_id', 'inner');
-    self::$db->join('continents', 'address.continent_id = continents.continent_id', 'inner');
     self::$db->join('agent', 'tour.tour_agentId = agent.agent_id', 'inner');
     self::$db->where('image.img_type', 'tour cover');
     self::$db->where('tour.tour_nameSlug', $tour_nameSlug);
@@ -209,12 +199,12 @@ class PackageMD extends CI_Model {
     }
   }
 
-  function updateDomesticLocation($newNameSlug,$region,$province){
+  function updateDomesticLocation($newNameSlug,$regionId,$province){
       self::$db->trans_begin();
       $query = "UPDATE tour_address ta
       JOIN address a ON ta.address_id = a.address_id
       JOIN tour t ON ta.tour_id = t.tour_id
-      SET a.address_province = '".$province."', a.geography_id = '".$region."'
+      SET a.address_province = '".$province."', a.geography_id = '".$regionId."'
       WHERE t.tour_nameSlug = '".$newNameSlug."'";
       self::$db->query($query);
       if (self::$db->trans_status() === FALSE) {
@@ -243,6 +233,137 @@ class PackageMD extends CI_Model {
     }
   }
 
+  function insertDomesticPackage($newNameSlug,$type,$agentId,$nameTH,$nameEN,$province,$regionId,$overviewTH,$overviewEN,$descTH,$descEN,$briefTH,$briefEN,$startPrice,$advanceBooking,$dayNight,$priceRange,$closeBooking){
+    self::$db->trans_begin();
+    $data = array(
+      'address_province' => $province,
+      'geography_id' => $regionId,
+      'country_id' => '215'
+    );
+    self::$db->insert('address', $data);
+    $addressId = self::$db->insert_id();
+    $data = array(
+     'tour_nationality' => 'thailand domestic tour' ,
+     'tour_agentId' => $agentId,
+     'tour_nameTH' => $nameTH ,
+     'tour_nameEN' => $nameEN,
+     'tour_nameSlug' => $newNameSlug,
+     'tour_type' => $type,
+     'tour_overviewTH' => $overviewTH,
+     'tour_overviewEN' => $overviewEN,
+     'tour_descTH' => $descTH,
+     'tour_descEN' => $descEN,
+     'tour_briefingTH' => $briefTH,
+     'tour_briefingEN' => $briefEN,
+     'tour_dayNight' => $dayNight,
+     'tour_startPrice' => $startPrice,
+     'tour_priceRange' => $priceRange,
+     'tour_closeBooking' => $closeBooking,
+     'tour_advanceBooking' => $advanceBooking,
+     'tour_privateGroup' => '0',
+     'tour_privateGroupPrice' => '0',
+     'tour_minimum' => '0',
+     'tour_discountRate' => NULL,
+     'tour_doublePack' => '0',
+     'tour_currency' => 'THB',
+     'tour_season' => '0',
+     'tour_hilight' => '0',
+     'tour_public' => '0',
+     'tour_remove' => '0'
+    );
+    self::$db->insert('tour', $data);
+    $tourId = self::$db->insert_id();
+    $data = array(
+      'tour_imgCover' => $tourId
+    );
+    self::$db->where('tour_id', $tourId);
+    self::$db->update('tour', $data);
+    $data = array(
+      'tour_id' => $tourId,
+      'address_id' => $addressId
+    );
+    self::$db->insert('tour_address', $data);
+    $data = array(
+      'img_type' => 'tour cover',
+      'img_refid' => $tourId,
+      'img_source' => 'filestorage/image/tour/'.$newNameSlug.'.jpg'
+    );
+    self::$db->insert('image', $data);
+    self::$db->trans_complete();
+    if (self::$db->trans_status() === FALSE) {
+      self::$db->trans_rollback();
+      return false;
+    } else {
+      self::$db->trans_commit();
+      return true;
+    }
+  }
+
+  function insertOutboundPackage($newNameSlug,$type,$agentId,$nameTH,$nameEN,$countryId,$continentId,$overviewTH,$overviewEN,$descTH,$descEN,$briefTH,$briefEN,$startPrice,$advanceBooking,$dayNight,$priceRange,$closeBooking){
+    self::$db->trans_begin();
+    $data = array(
+      'continent_id' => $continentId,
+      'country_id' => $countryId
+    );
+    self::$db->insert('address', $data);
+    $addressId = self::$db->insert_id();
+    $data = array(
+     'tour_nationality' => 'international tour' ,
+     'tour_agentId' => $agentId,
+     'tour_nameTH' => $nameTH ,
+     'tour_nameEN' => $nameEN,
+     'tour_nameSlug' => $newNameSlug,
+     'tour_type' => $type,
+     'tour_overviewTH' => $overviewTH,
+     'tour_overviewEN' => $overviewEN,
+     'tour_descTH' => $descTH,
+     'tour_descEN' => $descEN,
+     'tour_briefingTH' => $briefTH,
+     'tour_briefingEN' => $briefEN,
+     'tour_dayNight' => $dayNight,
+     'tour_startPrice' => $startPrice,
+     'tour_priceRange' => $priceRange,
+     'tour_closeBooking' => $closeBooking,
+     'tour_advanceBooking' => $advanceBooking,
+     'tour_privateGroup' => '0',
+     'tour_privateGroupPrice' => '0',
+     'tour_minimum' => '0',
+     'tour_discountRate' => NULL,
+     'tour_doublePack' => '0',
+     'tour_currency' => 'THB',
+     'tour_season' => '0',
+     'tour_hilight' => '0',
+     'tour_public' => '0',
+     'tour_remove' => '0'
+    );
+    self::$db->insert('tour', $data);
+    $tourId = self::$db->insert_id();
+    $data = array(
+      'tour_imgCover' => $tourId
+    );
+    self::$db->where('tour_id', $tourId);
+    self::$db->update('tour', $data);
+    $data = array(
+      'tour_id' => $tourId,
+      'address_id' => $addressId
+    );
+    self::$db->insert('tour_address', $data);
+    $data = array(
+      'img_type' => 'tour cover',
+      'img_refid' => $tourId,
+      'img_source' => 'filestorage/image/tour/'.$newNameSlug.'.jpg'
+    );
+    self::$db->insert('image', $data);
+    self::$db->trans_complete();
+    if (self::$db->trans_status() === FALSE) {
+      self::$db->trans_rollback();
+      return false;
+    } else {
+      self::$db->trans_commit();
+      return true;
+    }
+  }
+
   function editCondition($tour_nameSlug){
     self::$db->select("
       tour_condition.*
@@ -254,7 +375,7 @@ class PackageMD extends CI_Model {
   }
 
   function getAgency() {
-    self::$db->select("agent.agent_code, agent.agent_compName");
+    self::$db->select("agent.agent_id, agent.agent_code, agent.agent_compName");
     self::$db->from('agent');
     return self::$db->get();
   }

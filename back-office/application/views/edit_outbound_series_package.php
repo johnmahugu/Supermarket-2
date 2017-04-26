@@ -251,9 +251,9 @@ if(isset($price_range)){
   	                if(isset($agency)){
   	                	foreach($agency->result_array() as $row){
                         if($package['agent_code'] == $row['agent_code']){
-                          echo "<option value=".$row['agent_code']." selected>".$row['agent_code']." ".$row['agent_compName']."</option>";
+                          echo "<option value=".$row['agent_id']." selected>".$row['agent_code']." ".$row['agent_compName']."</option>";
                         }else{
-                          echo "<option value=".$row['agent_code'].">".$row['province_nameEN']." ".$row['agent_compName']."</option>";
+                          echo "<option value=".$row['agent_id'].">".$row['agent_code']." ".$row['agent_compName']."</option>";
                         }
   	                	}
   	                }
@@ -470,6 +470,9 @@ $('#submit').click(function(){
 });
 
 function submit(){
+  for ( instance in CKEDITOR.instances ) {
+    CKEDITOR.instances[instance].updateElement();
+  }
   $nameSlug = $('#nameSlug').val();
   $nameTH = $('#nameTH').val();
   $nameEN = $('#nameEN').val();
