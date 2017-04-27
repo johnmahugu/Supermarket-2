@@ -180,6 +180,31 @@ class PackageMD extends CI_Model {
     return self::$db->get();
   }
 
+  function editPackageService ($nameSlug){
+    self::$db->select("
+      tour.tour_id,
+      tour.tour_nameTH,
+      tour.tour_nameEN,
+      tour.tour_nameSlug,
+      tour.tour_startPrice,
+      tour.tour_priceRange,
+      tour.tour_currency,
+      tour.tour_dayNight,
+      address.*,
+      agent.agent_code
+    ");
+    self::$db->from('tour');
+    self::$db->join('image', 'tour.tour_imgCover = image.img_refid', 'inner');
+    self::$db->join('tour_address', 'tour.tour_id = tour_address.tour_id', 'inner');
+    self::$db->join('address', 'tour_address.address_id = address.address_id', 'inner');
+    self::$db->join('tour_condition', 'tour.tour_id = tour_condition.tour_id','left');
+    self::$db->join('agent', 'tour.tour_agentId = agent.agent_id', 'inner');
+    self::$db->where('image.img_type', 'tour cover');
+    self::$db->where('tour.tour_nameSlug', $nameSlug);
+    self::$db->group_by('tour.tour_id');
+    return self::$db->get();
+  }
+
   function updatePackage($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$agent,$overviewTH,$overviewEN,$descTH,$descEN,$briefTH,$briefEN,$advanceBooking,$dayNight,$priceRange){
     self::$db->trans_begin();
     $data = array(

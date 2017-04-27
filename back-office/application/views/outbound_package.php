@@ -167,7 +167,7 @@
 					<div class="row">
 						<div class="col-sm-8 col-xs-12">
 							<h1>Join Group Tour Packages</h1>
-							<p>Domestic | Supermarket Tours</p>
+							<p>Outbound | Supermarket Tours</p>
 						</div>
 						<div class="col-sm-4 col-xs-12">
 							<a href="new-outbound-package?type=<?=$this->session->flashdata('f1')?>" class="btn">New Packages</a>

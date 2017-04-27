@@ -295,7 +295,7 @@ foreach($condition->result_array() as $row){
                 if($package['tour_doublePack'] == 1){
                   $status++;
                 }
-								if($status > 0){
+								if($status > 0 || $package['tour_minimum'] > 0){
 									echo '<input type="checkbox" name="pax" checked>Pax Condition';
 								}else{
 									echo '<input type="checkbox" name="pax">Pax Condition';
@@ -313,7 +313,7 @@ foreach($condition->result_array() as $row){
 							<a href="edit-outbound-package?tour=<?=$package['tour_nameSlug']?>&type=<?=$this->session->flashdata('f1')?>" class="btn no-setting">TOUR INFO</a>
 						</div>
             <div class="col-sm-4 no-pd">
-							<a href="tm-outbound-easy-new-service.html" class="btn no-setting">SERVICES</a>
+							<a href="edit-outbound-package-service?tour=<?=$package['tour_nameSlug']?>&type=<?=$this->session->flashdata('f1')?>" class="btn no-setting">SERVICES</a>
 						</div>
 						<div class="col-sm-4 no-pd">
 							<a href="edit-outbound-package-condition?tour=<?=$package['tour_nameSlug']?>&type=<?=$this->session->flashdata('f1')?>" class="btn current">CONDITION</a>
@@ -637,9 +637,9 @@ foreach($condition->result_array() as $row){
 									<span>
                     <?php
                     if($package['tour_minimum'] > 0){
-                      echo '<input id="paxminimum" type="number" placeholder="Price" value="'.$package['tour_minimum'].'">';
+                      echo '<input id="paxminimum" type="number" placeholder="People" value="'.$package['tour_minimum'].'">';
                     }else{
-                      echo '<input id="paxminimum" type="number" placeholder="Price" disabled>';
+                      echo '<input id="paxminimum" type="number" placeholder="People" disabled>';
                     }
                      ?>
 										<span class="unit">Pax</span>

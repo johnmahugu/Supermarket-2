@@ -547,7 +547,7 @@ foreach($condition->result_array() as $row){
 									<span>
 										<?php
 										$price = $package['tour_privateGroupPrice'];
-										if($price > 0){
+										if($price > 0 || $package['tour_minimum'] > 0){
 											echo '<input id="priincrease" type="number" placeholder="Pay increase" value="'.$price.'">';
 										}else{
 											echo '<input id="priincrease" type="number" placeholder="Pay increase">';

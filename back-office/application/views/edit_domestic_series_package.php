@@ -393,16 +393,16 @@ if(isset($price_range)){
 	</div>
 
 	<!-- modal -->
-	<div class="modal fade" id="addFile" role="dialog">
+  <div class="modal fade" id="addFile" role="dialog">
     <form id="update-pdf" style="margin-top:-35%;">
-	    <div class="modal-dialog modal-md">
-	      <div class="modal-content">
-	        <div class="modal-header">
-	          <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i></button>
-	          <h4 class="modal-title">Upload <b></b> File</h4>
-	          <hr>
-	        </div>
-	        <div class="modal-body">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i></button>
+            <h4 class="modal-title">Upload <b></b> File</h4>
+            <hr>
+          </div>
+          <div class="modal-body">
             <?php
             if($package['tour_pdf'] != ''){
               echo '<label class="filter">Select File (Uploaded)</label>';
@@ -411,16 +411,17 @@ if(isset($price_range)){
             }
              ?>
              <br>
-				<input type="file">
-	        </div>
-	        <div class="modal-footer">
-	        	<button type="button" class="btn" data-dismiss="modal" >Cancel</button>
-		        <input type="submit" value="Select" class="btn" >
-	        </div>
-	      </div>
-	    </div>
+        <input name="file" type="file">
+          </div>
+          <div class="modal-footer">
+            <input name="nameSlug" type="hidden" value="<?=$package['tour_nameSlug']?>">
+            <button type="button" class="btn" data-dismiss="modal" >Cancel</button>
+            <input id="submitfile" type="button" value="Select" class="btn" >
+          </div>
+        </div>
+      </div>
     </form>
-  	</div>
+  </div>
 
   	<div class="modal fade" id="autoschedule" role="dialog">
 	    <div class="modal-dialog modal-md">

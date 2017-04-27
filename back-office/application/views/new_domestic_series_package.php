@@ -233,7 +233,7 @@
 									<label>Package Type</label>
                   <?php
                   $type = $this->session->flashdata('f1');
-                  if($type = 'sp'){
+                  if($type == 'sp'){
                     echo '<input type="text" value="Series Package" disabled>';
                   }else{
                     echo '<input type="text" value="Easy Package" disabled>';
@@ -258,16 +258,6 @@
 									<textarea id="briefTH" name="briefth"></textarea><br>
 									<hr><br>
 
-									<div class="col-md-6 col-xs-12 text-center">
-										<div class="btn border light full" data-toggle="modal" id="pdf" data-target="#addFile">
-											<i class="fa fa-file-pdf-o" aria-hidden="true"></i> Click Upload pdf file
-										</div>
-									</div>
-									<div class="col-md-6 col-xs-12 text-center">
-										<div class="btn border light full" data-toggle="modal" id="word" data-target="#addFile">
-											<i class="fa fa-file-word-o" aria-hidden="true"></i> Click Upload word file
-										</div>
-									</div>
 									<div class="clear"></div><br>
 
 									<label>Advance booking days</label><br>

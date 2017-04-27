@@ -114,10 +114,23 @@ class PackageCL extends CI_Controller {
 		$data['package'] = $query;
 		$data['condition'] = $this->PackageMD->editCondition($tour_nameSlug);
 		if($tour_type == 'sp'){
-			$this->load->view('edit_domestic_series_package_condition',$data);
+			$this->load->view('edit_domestic_series_package_service',$data);
 		}else{
 			echo 'Someting wrong. Please contact to developer.';
 		}
+	}
+
+	function edit_domestic_package_service(){
+		/********************Initial valiable********************/
+		$tour_nameSlug = $this->input->get('tour');
+		$tour_type = $this->input->get('type');
+		$this->session->set_flashdata('f1', $tour_type);
+		$data['province'] = $this->PackageMD->getProvince();
+		$data['region'] = $this->PackageMD->getRegion();
+		$query = $this->PackageMD->editPackageService($tour_nameSlug);
+		$data['package'] = $query;
+		$data['condition'] = $this->PackageMD->editCondition($tour_nameSlug);
+		$this->load->view('edit_domestic_easy_package_service',$data);
 	}
 
 	function edit_outbound_package() {
@@ -154,6 +167,19 @@ class PackageCL extends CI_Controller {
 		}else{
 			$this->load->view('edit_outbound_easy_package_condition',$data);
 		}
+	}
+
+	function edit_outbound_package_service(){
+		/********************Initial valiable********************/
+		$tour_nameSlug = $this->input->get('tour');
+		$tour_type = $this->input->get('type');
+		$this->session->set_flashdata('f1', $tour_type);
+		$data['continent'] = $this->PackageMD->getContinent();
+		$data['country'] = $this->PackageMD->getCountry();
+		$query= $this->PackageMD->editPackageService($tour_nameSlug);
+		$data['package'] = $query;
+		$data['condition'] = $this->PackageMD->editCondition($tour_nameSlug);
+		$this->load->view('edit_outbound_easy_package_service',$data);
 	}
 
 	function update_domestic_package(){

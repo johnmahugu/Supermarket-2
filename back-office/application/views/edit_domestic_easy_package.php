@@ -285,11 +285,6 @@ if(isset($price_range)){
 											<i class="fa fa-file-pdf-o" aria-hidden="true"></i> Click Upload pdf file
 										</div>
 									</div>
-									<div class="col-md-6 col-xs-12 text-center">
-										<div class="btn border light full" data-toggle="modal" id="word" data-target="#addFile">
-											<i class="fa fa-file-word-o" aria-hidden="true"></i> Click Upload word file
-										</div>
-									</div>
 									<div class="clear"></div><br>
 									<label>Advance booking days</label><br>
 									<input id="advanceBooking" type="number" value="<?=$package['tour_advanceBooking']?>" min="0">
@@ -398,7 +393,8 @@ if(isset($price_range)){
 	</div>
 
 	<!-- modal -->
-	<div class="modal fade" id="addFile" role="dialog">
+  <div class="modal fade" id="addFile" role="dialog">
+    <form id="update-pdf" style="margin-top:-35%;">
 	    <div class="modal-dialog modal-md">
 	      <div class="modal-content">
 	        <div class="modal-header">
@@ -407,16 +403,25 @@ if(isset($price_range)){
 	          <hr>
 	        </div>
 	        <div class="modal-body">
-				<label class="filter">Select File</label><br>
-				<input type="file">
+            <?php
+            if($package['tour_pdf'] != ''){
+              echo '<label class="filter">Select File (Uploaded)</label>';
+            }else{
+              echo '<label class="filter">Select File</label>';
+            }
+             ?>
+             <br>
+				<input name="file" type="file">
 	        </div>
 	        <div class="modal-footer">
+            <input name="nameSlug" type="hidden" value="<?=$package['tour_nameSlug']?>">
 	        	<button type="button" class="btn" data-dismiss="modal" >Cancel</button>
-		        <input type="submit" value="Select" class="btn" >
+		        <input id="submitfile" type="button" value="Select" class="btn" >
 	        </div>
 	      </div>
 	    </div>
-  	</div>
+    </form>
+  </div>
 
   	<div class="modal fade" id="autoschedule" role="dialog">
 	    <div class="modal-dialog modal-md">
@@ -459,6 +464,23 @@ $(document).ready(function(){
   $('a[href="domestic-package?type='+$('#isTourType').val()+'"]').find('li').eq(0).addClass('current');
   $start_price = $('#startPrice').val();
   $('#startPrice').val(numberWithSpaces($start_price));
+});
+
+$('#submitfile').click(function(){
+  var formData = new FormData($("#update-pdf")[0]);
+  $.ajax({
+    type: 'POST',
+    url:'/update-pdf',
+    data: formData,
+    mimeType: "multipart/form-data",
+    contentType: false,
+    cache: false,
+    processData: false,
+    success:function(data){
+      $('#addFile').removeClass('in');
+      $('.modal-backdrop.fade').removeClass('in');
+    }
+  });
 });
 
 $('#submit').click(function(){
