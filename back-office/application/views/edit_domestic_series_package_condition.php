@@ -23,15 +23,15 @@ foreach($condition->result_array() as $row){
 			$sr++;
       $sr_price = intval($row['tc_price']);
 			break;
-			case 'Children 2 - 12 year old (with bed)':
+			case 'Children 2 - 12 yrs (with bed)':
 			$cwd++;
       $cwd_price = intval($row['tc_price']);
 			break;
-			case 'Children 2 - 12 year old (with out bed)':
+			case 'Children 2 - 12 yrs (without bed)':
 			$cwod++;
       $cwod_price = intval($row['tc_price']);
 			break;
-			case 'Children < 2 year old':
+			case 'Children < 2 yrs':
 			$c++;
       $c_price = intval($row['tc_price']);
 			break;
@@ -103,7 +103,7 @@ foreach($condition->result_array() as $row){
 			</div>
 			<ul>
 				<a href="tm-std-main.html">
-					<li class="current">Standard Tours</li>
+					<li>Standard Tours</li>
 				</a>
 				<a href="tm-mc-easy-main.html">
 					<li>Easy Packages</li>
@@ -142,16 +142,16 @@ foreach($condition->result_array() as $row){
 					<li>Others</li>
 				</a>
 			</ul>
-			<h2 class="top-mg">Supermarket Tours</h2>
+      <h2 class="top-mg">Supermarket Tours</h2>
 			<div class="title-line">
 				<h3>Domestic Tours</h3>
 				<hr>
 			</div>
 			<ul>
-				<a href="tm-domestic-easy-main.html">
+				<a href="domestic-package?type=ep">
 					<li>Private Group Tours</li>
 				</a>
-				<a href="tm-domestic-series-main.html">
+				<a href="domestic-package?type=sp">
 					<li>Join Group Tours</li>
 				</a>
 				<a href="tm-domestic-locationdata.html">
@@ -163,10 +163,10 @@ foreach($condition->result_array() as $row){
 				<hr>
 			</div>
 			<ul>
-				<a href="tm-outbound-easy-main.html">
+				<a href="outbound-package?type=ep">
 					<li>Private Group Tours</li>
 				</a>
-				<a href="tm-outbound-series-main.html">
+				<a href="outbound-package?type=sp">
 					<li>Join Group Tours</li>
 				</a>
 				<a href="tm-outbound-locationdata.html">
@@ -192,10 +192,10 @@ foreach($condition->result_array() as $row){
 							<p>Domestic	 | Supermarket Tours</p><br>
 						</div>
 						<div class="col-sm-6 col-xs-12">
-							<input type="text" value="<?=$package['tour_nameTH']?>">
+							<input id="nameTH" type="text" value="<?=$package['tour_nameTH']?>">
 						</div>
 						<div class="col-sm-6 col-xs-12">
-							<input type="text" value="<?=$package['tour_nameEN']?>">
+							<input id="nameEN" type="text" value="<?=$package['tour_nameEN']?>">
 						</div>
 					</div>
 
@@ -205,15 +205,16 @@ foreach($condition->result_array() as $row){
 								<label class="filter">Region</label>
 								<select name="region">
                 <?php
-                  if(isset($region)){
-                    foreach($region->result_array() as $row){
-                      if($package['geography_nameEN'] == $row['geography_nameEN']){
-                        echo "<option value=".$row['geography_nameEN']." selected>".$row['geography_nameEN']."</option>";
-                      }else{
-                        echo "<option value=".$row['geography_nameEN'].">".$row['geography_nameEN']."</option>";
-                      }
+                if(isset($region)){
+                  foreach($region->result_array() as $row){
+                    if($package['geography_id'] == $row['geography_id']){
+                      echo "<option value=".$row['geography_id']." selected>".$row['geography_nameEN']."</option>";
+                    }else{
+                      echo "<option value=".$row['geography_id'].">".$row['geography_nameEN']."</option>";
                     }
                   }
+                }
+                ?>
                   ?>
                 </select>
 							</div>
@@ -223,22 +224,22 @@ foreach($condition->result_array() as $row){
 								<label class="filter">Province</label>
 								<select name="province">
 	              <?php
-	                if(isset($province)){
-	                	foreach($province->result_array() as $row){
-                      if($package['address_province'] == $row['province_nameEN']){
-                        echo "<option value=".$row['province_nameEN']." selected>".$row['province_nameEN']."</option>";
-                      }else{
-                        echo "<option value=".$row['province_nameEN'].">".$row['province_nameEN']."</option>";
-                      }
-	                	}
-	                }
+                if(isset($province)){
+                  foreach($province->result_array() as $row){
+                    if($package['address_province'] == $row['province_nameEN']){
+                      echo "<option value=".$row['province_nameEN']." selected>".$row['province_nameEN']."</option>";
+                    }else{
+                      echo "<option value=".$row['province_nameEN'].">".$row['province_nameEN']."</option>";
+                    }
+                  }
+                }
 	                ?>
 	              </select>
 							</div>
 						</div>
 						<div class="col-md-4 col-sm-6">
 							<label>Starter Price</label><br>
-							<input id="start-price" type="text" value="<?=intval($package['tour_startPrice'])?>"><span class="unit"><?=$package['tour_currency']?></span>
+							<input id="startPrice" type="text" value="<?=intval($package['tour_startPrice'])?>"><span class="unit"><?=$package['tour_currency']?></span>
 						</div>
 					</div>
 					<hr>
@@ -326,10 +327,10 @@ foreach($condition->result_array() as $row){
                   <?php
                   if($sr>0){
                     echo '<div class="form-group"><div class="col-md-4 col-sm-6">';
-                    echo '<input type="checkbox" checked>';
+                    echo '<input class="roomcheck" type="checkbox" checked>';
                   }else{
                     echo '<div class="form-group cb-nonselect"><div class="col-md-4 col-sm-6">';
-                    echo '<input type="checkbox">';
+                    echo '<input class="roomcheck" type="checkbox">';
                   }
                    ?>
 									<p>Single Room</p>
@@ -339,9 +340,9 @@ foreach($condition->result_array() as $row){
 									<span>
                     <?php
                     if($sr>0){
-                      echo '<input type="number" placeholder="Price"  value="'.$sr_price.'">';
+                      echo '<input class="room" roomtype="Single room" type="number" placeholder="Price"  value="'.$sr_price.'">';
                     }else{
-                      echo '<input type="number" placeholder="Price"disabled>';
+                      echo '<input class="room" roomtype="Single room" type="number" placeholder="Price"disabled>';
                     }
                     ?>
 										<span class="unit"><?=$package['tour_currency']?></span>
@@ -351,10 +352,10 @@ foreach($condition->result_array() as $row){
                   <?php
                   if($cwd>0){
                     echo '<div class="form-group"><div class="col-md-4 col-sm-6">';
-                    echo '<input type="checkbox" checked>';
+                    echo '<input class="roomcheck" type="checkbox" checked>';
                   }else{
                     echo '<div class="form-group cb-nonselect"><div class="col-md-4 col-sm-6">';
-                    echo '<input type="checkbox">';
+                    echo '<input class="roomcheck" type="checkbox">';
                   }
                    ?>
 									<p>Children 2 - 12 yrs (with bed)</p>
@@ -364,9 +365,9 @@ foreach($condition->result_array() as $row){
 									<span>
                     <?php
                     if($cwd>0){
-                      echo '<input type="number" placeholder="Price"  value="'.$cwd_price.'">';
+                      echo '<input class="room" roomtype="Children 2 - 12 yrs (with bed)" type="number" placeholder="Price"  value="'.$cwd_price.'">';
                     }else{
-                      echo '<input type="number" placeholder="Price"disabled>';
+                      echo '<input class="room" roomtype="Children 2 - 12 yrs (with bed)" type="number" placeholder="Price"disabled>';
                     }
                     ?>
 										<span class="unit"><?=$package['tour_currency']?></span>
@@ -376,10 +377,10 @@ foreach($condition->result_array() as $row){
                   <?php
                   if($cwod>0){
                     echo '<div class="form-group"><div class="col-md-4 col-sm-6">';
-                    echo '<input type="checkbox" checked>';
+                    echo '<input class="roomcheck" type="checkbox" checked>';
                   }else{
                     echo '<div class="form-group cb-nonselect"><div class="col-md-4 col-sm-6">';
-                    echo '<input type="checkbox">';
+                    echo '<input class="roomcheck" type="checkbox">';
                   }
                    ?>
 									<p>Children 2 - 12 yrs (without bed)</p>
@@ -389,9 +390,9 @@ foreach($condition->result_array() as $row){
 									<span>
                     <?php
                     if($cwod>0){
-                      echo '<input type="number" placeholder="Price"  value="'.$cwod_price.'">';
+                      echo '<input class="room" roomtype="Children 2 - 12 yrs (without bed)" type="number" placeholder="Price"  value="'.$cwod_price.'">';
                     }else{
-                      echo '<input type="number" placeholder="Price"disabled>';
+                      echo '<input class="room" roomtype="Children 2 - 12 yrs (without bed)" type="number" placeholder="Price"disabled>';
                     }
                     ?>
 										<span class="unit"><?=$package['tour_currency']?></span>
@@ -401,10 +402,10 @@ foreach($condition->result_array() as $row){
                   <?php
                   if($c>0){
                     echo '<div class="form-group"><div class="col-md-4 col-sm-6">';
-                    echo '<input type="checkbox" checked>';
+                    echo '<input class="roomcheck" type="checkbox" checked>';
                   }else{
                     echo '<div class="form-group cb-nonselect"><div class="col-md-4 col-sm-6">';
-                    echo '<input type="checkbox">';
+                    echo '<input class="roomcheck" type="checkbox">';
                   }
                    ?>
 									<p>Children < 2 yrs</p>
@@ -414,9 +415,9 @@ foreach($condition->result_array() as $row){
 									<span>
                     <?php
                     if($c>0){
-                      echo '<input type="number" placeholder="Price"  value="'.$c_price.'">';
+                      echo '<input class="room" roomtype="Children < 2 yrs" type="number" placeholder="Price"  value="'.$c_price.'">';
                     }else{
-                      echo '<input type="number" placeholder="Price"disabled>';
+                      echo '<input class="room" roomtype="Children < 2 yrs" type="number" placeholder="Price"disabled>';
                     }
                     ?>
 										<span class="unit"><?=$package['tour_currency']?></span>
@@ -436,37 +437,37 @@ foreach($condition->result_array() as $row){
               	if($row['tc_type'] == 'option'){
 									$count++;
                   echo '<div class="form-group"><div class="col-md-4">';
-                  echo '<input type="text" placeholder="Option Name" value="'.$row['tc_data'].'">';
+                  echo '<input class="option" type="text" placeholder="Option Name" value="'.$row['tc_data'].'">';
                   echo '</div><div class="col-md-3 form-inline"><label>Condition</label><span>';
                   echo '<select>';
                   if($row['tc_condition'] == 'increase'){
-                    echo '<option selected>Increase</option>';
-                    echo '<option>Decrease</option>';
+                    echo '<option class="optioncond" selected>Increase</option>';
+                    echo '<option class="optioncond">Decrease</option>';
                   }else{
-                    echo '<option selected>Decrease</option>';
-                    echo '<option>Increase</option>';
+                    echo '<option class="optioncond" selected>Decrease</option>';
+                    echo '<option class="optioncond">Increase</option>';
                   }
                   echo '</select>';
                   echo '</span></div>';
                   echo '<div class="col-md-3">';
-                  echo '<input type="number" placeholder="Price" value="'.intval($row['tc_price']).'">';
+                  echo '<input class="optionprice" type="number" placeholder="Price" value="'.intval($row['tc_price']).'">';
                   echo '<span class="unit">THB</span>';
-                  echo '</div><div class="col-md-2"><div class="btn no-border gray">Delete</div></div></div>';
+                  echo '</div><div class="col-md-2"><div class="btn no-border gray">Delete</div></div>';
                 }
               }
 							if($count == 0){
 								echo '<div class="form-group"><div class="col-md-4">';
-								echo '<input type="text" placeholder="Option Name">';
+								echo '<input class="option" type="text" placeholder="Option Name">';
 								echo '</div><div class="col-md-3 form-inline"><label>Condition</label><span>';
 								echo '<select>';
-								echo '<option selected>Increase</option>';
-								echo '<option>Decrease</option>';
+								echo '<option class="optioncond" selected>Increase</option>';
+								echo '<option class="optioncond">Decrease</option>';
 								echo '</select>';
 								echo '</span></div>';
 								echo '<div class="col-md-3">';
-								echo '<input type="number" placeholder="Price">';
+								echo '<input class="optionprice" type="number" placeholder="Price">';
 								echo '<span class="unit">'.$package['tour_currency'].'</span>';
-								echo '</div><div class="col-md-2"><div class="btn no-border gray">Delete</div></div></div>';
+								echo '</div><div class="col-md-2"><div class="btn no-border gray">Delete</div></div>';
 							}
                ?>
 						 </div>
@@ -477,8 +478,8 @@ foreach($condition->result_array() as $row){
                    </div>
                 </div>
               </div>
-             </div>
-           </div>
+            </div>
+          </div>
 					<div class="list-card card-header hide" id="multiple">
 						<div class="header">
 							<h2>Multiple Options Condition</h2>
@@ -494,40 +495,40 @@ foreach($condition->result_array() as $row){
                       if($is_first){
 												$count++;
                         $is_first = false;
-                        echo '<input type="text" placeholder="Description" value="'.$row['tc_title'].'"></div>';
-                        echo '<div class="col-md-3 form-inline"><label>Condition</label><span><select>';
+                        echo '<input id="multidesc" type="text" placeholder="Description" value="'.$row['tc_title'].'"></div>';
+                        echo '<div class="col-md-3 form-inline"><label>Condition</label><span><select id="multicond">';
                         if($row['tc_condition'] == 'increase'){
                           echo '<option selected>Increase</option>';
                           echo '<option>Decrease</option>';
                         }else{
-                          echo '<option>Increase</option>';
-                          echo '<option selected>Decrease</option>';
+                          echo '<option class="multicond">Increase</option>';
+                          echo '<option class="multicond" selected>Decrease</option>';
                         }
                         echo '</select></span></div></div><hr>';
                       }
                       echo '<div class="form-group"><div class="col-md-6">';
-                      echo '<input type="text" placeholder="Option Name" value="'.$row['tc_data'].'">';
+                      echo '<input class="multioption" type="text" placeholder="Option Name" value="'.$row['tc_data'].'">';
                       echo '</div><div class="col-md-3">';
-                      echo '<input type="number" placeholder="Price" value="'.intval($row['tc_price']).'">';
+                      echo '<input class="multiprice" type="number" placeholder="Price" value="'.intval($row['tc_price']).'">';
                       echo '<span class="unit">'.$package['tour_currency'].'</span></div>';
                       echo '<div class="col-md-2 col-md-offset-1"><div class="btn no-border gray">Delete</div>';
-                      echo '</div></div>';
                     }
               		}
 									if($count == 0){
-										echo '<input type="text" placeholder="Description"></div>';
-										echo '<div class="col-md-3 form-inline"><label>Condition</label><span><select>';
+										echo '<input id="multidesc" type="text" placeholder="Description"></div>';
+										echo '<div class="col-md-3 form-inline"><label>Condition</label><span><select id="multicond">';
 										echo '<option selected>Increase</option>';
 										echo '<option>Decrease</option>';
 										echo '</select></span></div></div><hr><div class="form-group"><div class="col-md-6">';
-										echo '<input type="text" placeholder="Option Name">';
+										echo '<input class="multioption" type="text" placeholder="Option Name">';
 										echo '</div><div class="col-md-3">';
-										echo '<input type="number" placeholder="Price">';
+										echo '<input class="multiprice" type="number" placeholder="Price">';
 										echo '<span class="unit">'.$package['tour_currency'].'</span></div>';
 										echo '<div class="col-md-2 col-md-offset-1"><div class="btn no-border gray">Delete</div>';
-										echo '</div></div>';
 									}
                  ?>
+                 </div>
+               </div>
 							<div class="btn-wrapper">
 								<div class="col-xs-12">
 									<div class="btn no-border light"><i class="fa fa-plus" aria-hidden="true"></i> Add Condition</div>
@@ -548,9 +549,9 @@ foreach($condition->result_array() as $row){
 										<?php
 										$price = $package['tour_privateGroupPrice'];
 										if($price > 0){
-											echo '<input type="number" placeholder="Pay increase" value="'.$price.'">';
+											echo '<input id="priincrease" type="number" placeholder="Pay increase" value="'.$price.'">';
 										}else{
-											echo '<input type="number" placeholder="Pay increase">';
+											echo '<input id="priincrease" type="number" placeholder="Pay increase">';
 										}
 										 ?>
 										<span class="unit"><?=$package['tour_currency']?></span>
@@ -564,12 +565,12 @@ foreach($condition->result_array() as $row){
                 $c_discountRate = count($discountRate);
                 for($i=0;$i<$c_discountRate;$i++){
                   echo '<div class="col-md-4 form-inline"><label>Up to</label><span>';
-                  echo '<input type="number" value="'.$discountRate[$i]['pax'].'">';
+                  echo '<input class="pripax" type="number" value="'.$discountRate[$i]['pax'].'">';
                   echo '<span class="unit">Pax</span>';
                   echo '</span></div>';
                   echo '<div class="col-md-4 form-inline">';
                   echo '<label>Pay increase</label><span>';
-                  echo '<input type="number" value="'.$discountRate[$i]['price'].'">';
+                  echo '<input class="priprice" type="number" value="'.$discountRate[$i]['price'].'">';
                   echo '<span class="unit">'.$package['tour_currency'].'</span>';
                   echo '</span>';
                   echo '</div>';
@@ -577,12 +578,12 @@ foreach($condition->result_array() as $row){
                 }
 								if($c_discountRate == 0){
 									echo '<div class="col-md-4 form-inline"><label>Up to</label><span>';
-                  echo '<input type="number">';
+                  echo '<input class="pripax" type="number">';
                   echo '<span class="unit">Pax</span>';
                   echo '</span></div>';
                   echo '<div class="col-md-4 form-inline">';
                   echo '<label>Pay increase</label><span>';
-                  echo '<input type="number">';
+                  echo '<input class="priprice" type="number">';
                   echo '<span class="unit">'.$package['tour_currency'].'</span>';
                   echo '</span>';
                   echo '</div>';
@@ -606,11 +607,11 @@ foreach($condition->result_array() as $row){
                   if($package['tour_doublePack'] == 1){
                     echo '<div class="form-group">';
                     echo '<div class="col-md-4 col-sm-6">';
-                    echo '<input type="checkbox" checked>';
+                    echo '<input id="paxdouble" type="checkbox" checked>';
                   }else{
                     echo '<div class="form-group cb-nonselect">';
                     echo '<div class="col-md-4 col-sm-6">';
-                    echo '<input type="checkbox">';
+                    echo '<input id="paxdouble" type="checkbox">';
                   }
                    ?>
 									<p>Double Pax Condition</p>
@@ -634,9 +635,9 @@ foreach($condition->result_array() as $row){
 									<span>
                     <?php
                     if($package['tour_minimum'] > 0){
-                      echo '<input type="number" placeholder="Price" value="'.$package['tour_minimum'].'">';
+                      echo '<input id="paxminimum" type="number" placeholder="Price" value="'.$package['tour_minimum'].'">';
                     }else{
-                      echo '<input type="number" placeholder="Price" disabled>';
+                      echo '<input id="paxminimum" type="number" placeholder="Price" disabled>';
                     }
                      ?>
 										<span class="unit">Pax</span>
@@ -648,37 +649,160 @@ foreach($condition->result_array() as $row){
 				</div>
 				<div class="row">
 					<div class="btn-wrapper text-center">
-            <form action="update-domestic-package">
-						  <input type="submit" value="Add Package" class="btn bold">
+            <form action="update-domestic-package-condition" method="POST">
+              <input name="oldNameSlug" type="hidden" required>
+              <input name="newNameSlug" type="hidden" required>
+              <input name="type" type="hidden" value="<?=$this->session->flashdata('f1')?>" required>
+              <input name="region" type="hidden" required>
+              <input name="province" type="hidden" required>
+              <input name="nameTH" type="hidden" required>
+              <input name="nameEN" type="hidden" required>
+              <input name="startPrice" type="hidden" required>
+              <input name="roomtype" type="hidden" required>
+              <input name="roomprice" type="hidden" required>
+              <input name="optionname" type="hidden" required>
+              <input name="optioncond" type="hidden" required>
+              <input name="optionprice" type="hidden" required>
+              <input name="multidesc" type="hidden" required>
+              <input name="multicond" type="hidden" required>
+              <input name="multioption" type="hidden" required>
+              <input name="multiprice" type="hidden" required>
+              <input name="priincrease" type="hidden" required>
+              <input name="pridiscountRate" type="hidden" required>
+              <input name="paxdouble" type="hidden" required>
+              <input name="paxminimum" type="hidden" required>
+              <button id="submit" type="submit" class="btn bold">Add Package</button>
             </form>
 					</div>
 				</div>
 			</div>
 		</main>
 	</div>
+  <input id="nameSlug" type="hidden" value="<?=$package['tour_nameSlug']?>">
+  <input id="isTourType" type="hidden" value="<?=$this->session->flashdata('f1')?>">
 </body>
 <script src="assets/js/script.js"></script>
 <script>
 
 $(document).ready(function(){
-  $('a[href="outbound-package?type='+$('#isTourType').val()+'"]').find('li').eq(0).addClass('current');
-  $start_price = $('#start-price').val();
-  $('#start-price').val(numberWithSpaces($start_price));
+  $('a[href="domestic-package?type='+$('#isTourType').val()+'"]').find('li').eq(0).addClass('current');
+  $startPrice = $('#startPrice').val();
+  $('#startPrice').val(numberWithSpaces($startPrice));
 });
 
-$('#start-price').click(function(){
-  $start_price = $(this).val().replace(' ','');
-  $('#start-price').val($start_price);
+$('#submit').click(function(){
+  $nameSlug = $('#nameSlug').val();
+  $nameTH = $('#nameTH').val();
+  $nameEN = $('#nameEN').val();
+  $newNameSlug = $nameEN.toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+  $region = $('select[name=region]').val();
+  $province = $('select[name=province]').find('option:selected').text();
+  $startPrice = $('#startPrice').val().replace(' ','');
+
+  $room = $('.room');
+  $c_room = $room.length;
+  $roomcheck = $('.roomcheck');
+  $roomtype = new Array();
+  $roomprice = new Array();
+  for($i=0;$i<$c_room;$i++){
+    if($roomcheck.eq($i).prop('checked') == true){
+      if($room.eq($i).val() != ''){
+        $roomtype.push($room.eq($i).attr('roomtype'));
+        $roomprice.push($room.eq($i).val());
+      }
+    }
+  }
+
+  $option = $('.option');
+  $optioncond = $('.optioncond');
+  $optionprice = $('.optionprice');
+  $c_option = $option.length;
+  $optionname_a = new Array();
+  $optioncond_a = new Array();
+  $optionprice_a = new Array();
+  for($i=0;$i<$c_option;$i++){
+    if($option.eq($i).val() != '' && $optionprice.eq($i).val() != ''){
+      $optionname_a.push($option.eq($i).val());
+      $optioncond_a.push($optioncond.eq($i).html().toLowerCase());
+      $optionprice_a.push($optionprice.eq($i).val());
+    }
+  }
+
+  $multidesc = $('#multidesc').val();
+  $multicond = '';
+  $multioption_a = new Array();
+  $multiprice_a = new Array();
+  if($multidesc != ''){
+    $multicond = $('#multicond').find('option:selected').val().toLowerCase();
+    $multioption = $('.multioption');
+    $c_multioption = $multioption.length;
+    $multiprice = $('.multiprice');
+    for($i=0;$i<$c_multioption;$i++){
+      $multioption_a.push($multioption.eq($i).val());
+      $multiprice_a.push($multiprice.eq($i).val());
+    }
+  }
+
+  $priincrease = $('#priincrease').val();
+  $pripax = $('.pripax');
+  $c_pripax = $pripax.length;
+  $priprice = $('.priprice');
+  $pridiscountRate = '[';
+  for($i=0;$i<$c_pripax;$i++){
+    $pridiscountRate += '{"pax":'+$pripax.eq($i).val()+',"price":'+$priprice.eq($i).val()+'},';
+  }
+  $pridiscountRate = $pridiscountRate.substr(0,$pridiscountRate.length-1);
+  $pridiscountRate += ']';
+  if($priincrease != '' && $pridiscountRate != '[{"pax":,"price":}]'){
+    $('input[name=priincrease]').val($priincrease);
+    $('input[name=pridiscountRate]').val($pridiscountRate);
+  }
+
+  $paxdouble = $('#paxdouble');
+  if($paxdouble.prop('checked') == true){
+    $('input[name=paxdouble]').val('1');
+  }else{
+    $('input[name=paxdouble]').val('0');
+  }
+  $paxminimum = $('#paxminimum').val();
+
+  $('input[name=oldNameSlug]').val($nameSlug);
+  $('input[name=newNameSlug]').val($newNameSlug);
+  $('input[name=nameTH]').val($nameTH);
+  $('input[name=nameEN]').val($nameEN);
+  $('input[name=region]').val($region);
+  $('input[name=province]').val($province);
+  $('input[name=startPrice]').val($startPrice);
+  $('input[name=roomtype]').val($roomtype);
+  $('input[name=roomprice]').val($roomprice);
+  $('input[name=optionname]').val($optionname_a);
+  $('input[name=optioncond]').val($optioncond_a);
+  $('input[name=optionprice]').val($optionprice_a);
+  $('input[name=multidesc]').val($multidesc);
+  $('input[name=multicond]').val($multicond);
+  $('input[name=multioption]').val($multioption_a);
+  $('input[name=multiprice]').val($multiprice_a);
+  $('input[name=paxminimum]').val($paxminimum);
 });
 
-$('#start-price').blur(function(){
-  $start_price = $('#start-price').val();
-  if($.isNumeric($start_price.replace(' ',''))){
-    $('#start-price').val(numberWithSpaces($start_price));
+$('#startPrice').click(function(){
+  $startPrice = $(this).val().replace(' ','');
+  $('#startPrice').val($startPrice);
+});
+
+$('#startPrice').blur(function(){
+  $startPrice = $('#startPrice').val();
+  if($.isNumeric($startPrice.replace(' ',''))){
+    $('#startPrice').val(numberWithSpaces($startPrice));
   }else{
     alert('Invalid number');
-    $('#start-price').val(this.defaultValue);
-    $('#start-price').focus();
+    $('#startPrice').val(this.defaultValue);
+    $('#startPrice').focus();
   }
 });
 

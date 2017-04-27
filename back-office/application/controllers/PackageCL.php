@@ -67,7 +67,7 @@ class PackageCL extends CI_Controller {
 
 	function delete_package() {
 		$tour_nameSlug = $this->input->get('tour');
-		$query = $this->PackageMD->disablePackage($tour_nameSlug);
+		$query = $this->PackageMD->removePackage($tour_nameSlug);
 		redirect('outbound-package?type=sp', 'refresh');
 	}
 
@@ -97,7 +97,7 @@ class PackageCL extends CI_Controller {
 		$this->session->set_flashdata('f1', $tour_type);
 		$data['province'] = $this->PackageMD->getProvince();
 		$data['region'] = $this->PackageMD->getRegion();
-		$query= $this->PackageMD->editPackageCondition($tour_nameSlug);
+		$query = $this->PackageMD->editPackageCondition($tour_nameSlug);
 		$data['package'] = $query;
 		$data['condition'] = $this->PackageMD->editCondition($tour_nameSlug);
 		if($tour_type == 'sp'){
@@ -118,11 +118,11 @@ class PackageCL extends CI_Controller {
 		$data['agency'] = $this->PackageMD->getAgency();
 		$query= $this->PackageMD->editPackage($tour_nameSlug);
 		$data['package'] = $query;
-		$data['price_range']    = $query->row()->tour_priceRange;
+		$data['price_range'] = $query->row()->tour_priceRange;
 		if($tour_type == 'sp'){
 			$this->load->view('edit_outbound_series_package',$data);
 		}else{
-			$this->load->view('edit_outbound_easy_package',$data);
+			echo 'Someting wrong. Please contact to developer.';
 		}
 	}
 
@@ -178,10 +178,31 @@ class PackageCL extends CI_Controller {
 
 	function update_domestic_package_condition(){
 		/********************Initial valiable********************/
-		$tour_nameSlug = $this->input->get('tour');
-		$tour_type = $this->input->get('type');
-		$this->session->set_flashdata('f1', $tour_type);
-		$this->load->view('domestic_package',$data);
+		$oldNameSlug = $this->input->post('oldNameSlug');
+		$newNameSlug = $this->input->post('newNameSlug');
+		$type = $this->input->post('type');
+		$this->session->set_flashdata('f1', $type);
+		$nameTH = $this->input->post('nameTH');
+		$nameEN = $this->input->post('nameEN');
+		$regionId = $this->input->post('region');
+		$province = $this->input->post('province');
+		$startPrice = $this->input->post('startPrice');
+		$roomtype = $this->input->post('roomtype');
+		$roomprice = $this->input->post('roomprice');
+		$optionname = $this->input->post('optionname');
+		$optioncond = $this->input->post('optioncond');
+		$optionprice = $this->input->post('optionprice');
+		$multidesc = $this->input->post('multidesc');
+		$multicond = $this->input->post('multicond');
+		$multioption = $this->input->post('multioption');
+		$multiprice = $this->input->post('multiprice');
+		$priincrease = $this->input->post('priincrease');
+		$pridiscountRate = $this->input->post('pridiscountRate');
+		$paxdouble = $this->input->post('paxdouble');
+		$paxminimum = $this->input->post('paxminimum');
+		$this->PackageMD->updatePackageCondition($oldNameSlug,$newNameSlug,$type,$nameTH,$nameEN,$regionId,$province,$startPrice,$roomtype,$roomprice,$optionname,$optioncond,$optionprice,$multidesc,$multicond,$multioption,$multiprice,$priincrease,$pridiscountRate,$paxdouble,$paxminimum);
+		$this->PackageMD->updateDomesticLocation($newNameSlug,$regionId,$province);
+		redirect('domestic-package?type='.$type, 'refresh');
 	}
 
 	function update_outbound_package(){

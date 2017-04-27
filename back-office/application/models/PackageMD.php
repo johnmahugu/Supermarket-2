@@ -88,7 +88,7 @@ class PackageMD extends CI_Model {
     return self::$db->get();
   }
 
-  function disablePackage($tour_nameSlug) {
+  function removePackage($tour_nameSlug) {
     self::$db->trans_start();
     $query = "UPDATE tour
     SET tour.tour_remove = '1'
@@ -147,10 +147,7 @@ class PackageMD extends CI_Model {
       tour.tour_openBooking,
 			tour.tour_currency,
       tour.tour_privateGroup,
-			countries.country_name,
-      continents.continent_name,
-      address.address_province,
-      geography.geography_nameEN,
+      address.*,
       agent.agent_code,
       tour.tour_doublePack,
       tour_privateGroupPrice,
@@ -161,10 +158,7 @@ class PackageMD extends CI_Model {
     self::$db->join('image', 'tour.tour_imgCover = image.img_refid', 'inner');
     self::$db->join('tour_address', 'tour.tour_id = tour_address.tour_id', 'inner');
     self::$db->join('address', 'tour_address.address_id = address.address_id', 'inner');
-    self::$db->join('countries', 'address.country_id = countries.country_id', 'inner');
-    self::$db->join('geography', 'address.geography_id = geography.geography_id', 'inner');
-    self::$db->join('continents', 'address.continent_id = continents.continent_id', 'inner');
-    self::$db->join('tour_condition', 'tour.tour_id = tour_condition.tour_id', 'inner');
+    self::$db->join('tour_condition', 'tour.tour_id = tour_condition.tour_id','left');
     self::$db->join('agent', 'tour.tour_agentId = agent.agent_id', 'inner');
     self::$db->where('image.img_type', 'tour cover');
     self::$db->where('tour.tour_nameSlug', $tour_nameSlug);
@@ -190,6 +184,110 @@ class PackageMD extends CI_Model {
     );
     self::$db->where('tour_nameSlug', $oldNameSlug);
     self::$db->update('tour', $data);
+    if (self::$db->trans_status() === FALSE) {
+      self::$db->trans_rollback();
+      return false;
+    } else {
+      self::$db->trans_commit();
+      return true;
+    }
+  }
+
+  function updatePackageCondition($oldNameSlug,$newNameSlug,$type,$nameTH,$nameEN,$regionId,$province,$startPrice,$roomtype,$roomprice,$optionname,$optioncond,$optionprice,$multidesc,$multicond,$multioption,$multiprice,$priincrease,$pridiscountRate,$paxdouble,$paxminimum){
+    self::$db->trans_begin();
+    $data = array(
+      'tour_nameSlug' => $newNameSlug,
+      'tour_nameTH' => $nameTH,
+      'tour_nameEN' => $nameEN,
+			'tour_startPrice' => $startPrice
+    );
+    self::$db->where('tour_nameSlug', $oldNameSlug);
+    self::$db->update('tour', $data);
+
+    $query = 'SELECT tour_id FROM tour WHERE tour_nameSlug ="'.$newNameSlug.'"';
+    $result = self::$db->query($query);
+    $result = $result->row_array(0);
+    $tour_id = $result['tour_id'];
+
+    $query = 'DELETE FROM tour_condition WHERE tour_id = "'.$tour_id.'" AND tc_type="room"';
+    self::$db->query($query);
+    $roomtype = explode(",",$roomtype);
+    $c_roomtype = count($roomtype);
+    $roomprice = explode(",",$roomprice);
+    for($i=0;$i<$c_roomtype;$i++){
+      if($roomprice[$i] != 0){
+        $data = array(
+          'tour_id' => $tour_id,
+          'tc_condition' => 'increase',
+          'tc_price' => $roomprice[$i],
+          'tc_type' => 'room',
+          'tc_title' => NULL,
+          'tc_data' => '[{"roomtype":"'.$roomtype[$i].'","roomdetail":""}]',
+          'tc_order' => ($i+1)
+        );
+        self::$db->insert('tour_condition',$data);
+      }
+    }
+
+    $query = 'DELETE FROM tour_condition WHERE tour_id = "'.$tour_id.'" AND tc_type="option"';
+    self::$db->query($query);
+    $optionname = explode(",",$optionname);
+    $c_optionname = count($optionname);
+    $optioncond = explode(",",$optioncond);
+    $optionprice = explode(",",$optionprice);
+    for($i=0;$i<$c_optionname;$i++){
+      if($optionprice[$i] != 0){
+        $data = array(
+          'tour_id' => $tour_id,
+          'tc_condition' => $optioncond[$i],
+          'tc_price' => $optionprice[$i],
+          'tc_type' => 'option',
+          'tc_title' => NULL,
+          'tc_data' => $optionname[$i],
+          'tc_order' => ($i+1)
+        );
+        self::$db->insert('tour_condition',$data);
+      }
+    }
+
+    $query = 'DELETE FROM tour_condition WHERE tour_id = "'.$tour_id.'" AND tc_type="option activity"';
+    self::$db->query($query);
+    $multioption = explode(",",$multioption);
+    $c_multioption = count($multioption);
+    $multicond = explode(",",$multicond);
+    $multiprice = explode(",",$multiprice);
+    for($i=0;$i<$c_multioption;$i++){
+      if($multiprice[$i] != 0){
+        $data = array(
+          'tour_id' => $tour_id,
+          'tc_condition' => $multicond[$i],
+          'tc_price' => $multiprice[$i],
+          'tc_type' => 'option activity',
+          'tc_title' => $multidesc,
+          'tc_data' => $multioption[$i],
+          'tc_order' => ($i+1)
+        );
+        self::$db->insert('tour_condition',$data);
+      }
+    }
+
+    if($priincrease != ''){
+      $data = array(
+        'tour_privateGroup' => '1',
+        'tour_privateGroupPrice' => $priincrease,
+        'tour_discountRate' => $pridiscountRate
+      );
+      self::$db->where('tour_id', $tour_id);
+      self::$db->update('tour',$data);
+    }
+    
+    $data = array(
+      'tour_doublePack' => $paxdouble,
+      'tour_minimum' => $paxminimum
+    );
+    self::$db->where('tour_id', $tour_id);
+    self::$db->update('tour',$data);
+
     if (self::$db->trans_status() === FALSE) {
       self::$db->trans_rollback();
       return false;

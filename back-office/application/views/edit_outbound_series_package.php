@@ -177,7 +177,7 @@ if(isset($price_range)){
                 <?php
                   if(isset($continent)){
                     foreach($continent->result_array() as $row){
-                      if($package['continent_name'] == $row['continent_name']){
+                      if($package['continent_id'] == $row['continent_id']){
                         echo "<option value=".$row['continent_id']." selected>".$row['continent_name']."</option>";
                       }else{
                         echo "<option value=".$row['continent_id'].">".$row['continent_name']."</option>";
@@ -195,7 +195,7 @@ if(isset($price_range)){
 	              <?php
 	                if(isset($country)){
 	                	foreach($country->result_array() as $row){
-                      if($package['country_name'] == $row['country_name']){
+                      if($package['country_id'] == $row['country_id']){
                         echo "<option value=".$row['country_id']." selected>".$row['country_name']."</option>";
                       }else{
                         echo "<option value=".$row['country_id'].">".$row['country_name']."</option>";
