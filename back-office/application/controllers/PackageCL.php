@@ -151,6 +151,7 @@ class PackageCL extends CI_Controller {
 		$this->session->set_flashdata('f1', $type);
 		$nameTH = $this->input->post('nameTH');
 		$nameEN = $this->input->post('nameEN');
+		$agent = $this->input->post('agent');
 		$regionId = $this->input->post('region');
 		$province = $this->input->post('province');
 		$overviewTH = $this->input->post('overviewTH');
@@ -162,7 +163,7 @@ class PackageCL extends CI_Controller {
 		$advanceBooking = $this->input->post('advanceBooking');
 		$dayNight = $this->input->post('dayNight');
 		$priceRange = $this->input->post('priceRange');
-		$result = $this->PackageMD->updatePackage($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$overviewTH,$overviewEN,$descTH,$descEN,$briefTH,$briefEN,$advanceBooking,$dayNight,$priceRange);
+		$result = $this->PackageMD->updatePackage($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$agent,$overviewTH,$overviewEN,$descTH,$descEN,$briefTH,$briefEN,$advanceBooking,$dayNight,$priceRange);
 		$this->PackageMD->updateDomesticLocation($newNameSlug,$regionId,$province);
 		$encoded = $_POST['image-data'];
 		if($encoded != ''){
@@ -213,6 +214,7 @@ class PackageCL extends CI_Controller {
 		$this->session->set_flashdata('f1', $type);
 		$nameTH = $this->input->post('nameTH');
 		$nameEN = $this->input->post('nameEN');
+		$agent = $this->input->post('agent');
 		$countryId = $this->input->post('countryId');
 		$continentId = $this->input->post('continentId');
 		$overviewTH = $this->input->post('overviewTH');
@@ -224,7 +226,7 @@ class PackageCL extends CI_Controller {
 		$advanceBooking = $this->input->post('advanceBooking');
 		$dayNight = $this->input->post('dayNight');
 		$priceRange = $this->input->post('priceRange');
-		$result = $this->PackageMD->updatePackage($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$overviewTH,$overviewEN,$descTH,$descEN,$briefTH,$briefEN,$advanceBooking,$dayNight,$priceRange);
+		$result = $this->PackageMD->updatePackage($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$agent,$overviewTH,$overviewEN,$descTH,$descEN,$briefTH,$briefEN,$advanceBooking,$dayNight,$priceRange);
 		$this->PackageMD->updateOutboundLocation($newNameSlug,$countryId,$continentId);
 		$encoded = $_POST['image-data'];
 		if($encoded != ''){

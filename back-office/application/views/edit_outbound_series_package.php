@@ -246,7 +246,7 @@ if(isset($price_range)){
 								</div>
 								<div class="col-md-8">
 									<label>Tour Agency</label>
-                  <select name="agency">
+                  <select name="agent">
   	              <?php
   	                if(isset($agency)){
   	                	foreach($agency->result_array() as $row){
@@ -379,6 +379,7 @@ if(isset($price_range)){
 					<div class="btn-wrapper text-center">
               <input name="oldNameSlug" type="hidden" required>
               <input name="newNameSlug" type="hidden" required>
+              <input name="agent" type="hidden" required>
               <input name="type" type="hidden" value="<?=$this->session->flashdata('f1')?>" required>
               <input name="nameTH" type="hidden" required>
               <input name="nameEN" type="hidden" required>
@@ -482,6 +483,7 @@ function submit(){
     .replace(/\-\-+/g, '-')
     .replace(/^-+/, '')
     .replace(/-+$/, '');
+  $agent = $('select[name=agent]').find('option:selected').val();
   $continentId = $('select[name=continent]').val();
   $countryId = $('select[name=country]').val();
   $overviewTH = $('#overviewTH').val();
@@ -498,6 +500,7 @@ function submit(){
   $('input[name=newNameSlug]').val($newNameSlug);
   $('input[name=nameTH]').val($nameTH);
   $('input[name=nameEN]').val($nameEN);
+  $('input[name=agent]').val($agent);
   $('input[name=countryId]').val($countryId);
   $('input[name=continentId]').val($continentId);
   $('input[name=overviewTH]').val($overviewTH);
@@ -542,6 +545,10 @@ $('#gen-schedule').click(function(){
 
 function listGenSchedule(){
 }
+
+$('.public').change(function(){
+  alert('AA');
+});
 
 $('#startPrice').click(function(){
   $start_price = $(this).val().replace(' ','');
@@ -602,7 +609,7 @@ function numberWithSpaces(x) {
 
     $('.list-card .btn.no-border.light').click(function() {
 		var addform = $(this).closest('.content').find('.form-group').last().html();
-		$(this).closest('.content').find('.form-group').last().after('<div class="form-group"><div class="col-md-3 col-sm-6 form-inline"><label>From</label><span><input type="text" class="date from" value="Select Date" readonly="readonly"></span></div><div class="col-md-3 col-sm-6 form-inline"><label>To</label><span><input type="text" class="date to" value="Select Date" readonly="readonly" disabled></span></div><div class="col-md-3 col-md-offset-1 col-sm-8 form-inline"><label>Price</label><span><input type="number"><span class="unit">THB</span></span></div><div class="col-md-2 col-sm-4"><div class="btn no-border gray">Delete</div></div></div>');
+		$(this).closest('.content').find('.form-group').last().after('<div class="form-group priceRange"><div class="col-md-3 col-sm-6 form-inline"><label>From</label><span><input type="text" class="date from" value="Select Date" readonly="readonly"></span></div><div class="col-md-3 col-sm-6 form-inline"><label>To</label><span><input type="text" class="date to" value="Select Date" readonly="readonly" disabled></span></div><div class="col-md-3 col-md-offset-1 col-sm-8 form-inline"><label>Price</label><span><input type="number"><span class="unit">THB</span></span></div><div class="col-md-2 col-sm-4"><div class="btn no-border gray">Delete</div></div></div>');
 	});
 
     $('body').on('focus',".date.from", function(){

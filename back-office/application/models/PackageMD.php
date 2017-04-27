@@ -166,12 +166,13 @@ class PackageMD extends CI_Model {
     return self::$db->get();
   }
 
-  function updatePackage($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$overviewTH,$overviewEN,$descTH,$descEN,$briefTH,$briefEN,$advanceBooking,$dayNight,$priceRange){
+  function updatePackage($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$agent,$overviewTH,$overviewEN,$descTH,$descEN,$briefTH,$briefEN,$advanceBooking,$dayNight,$priceRange){
     self::$db->trans_begin();
     $data = array(
       'tour_nameSlug' => $newNameSlug,
       'tour_nameTH' => $nameTH,
       'tour_nameEN' => $nameEN,
+      'tour_agentId' => $agent,
       'tour_overviewTH' => $overviewTH,
       'tour_overviewEN' => $overviewEN,
       'tour_descTH' => $descTH,
@@ -280,7 +281,7 @@ class PackageMD extends CI_Model {
       self::$db->where('tour_id', $tour_id);
       self::$db->update('tour',$data);
     }
-    
+
     $data = array(
       'tour_doublePack' => $paxdouble,
       'tour_minimum' => $paxminimum

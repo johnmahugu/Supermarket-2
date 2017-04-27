@@ -246,7 +246,7 @@ if(isset($price_range)){
 								</div>
 								<div class="col-md-8">
 									<label>Tour Agency</label>
-                  <select name="agency">
+                  <select name="agent">
   	              <?php
   	                if(isset($agency)){
   	                	foreach($agency->result_array() as $row){
@@ -374,6 +374,7 @@ if(isset($price_range)){
 					<div class="btn-wrapper text-center">
               <input name="oldNameSlug" type="hidden" required>
               <input name="newNameSlug" type="hidden" required>
+              <input name="agent" type="hidden" required>
               <input name="type" type="hidden" value="<?=$this->session->flashdata('f1')?>" required>
               <input name="region" type="hidden" required>
               <input name="province" type="hidden" required>
@@ -477,6 +478,7 @@ function submit(){
     .replace(/\-\-+/g, '-')
     .replace(/^-+/, '')
     .replace(/-+$/, '');
+  $agent = $('select[name=agent]').find('option:selected').val();
   $region = $('select[name=region]').val();
   $province = $('select[name=province]').find('option:selected').text();
   $overviewTH = $('#overviewTH').val();
@@ -494,6 +496,7 @@ function submit(){
   $('input[name=newNameSlug]').val($newNameSlug);
   $('input[name=nameTH]').val($nameTH);
   $('input[name=nameEN]').val($nameEN);
+  $('input[name=agent]').val($agent);
   $('input[name=region]').val($region);
   $('input[name=province]').val($province);
   $('input[name=overviewTH]').val($overviewTH);
