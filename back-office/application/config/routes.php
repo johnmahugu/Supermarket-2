@@ -74,3 +74,4 @@ $route['insert-domestic-package'] = 'PackageCL/insert_domestic_package';
 $route['insert-outbound-package'] = 'PackageCL/insert_outbound_package';
 $route['change-public'] = 'PackageCL/change_public';
 $route['change-highlight'] = 'PackageCL/change_highlight';
+$route['update-pdf'] = 'PackageCL/update_pdf';

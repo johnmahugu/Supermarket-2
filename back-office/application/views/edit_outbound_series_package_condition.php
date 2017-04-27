@@ -438,13 +438,13 @@ foreach($condition->result_array() as $row){
                   echo '<div class="form-group"><div class="col-md-4">';
                   echo '<input class="option" type="text" placeholder="Option Name" value="'.$row['tc_data'].'">';
                   echo '</div><div class="col-md-3 form-inline"><label>Condition</label><span>';
-                  echo '<select>';
+                  echo '<select class="optioncond">';
                   if($row['tc_condition'] == 'increase'){
-                    echo '<option class="optioncond" selected>Increase</option>';
-                    echo '<option class="optioncond">Decrease</option>';
+                    echo '<option selected>Increase</option>';
+                    echo '<option >Decrease</option>';
                   }else{
-                    echo '<option class="optioncond" selected>Decrease</option>';
-                    echo '<option class="optioncond">Increase</option>';
+                    echo '<option selected>Decrease</option>';
+                    echo '<option>Increase</option>';
                   }
                   echo '</select>';
                   echo '</span></div>';
@@ -458,9 +458,9 @@ foreach($condition->result_array() as $row){
 								echo '<div class="form-group"><div class="col-md-4">';
 								echo '<input class="option" type="text" placeholder="Option Name">';
 								echo '</div><div class="col-md-3 form-inline"><label>Condition</label><span>';
-								echo '<select>';
-								echo '<option class="optioncond" selected>Increase</option>';
-								echo '<option class="optioncond">Decrease</option>';
+								echo '<select class="optioncond">';
+								echo '<option selected>Increase</option>';
+								echo '<option>Decrease</option>';
 								echo '</select>';
 								echo '</span></div>';
 								echo '<div class="col-md-3">';
@@ -684,7 +684,7 @@ foreach($condition->result_array() as $row){
 <script>
 
 $(document).ready(function(){
-  $('a[href="domestic-package?type='+$('#isTourType').val()+'"]').find('li').eq(0).addClass('current');
+  $('a[href="outbound-package?type='+$('#isTourType').val()+'"]').find('li').eq(0).addClass('current');
   $startPrice = $('#startPrice').val();
   $('#startPrice').val(numberWithSpaces($startPrice));
 });
@@ -727,7 +727,7 @@ $('#submit').click(function(){
   for($i=0;$i<$c_option;$i++){
     if($option.eq($i).val() != '' && $optionprice.eq($i).val() != ''){
       $optionname_a.push($option.eq($i).val());
-      $optioncond_a.push($optioncond.eq($i).html().toLowerCase());
+      $optioncond_a.push($optioncond.eq($i).find('option:selected').val().toLowerCase());
       $optionprice_a.push($optionprice.eq($i).val());
     }
   }

@@ -8,6 +8,7 @@ class PackageCL extends CI_Controller {
 		$this->load->database('supermarket',TRUE);
 		$this->load->library('session');
 		$this->load->library('ftp');
+		$this->load->library('upload');
 		$this->load->helper('url');
 		$this->load->model('PackageMD');
   }
@@ -183,7 +184,7 @@ class PackageCL extends CI_Controller {
 			$a = base64_decode($exp[1]);
 			$file = $newNameSlug.'.jpg';
 			file_put_contents('filestorage/temp/'.$file, $a);
-			$this->upload_filestorage($file);
+			$this->upload_cover($file);
 			sleep(3);
 		}
 		redirect('domestic-package?type='.$type, 'refresh');
@@ -246,7 +247,7 @@ class PackageCL extends CI_Controller {
 			$a = base64_decode($exp[1]);
 			$file = $newNameSlug.'.jpg';
 			file_put_contents('filestorage/temp/'.$file, $a);
-			$this->upload_filestorage($file);
+			$this->upload_cover($file);
 			sleep(3);
 		}
 		redirect('outbound-package?type='.$type, 'refresh');
@@ -336,7 +337,7 @@ class PackageCL extends CI_Controller {
 		$a = base64_decode($exp[1]);
 		$file = $newNameSlug.'.jpg';
 		file_put_contents('filestorage/temp/'.$file, $a);
-		$this->upload_filestorage($file);
+		$this->upload_cover($file);
 		sleep(3);
 		redirect('domestic-package?type='.$type, 'refresh');
 	}
@@ -366,12 +367,24 @@ class PackageCL extends CI_Controller {
 		$a = base64_decode($exp[1]);
 		$file = $newNameSlug.'.jpg';
 		file_put_contents('filestorage/temp/'.$file, $a);
-		$this->upload_filestorage($file);
+		$this->upload_cover($file);
 		sleep(3);
 		redirect('outbound-package?type='.$type, 'refresh');
 	}
 
-	function upload_filestorage($fileName){
+	function update_pdf(){
+		$nameSlug = $this->input->post('nameSlug');
+		$config['upload_path'] = 'filestorage/temp/';
+    $config['allowed_types'] = 'pdf';
+    $config['file_name'] = $nameSlug;
+		$this->upload->initialize($config);
+		if($this->upload->do_upload("file")){
+			$this->upload_pdf($nameSlug.'.pdf');
+			$this->PackageMD->updatePDF($nameSlug);
+		}
+	}
+
+	function upload_cover($fileName){
 		$source = './filestorage/temp/'.$fileName;
 		$ftp_config['hostname'] = 'ftp://travelshop-center.tk';
 		$ftp_config['username'] = 'travelshop';
@@ -379,6 +392,19 @@ class PackageCL extends CI_Controller {
 		$ftp_config['debug']    = TRUE;
 		$this->ftp->connect($ftp_config);
 		$destination = '/public_html/filestorage/image/tour/'.$fileName;
+		$this->ftp->upload($source, $destination);
+		$this->ftp->close();
+		@unlink($source);
+	}
+
+	function upload_pdf($fileName){
+		$source = './filestorage/temp/'.$fileName;
+		$ftp_config['hostname'] = 'ftp://travelshop-center.tk';
+		$ftp_config['username'] = 'travelshop';
+		$ftp_config['password'] = 'V2zmx9N33';
+		$ftp_config['debug']    = TRUE;
+		$this->ftp->connect($ftp_config);
+		$destination = '/public_html/filestorage/pdf/'.$fileName;
 		$this->ftp->upload($source, $destination);
 		$this->ftp->close();
 		@unlink($source);

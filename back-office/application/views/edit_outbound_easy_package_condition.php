@@ -687,7 +687,7 @@ foreach($condition->result_array() as $row){
 <script>
 
 $(document).ready(function(){
-  $('a[href="domestic-package?type='+$('#isTourType').val()+'"]').find('li').eq(0).addClass('current');
+  $('a[href="outbound-package?type='+$('#isTourType').val()+'"]').find('li').eq(0).addClass('current');
   $startPrice = $('#startPrice').val();
   $('#startPrice').val(numberWithSpaces($startPrice));
 });

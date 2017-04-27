@@ -485,6 +485,14 @@ class PackageMD extends CI_Model {
     }
   }
 
+  function updatePDF($nameSlug){
+    $data = array(
+      'tour_pdf' => $nameSlug.'.pdf'
+    );
+    self::$db->where('tour_nameSlug', $nameSlug);
+    self::$db->update('tour', $data);
+  }
+
   function editCondition($tour_nameSlug){
     self::$db->select("
       tour_condition.*

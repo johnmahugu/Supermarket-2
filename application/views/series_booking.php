@@ -208,7 +208,6 @@
           <?php
         }
             }
-            echo '</div></div>';
             }
             $is_first = true;
             foreach($condition->result_array() AS $row){
@@ -317,9 +316,7 @@
                 </div>
               </div>
             </div>
-          </div>
         </div>
-      </div>
       <div class="clear"></div>
       <div class="btn-wrapper">
         <div class="col-sm-4 col-sm-offset-4">
@@ -327,6 +324,7 @@
         </div>
       </div>
     </div>
+  </div>
     <footer>
       <div class="container">
         <div class="row">
@@ -688,7 +686,10 @@
     function sum_amount(){
     	$count_list = $('.list').length;
     	$sum = 0;
-      $extension_activity_price = parseInt($('input:radio[name=extension-activity]:checked').attr('price'));
+      $extension_activity_price = 0;
+      if($('input:radio[name=extension-activity]:checked').attr('price') != undefined){
+        $extension_activity_price = parseInt($('input:radio[name=extension-activity]:checked').attr('price'));
+      }
     	for($i=0;$i<$count_list;$i++){
     		if($('.list').eq($i).find('input').eq(1).val() != undefined && $('.priceroom').eq(0).text() != undefined && $('.list').eq($i).find('input').eq(1).val() > 0){
           $sum += (numeral($('.priceroom').eq($i-1).text()).format('0'))*($('.list').eq($i).find('input').eq(1).val());
