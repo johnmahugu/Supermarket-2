@@ -99,6 +99,20 @@ class PackageMD extends CI_Model {
     return self::$db->trans_status();
   }
 
+  function changePublic($nameSlug,$status){
+    $query = "UPDATE tour
+    SET tour.tour_public = '".$status."'
+    WHERE tour.tour_nameSlug = '".$nameSlug."'";
+    self::$db->query($query);
+  }
+
+  function changeHighlight($nameSlug,$status){
+    $query = "UPDATE tour
+    SET tour.tour_hilight = '".$status."'
+    WHERE tour.tour_nameSlug = '".$nameSlug."'";
+    self::$db->query($query);
+  }
+
   function editPackage($tour_nameSlug) {
     self::$db->select("
 			tour.tour_id,
@@ -185,6 +199,7 @@ class PackageMD extends CI_Model {
     );
     self::$db->where('tour_nameSlug', $oldNameSlug);
     self::$db->update('tour', $data);
+    self::$db->trans_complete();
     if (self::$db->trans_status() === FALSE) {
       self::$db->trans_rollback();
       return false;
@@ -194,7 +209,7 @@ class PackageMD extends CI_Model {
     }
   }
 
-  function updatePackageCondition($oldNameSlug,$newNameSlug,$type,$nameTH,$nameEN,$regionId,$province,$startPrice,$roomtype,$roomprice,$optionname,$optioncond,$optionprice,$multidesc,$multicond,$multioption,$multiprice,$priincrease,$pridiscountRate,$paxdouble,$paxminimum){
+  function updatePackageCondition($oldNameSlug,$newNameSlug,$type,$nameTH,$nameEN,$startPrice,$roomtype,$roomprice,$optionname,$optioncond,$optionprice,$multidesc,$multicond,$multioption,$multiprice,$priincrease,$pridiscountRate,$paxdouble,$paxminimum){
     self::$db->trans_begin();
     $data = array(
       'tour_nameSlug' => $newNameSlug,
@@ -289,6 +304,7 @@ class PackageMD extends CI_Model {
     self::$db->where('tour_id', $tour_id);
     self::$db->update('tour',$data);
 
+    self::$db->trans_complete();
     if (self::$db->trans_status() === FALSE) {
       self::$db->trans_rollback();
       return false;
@@ -306,6 +322,8 @@ class PackageMD extends CI_Model {
       SET a.address_province = '".$province."', a.geography_id = '".$regionId."'
       WHERE t.tour_nameSlug = '".$newNameSlug."'";
       self::$db->query($query);
+
+      self::$db->trans_complete();
       if (self::$db->trans_status() === FALSE) {
         self::$db->trans_rollback();
         return false;
@@ -315,14 +333,16 @@ class PackageMD extends CI_Model {
       }
   }
 
-  function updateOutboundLocation($newNameSlug,$countryId,$continent){
+  function updateOutboundLocation($newNameSlug,$country,$continent){
     self::$db->trans_begin();
     $query = "UPDATE tour_address ta
     JOIN address a ON ta.address_id = a.address_id
     JOIN tour t ON ta.tour_id = t.tour_id
-    SET a.continent_id = '".$continent."', a.country_id = '".$countryId."'
+    SET a.continent_id = '".$continent."', a.country_id = '".$country."'
     WHERE t.tour_nameSlug = '".$newNameSlug."'";
     self::$db->query($query);
+
+    self::$db->trans_complete();
     if (self::$db->trans_status() === FALSE) {
       self::$db->trans_rollback();
       return false;
@@ -388,6 +408,7 @@ class PackageMD extends CI_Model {
       'img_source' => 'filestorage/image/tour/'.$newNameSlug.'.jpg'
     );
     self::$db->insert('image', $data);
+
     self::$db->trans_complete();
     if (self::$db->trans_status() === FALSE) {
       self::$db->trans_rollback();
@@ -453,6 +474,7 @@ class PackageMD extends CI_Model {
       'img_source' => 'filestorage/image/tour/'.$newNameSlug.'.jpg'
     );
     self::$db->insert('image', $data);
+
     self::$db->trans_complete();
     if (self::$db->trans_status() === FALSE) {
       self::$db->trans_rollback();

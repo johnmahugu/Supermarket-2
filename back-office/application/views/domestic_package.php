@@ -234,14 +234,14 @@
 							<div class="checkbox-wrapper">
 								<?php
 								if($row['tour_public'] == 1){
-									echo '<p><input type="checkbox" checked> <span>Publish</span></p>';
+									echo '<p><input class="public" type="checkbox" nameSlug="'.$row['tour_nameSlug'].'" checked> <span>Publish</span></p>';
 								}else{
-									echo '<p><input type="checkbox"> <span>Publish</span></p>';
+									echo '<p><input class="public" type="checkbox" nameSlug="'.$row['tour_nameSlug'].'"> <span>Publish</span></p>';
 								}
 								if($row['tour_hilight'] == 1){
-									echo '<p><input type="checkbox" checked> <span>Highlight</span></p>';
+									echo '<p><input class="highlight" type="checkbox" nameSlug="'.$row['tour_nameSlug'].'" checked> <span>Highlight</span></p>';
 								}else{
-									echo '<p><input type="checkbox"> <span>Highlight</span></p>';
+									echo '<p><input class="highlight" type="checkbox" nameSlug="'.$row['tour_nameSlug'].'"> <span>Highlight</span></p>';
 								}
 								?>
 							</div>
@@ -276,6 +276,40 @@ $(document).ready(function(){
 
 $('select').change(function(){
 	filter();
+});
+
+$('.public').change(function(){
+	$nameSlug = $(this).attr('nameSlug');
+	if($(this).prop('checked')){
+		$status = 1;
+	}else{
+		$status = 0;
+	}
+	$.ajax({
+		type: 'GET',
+		url:'/change-public',
+		data:{
+			'nameSlug': $nameSlug,
+			'status': $status
+			}
+	});
+});
+
+$('.highlight').change(function(){
+	$nameSlug = $(this).attr('nameSlug');
+	if($(this).prop('checked')){
+		$status = 1;
+	}else{
+		$status = 0;
+	}
+	$.ajax({
+		type: 'GET',
+		url:'/change-highlight',
+		data:{
+			'nameSlug': $nameSlug,
+			'status': $status
+			}
+	});
 });
 
 function filter(){

@@ -309,10 +309,13 @@ foreach($condition->result_array() as $row){
 			<div class="main-wrapper">
 				<div class="row">
 					<div class="card-btn-tab">
-						<div class="col-sm-6 no-pd">
+						<div class="col-sm-4 no-pd">
 							<a href="edit-outbound-package?tour=<?=$package['tour_nameSlug']?>&type=<?=$this->session->flashdata('f1')?>" class="btn no-setting">TOUR INFO</a>
 						</div>
-						<div class="col-sm-6 no-pd">
+            <div class="col-sm-4 no-pd">
+							<a href="tm-outbound-easy-new-service.html" class="btn no-setting">SERVICES</a>
+						</div>
+						<div class="col-sm-4 no-pd">
 							<a href="edit-outbound-package-condition?tour=<?=$package['tour_nameSlug']?>&type=<?=$this->session->flashdata('f1')?>" class="btn current">CONDITION</a>
 						</div>
 					</div>

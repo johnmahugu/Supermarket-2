@@ -29,7 +29,7 @@ if(isset($price_range)){
 	<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="">
-  <form id="update-outbound-package" action="update-outbound-package" method="post" enctype="multipart/form-data">
+  <form id="update-domestic-package" action="update-domestic-package" method="post" enctype="multipart/form-data">
 	<header>
 		<div class="header-bar">
 			<div class="logo">
@@ -172,37 +172,37 @@ if(isset($price_range)){
 					<div class="row top-mg">
 						<div class="col-md-4 col-sm-6">
 							<div class="input-box">
-								<label class="filter">Continent</label>
-                <select name="continent">
-                <?php
-                  if(isset($continent)){
-                    foreach($continent->result_array() as $row){
-                      if($package['continent_id'] == $row['continent_id']){
-                        echo "<option value=".$row['continent_id']." selected>".$row['continent_name']."</option>";
-                      }else{
-                        echo "<option value=".$row['continent_id'].">".$row['continent_name']."</option>";
-                      }
-                    }
-                  }
-                  ?>
+								<label class="filter">Region</label>
+                <select name="region">
+                  <?php
+                   if(isset($region)){
+                     foreach($region->result_array() as $row){
+                       if($package['geography_id'] == $row['geography_id']){
+                         echo "<option value=".$row['geography_id']." selected>".$row['geography_nameEN']."</option>";
+                       }else{
+                         echo "<option value=".$row['geography_id'].">".$row['geography_nameEN']."</option>";
+                       }
+                     }
+                   }
+                   ?>
                 </select>
 							</div>
 						</div>
 						<div class="col-md-4 col-sm-6">
 							<div class="input-box">
-								<label class="filter">Country</label>
-                <select name="country">
-	              <?php
-	                if(isset($country)){
-	                	foreach($country->result_array() as $row){
-                      if($package['country_id'] == $row['country_id']){
-                        echo "<option value=".$row['country_id']." selected>".$row['country_name']."</option>";
-                      }else{
-                        echo "<option value=".$row['country_id'].">".$row['country_name']."</option>";
-                      }
-	                	}
-	                }
-	                ?>
+								<label class="filter">Province</label>
+                <select name="province">
+                  <?php
+  	                if(isset($province)){
+  	                	foreach($province->result_array() as $row){
+                        if($package['address_province'] == $row['province_nameEN']){
+                          echo "<option value=".$row['province_nameEN']." selected>".$row['province_nameEN']."</option>";
+                        }else{
+                          echo "<option value=".$row['province_nameEN'].">".$row['province_nameEN']."</option>";
+                        }
+  	                	}
+  	                }
+  	                ?>
 	              </select>
 							</div>
 						</div>
@@ -220,7 +220,7 @@ if(isset($price_range)){
 							<a href="tm-domestic-series-new.html" class="btn current">TOUR INFO</a>
 						</div>
 						<div class="col-sm-6 no-pd">
-							<a href="edit-outbound-package-condition?tour=<?=$package['tour_nameSlug']?>&type=<?=$this->session->flashdata('f1')?>" class="btn no-setting">CONDITION</a>
+							<a href="edit-domestic-package-condition?tour=<?=$package['tour_nameSlug']?>&type=<?=$this->session->flashdata('f1')?>" class="btn no-setting">CONDITION</a>
 						</div>
 					</div>
 				</div>
@@ -292,12 +292,7 @@ if(isset($price_range)){
 									</div>
 									<div class="clear"></div><br>
 									<label>Advance booking days</label><br>
-                  <?php
-                  $date1 = new DateTime($booking_timerange[0]['from']);
-                  $date2 = new DateTime($package['tour_openBooking']);
-                  $diff = $date2->diff($date1);
-                   ?>
-									<input id="advanceBooking" type="number" value="<?=$diff->format('%a');?>" min="0">
+									<input id="advanceBooking" type="number" value="<?=$package['tour_advanceBooking']?>" min="0">
 									<span class="unit">Day</span>
 								</div>
 							</div>
@@ -381,10 +376,10 @@ if(isset($price_range)){
               <input name="newNameSlug" type="hidden" required>
               <input name="agent" type="hidden" required>
               <input name="type" type="hidden" value="<?=$this->session->flashdata('f1')?>" required>
+              <input name="region" type="hidden" required>
+              <input name="province" type="hidden" required>
               <input name="nameTH" type="hidden" required>
               <input name="nameEN" type="hidden" required>
-              <input name="countryId" type="hidden" required>
-              <input name="continentId" type="hidden" required>
               <input name="overviewTH" type="hidden" required>
               <input name="overviewEN" type="hidden" required>
               <input name="descTH" type="hidden" required>
@@ -461,7 +456,7 @@ if(isset($price_range)){
 <script src="assets/js/script.js"></script>
 <script>
 $(document).ready(function(){
-  $('a[href="outbound-package?type='+$('#isTourType').val()+'"]').find('li').eq(0).addClass('current');
+  $('a[href="domestic-package?type='+$('#isTourType').val()+'"]').find('li').eq(0).addClass('current');
   $start_price = $('#startPrice').val();
   $('#startPrice').val(numberWithSpaces($start_price));
 });
@@ -484,8 +479,8 @@ function submit(){
     .replace(/^-+/, '')
     .replace(/-+$/, '');
   $agent = $('select[name=agent]').find('option:selected').val();
-  $continentId = $('select[name=continent]').val();
-  $countryId = $('select[name=country]').val();
+  $region = $('select[name=region]').val();
+  $province = $('select[name=province]').find('option:selected').text();
   $overviewTH = $('#overviewTH').val();
   $overviewEN = $('#overviewEN').val();
   $descTH = $('#descTH').val();
@@ -496,13 +491,14 @@ function submit(){
   $startPrice = $('#startPrice').val().replace(' ','');
   $day = $('select[name=daytrip]').val();
   $night = $day-1;
+
   $('input[name=oldNameSlug]').val($nameSlug);
   $('input[name=newNameSlug]').val($newNameSlug);
   $('input[name=nameTH]').val($nameTH);
   $('input[name=nameEN]').val($nameEN);
   $('input[name=agent]').val($agent);
-  $('input[name=countryId]').val($countryId);
-  $('input[name=continentId]').val($continentId);
+  $('input[name=region]').val($region);
+  $('input[name=province]').val($province);
   $('input[name=overviewTH]').val($overviewTH);
   $('input[name=overviewEN]').val($overviewEN);
   $('input[name=descTH]').val($descTH);
@@ -618,7 +614,7 @@ function numberWithSpaces(x) {
 	            var daytrip = parseInt($('select[name="daytrip"]').val());
 	            $(this).closest('.form-group').find('.date.to').datepicker({
 			      	buttonText: "Select date",
-			      	dateFormat: 'd/m/yy' });
+			      	dateFormat: 'yy-mm-dd' });
 	            to.setDate(to.getDate()+daytrip);
 	            $(this).closest('.form-group').find('.date.to').datepicker('setDate', to);}
 	    	});
