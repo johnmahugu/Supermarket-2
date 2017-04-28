@@ -374,6 +374,7 @@ if(isset($price_range)){
               <input name="type" type="hidden" value="<?=$this->session->flashdata('f1')?>" required>
               <input name="nameTH" type="hidden" required>
               <input name="nameEN" type="hidden" required>
+              <input name="startPrice" type="hidden" required>
               <input name="countryId" type="hidden" required>
               <input name="continentId" type="hidden" required>
               <input name="overviewTH" type="hidden" required>

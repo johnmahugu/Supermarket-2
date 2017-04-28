@@ -182,6 +182,25 @@ class PackageCL extends CI_Controller {
 		$this->load->view('edit_outbound_easy_package_service',$data);
 	}
 
+	function update_outbound_package_service(){
+		/********************Initial valiable********************/
+		$oldNameSlug = $this->input->post('oldNameSlug');
+		$newNameSlug = $this->input->post('newNameSlug');
+		$type = $this->input->post('type');
+		$this->session->set_flashdata('f1', $type);
+		$nameTH = $this->input->post('nameTH');
+		$nameEN = $this->input->post('nameEN');
+		$country = $this->input->post('country');
+		$continent = $this->input->post('continent');
+		$startPrice = $this->input->post('startPrice');
+		$roomtype = $this->input->post('roomtype');
+		$roomprice = $this->input->post('roomprice');
+		$hotel = $this->input->post('hotel');
+		$this->PackageMD->updatePackageService($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$startPrice,$roomtype,$roomprice,$hotel);
+		$this->PackageMD->updateOutboundLocation($newNameSlug,$country,$continent);
+		redirect('outbound-package?type='.$type, 'refresh');
+	}
+
 	function update_domestic_package(){
 		/********************Initial valiable********************/
 		$oldNameSlug = $this->input->post('oldNameSlug');
@@ -190,6 +209,7 @@ class PackageCL extends CI_Controller {
 		$this->session->set_flashdata('f1', $type);
 		$nameTH = $this->input->post('nameTH');
 		$nameEN = $this->input->post('nameEN');
+		$startPrice = $this->input->post('startPrice');
 		$agent = $this->input->post('agent');
 		$regionId = $this->input->post('region');
 		$province = $this->input->post('province');
@@ -202,7 +222,7 @@ class PackageCL extends CI_Controller {
 		$advanceBooking = $this->input->post('advanceBooking');
 		$dayNight = $this->input->post('dayNight');
 		$priceRange = $this->input->post('priceRange');
-		$result = $this->PackageMD->updatePackage($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$agent,$overviewTH,$overviewEN,$descTH,$descEN,$briefTH,$briefEN,$advanceBooking,$dayNight,$priceRange);
+		$result = $this->PackageMD->updatePackage($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$agent,$startPrice,$overviewTH,$overviewEN,$descTH,$descEN,$briefTH,$briefEN,$advanceBooking,$dayNight,$priceRange);
 		$this->PackageMD->updateDomesticLocation($newNameSlug,$regionId,$province);
 		$encoded = $_POST['image-data'];
 		if($encoded != ''){
@@ -253,6 +273,7 @@ class PackageCL extends CI_Controller {
 		$this->session->set_flashdata('f1', $type);
 		$nameTH = $this->input->post('nameTH');
 		$nameEN = $this->input->post('nameEN');
+		$startPrice = $this->input->post('startPrice');
 		$agent = $this->input->post('agent');
 		$country = $this->input->post('country');
 		$continent = $this->input->post('continent');
@@ -265,7 +286,7 @@ class PackageCL extends CI_Controller {
 		$advanceBooking = $this->input->post('advanceBooking');
 		$dayNight = $this->input->post('dayNight');
 		$priceRange = $this->input->post('priceRange');
-		$result = $this->PackageMD->updatePackage($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$agent,$overviewTH,$overviewEN,$descTH,$descEN,$briefTH,$briefEN,$advanceBooking,$dayNight,$priceRange);
+		$result = $this->PackageMD->updatePackage($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$startPrice,$agent,$overviewTH,$overviewEN,$descTH,$descEN,$briefTH,$briefEN,$advanceBooking,$dayNight,$priceRange);
 		$this->PackageMD->updateOutboundLocation($newNameSlug,$country,$continent);
 		$encoded = $_POST['image-data'];
 		if($encoded != ''){

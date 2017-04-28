@@ -77,3 +77,5 @@ $route['change-highlight'] = 'PackageCL/change_highlight';
 $route['update-pdf'] = 'PackageCL/update_pdf';
 $route['edit-domestic-package-service'] = 'PackageCL/edit_domestic_package_service';
 $route['edit-outbound-package-service'] = 'PackageCL/edit_outbound_package_service';
+$route['update-domestic-package-service'] = 'PackageCL/update_domestic_package_service';
+$route['update-outbound-package-service'] = 'PackageCL/update_outbound_package_service';

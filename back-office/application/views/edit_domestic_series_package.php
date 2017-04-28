@@ -375,6 +375,7 @@ if(isset($price_range)){
               <input name="province" type="hidden" required>
               <input name="nameTH" type="hidden" required>
               <input name="nameEN" type="hidden" required>
+              <input name="startPrice" type="hidden" required>
               <input name="overviewTH" type="hidden" required>
               <input name="overviewEN" type="hidden" required>
               <input name="descTH" type="hidden" required>

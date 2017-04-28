@@ -93,16 +93,12 @@ class HomepageMD extends CI_Model {
 			tour.tour_startPrice,
 			tour.tour_priceRange,
 			tour.tour_currency,
-			image.img_source,
-			countries.country_name
+			image.img_source
 		");
     $this->db->from('tour');
     $this->db->join('image', 'tour.tour_imgCover = image.img_refid', 'inner');
     $this->db->join('tour_address', 'tour.tour_id = tour_address.tour_id', 'inner');
     $this->db->join('address', 'tour_address.address_id = address.address_id', 'inner');
-    $this->db->join('countries', 'address.country_id = countries.country_id', 'inner');
-    $this->db->join('continents', 'address.continent_id = continents.continent_id', 'inner');
-    $this->db->join('geography', 'address.geography_id = geography.geography_id');
     $this->db->where('image.img_type', 'tour cover');
     $this->db->where('tour.tour_type', $type);
     $this->db->where('tour.tour_public','1');
@@ -110,13 +106,13 @@ class HomepageMD extends CI_Model {
       $this->db->where('tour.tour_season', $season);
     }
     if ($region != '') {
-      $this->db->where('geography.geography_nameEN', $region);
+      $this->db->where('address.geography_id', $region);
     }
     if ($province != '') {
       $this->db->where('address.address_province', $province);
     }
     if ($continent != '') {
-      $this->db->where('continents.continent_name', $continent);
+      $this->db->where('address.continent_id', $continent);
     }
     if ($country != '') {
       if ($country == 'thailand') {
@@ -124,7 +120,7 @@ class HomepageMD extends CI_Model {
       } else if ($country == 'international') {
         $this->db->where('tour.tour_nationality !=', 'thailand domestic tour');
       } else {
-        $this->db->where('countries.country_name', $country);
+        $this->db->where('address.country_id', $country);
       }
     }
     if ($keysearch != '') {
@@ -142,7 +138,7 @@ class HomepageMD extends CI_Model {
   }
 
   function getRegion() {
-    $this->db->select("geography.geography_nameTH, geography.geography_nameEN");
+    $this->db->select("geography.geography_id,geography.geography_nameTH, geography.geography_nameEN");
     $this->db->from('geography');
     return $this->db->get();
   }
@@ -154,14 +150,14 @@ class HomepageMD extends CI_Model {
   }
 
   function getContinent() {
-    $this->db->select("continents.continent_name");
+    $this->db->select("continents.continent_id, continents.continent_name");
     $this->db->from('continents');
     $this->db->order_by('continents.continent_name', 'ASC');
     return $this->db->get();
   }
 
   function getCountry() {
-    $this->db->select("countries.country_name");
+    $this->db->select("countries.country_id, countries.country_name");
     $this->db->from('countries');
     $this->db->order_by('countries.country_name', 'ASC');
     return $this->db->get();

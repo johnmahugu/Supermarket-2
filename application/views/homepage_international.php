@@ -164,7 +164,7 @@
                 <?php
                   if(isset($continent)){
                   	foreach($continent->result_array() as $row){
-                  		echo "<option>".$row['continent_name']."</option>";
+                  		echo "<option value='".$row['continent_id']."'>".$row['continent_name']."</option>";
                   	}
                   }
                   ?>
@@ -181,7 +181,7 @@
                 <?php
                   if(isset($country)){
                   	foreach($country->result_array() as $row){
-                  		echo "<option>".$row['country_name']."</option>";
+                  		echo "<option value='".$row['country_id']."'>".$row['country_name']."</option>";
                   	}
                   }
                   ?>

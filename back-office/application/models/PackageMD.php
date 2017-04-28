@@ -205,7 +205,7 @@ class PackageMD extends CI_Model {
     return self::$db->get();
   }
 
-  function updatePackage($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$agent,$overviewTH,$overviewEN,$descTH,$descEN,$briefTH,$briefEN,$advanceBooking,$dayNight,$priceRange){
+  function updatePackage($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$startPrice,$agent,$overviewTH,$overviewEN,$descTH,$descEN,$briefTH,$briefEN,$advanceBooking,$dayNight,$priceRange){
     self::$db->trans_begin();
     $data = array(
       'tour_nameSlug' => $newNameSlug,
@@ -220,7 +220,8 @@ class PackageMD extends CI_Model {
       'tour_briefingEN' => $briefEN,
       'tour_advanceBooking' => $advanceBooking,
       'tour_dayNight' => $dayNight,
-      'tour_priceRange' => $priceRange
+      'tour_priceRange' => $priceRange,
+      'tour_startPrice' => $startPrice
     );
     self::$db->where('tour_nameSlug', $oldNameSlug);
     self::$db->update('tour', $data);
@@ -328,6 +329,65 @@ class PackageMD extends CI_Model {
     );
     self::$db->where('tour_id', $tour_id);
     self::$db->update('tour',$data);
+
+    self::$db->trans_complete();
+    if (self::$db->trans_status() === FALSE) {
+      self::$db->trans_rollback();
+      return false;
+    } else {
+      self::$db->trans_commit();
+      return true;
+    }
+  }
+
+  function updatePackageService($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$startPrice,$roomtype,$roomprice,$hotel){
+    self::$db->trans_begin();
+    $data = array(
+      'tour_nameSlug' => $newNameSlug,
+      'tour_nameTH' => $nameTH,
+      'tour_nameEN' => $nameEN,
+			'tour_startPrice' => $startPrice
+    );
+    self::$db->where('tour_nameSlug', $oldNameSlug);
+    self::$db->update('tour', $data);
+
+    $query = 'SELECT tour_id FROM tour WHERE tour_nameSlug ="'.$newNameSlug.'"';
+    $result = self::$db->query($query);
+    $result = $result->row_array(0);
+    $tour_id = $result['tour_id'];
+
+    $query = 'DELETE FROM tour_condition WHERE tour_id = "'.$tour_id.'" AND tc_type="room"';
+    self::$db->query($query);
+    $roomtype = explode(",",$roomtype);
+    $c_roomtype = count($roomtype);
+    $roomprice = explode(",",$roomprice);
+    for($i=0;$i<$c_roomtype;$i++){
+      if($roomprice[$i] != 0){
+        $data = array(
+          'tour_id' => $tour_id,
+          'tc_condition' => 'increase',
+          'tc_price' => $roomprice[$i],
+          'tc_type' => 'room',
+          'tc_title' => NULL,
+          'tc_data' => '[{"roomtype":"'.$roomtype[$i].'","roomdetail":""}]',
+          'tc_order' => ($i+1)
+        );
+        self::$db->insert('tour_condition',$data);
+      }
+    }
+
+    $query = 'DELETE FROM tour_condition WHERE tour_id = "'.$tour_id.'" AND tc_type="hotel"';
+    self::$db->query($query);
+    $data = array(
+      'tour_id' => $tour_id,
+      'tc_condition' => NULL,
+      'tc_price' => NULL,
+      'tc_type' => 'hotel',
+      'tc_title' => NULL,
+      'tc_data' => $hotel,
+      'tc_order' => '1'
+    );
+    self::$db->insert('tour_condition',$data);
 
     self::$db->trans_complete();
     if (self::$db->trans_status() === FALSE) {

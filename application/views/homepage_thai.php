@@ -160,15 +160,12 @@
               <p>Region</p>
               <br>
               <select name="region">
-              <?php if($lang == 'TH'){
-                echo '<option>ทุกภาค</option>';
-                }else{
-                echo '<option>All Region</option>';
-                }
+                <option>All Region</option>
+              <?php
                 if(isset($region)){
-                foreach($region->result_array() as $row){
-                	echo "<option value=".$row['geography_nameEN'].">".$row['geography_name'.$lang]."</option>";
-                }
+                  foreach($region->result_array() as $row){
+                  	echo "<option value=".$row['geography_id'].">".$row['geography_name'.$lang]."</option>";
+                  }
                 }
                 ?>
               </select>
@@ -180,12 +177,8 @@
               <p>Province</p>
               <br>
               <select name="province">
+                <option>All Province</option>
               <?php
-                if($lang == 'TH'){
-                	echo '<option>ทุกจังหวัด</option>';
-                }else{
-                	echo '<option>All Province</option>';
-                }
                 if(isset($province)){
                 	foreach($province->result_array() as $row){
                 		echo "<option value=".$row['province_nameEN'].">".$row['province_name'.$lang]."</option>";
