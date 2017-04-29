@@ -386,7 +386,7 @@ class PackageCL extends CI_Controller {
 		file_put_contents('filestorage/temp/'.$file, $a);
 		$this->upload_cover($file);
 		sleep(3);
-		redirect('domestic-package?type='.$type, 'refresh');
+		redirect('edit-domestic-package?tour='.$newnameSlug.'&type='.$type, 'refresh');
 	}
 
 	function insert_outbound_package(){
@@ -416,13 +416,13 @@ class PackageCL extends CI_Controller {
 		file_put_contents('filestorage/temp/'.$file, $a);
 		$this->upload_cover($file);
 		sleep(3);
-		redirect('outbound-package?type='.$type, 'refresh');
+		redirect('edit-outbound-package?tour='.$newnameSlug.'&type='.$type, 'refresh');
 	}
 
 	function update_pdf(){
 		$nameSlug = $this->input->post('nameSlug');
 		$config['upload_path'] = 'filestorage/temp/';
-    $config['allowed_types'] = 'pdf';
+    $config['allowed_types'] = 'pdf|word';
     $config['file_name'] = $nameSlug;
 		$this->upload->initialize($config);
 		if($this->upload->do_upload("file")){

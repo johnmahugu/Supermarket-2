@@ -25,7 +25,7 @@ if(isset($price_range)){
 	<link rel="stylesheet" href="assets/css/dropzone.css">
 	<script src="assets/js/ckeditor/ckeditor.js"></script>
 	<script src="assets/js/jquery.cropit.js"></script>
-
+  <script src="assets/js/date.format.js"></script>
 	<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="">
@@ -245,7 +245,7 @@ if(isset($price_range)){
 								    <div class="btn upload">Choose Cover Image</div>
 								</div>
 								<div class="col-md-8">
-									<label>Tour Agency</label>
+									<label>Wholesale Agency Company</label>
                   <select name="agent">
   	              <?php
   	                if(isset($agency)){
@@ -538,12 +538,14 @@ function submit(){
   $result = '[';
   for($i=0;$i<$priceRange.length;$i++){
     $($priceRange[$i]).find('input').each(function(i){
+      $d_temp = $(this).val().split("/");
+      $d_temp = new Date($d_temp[2]+'-'+$d_temp[1]+'-'+$d_temp[0]);
       switch(i%3){
         case 0:
-          $from = $(this).val();
+          $from = dateFormat($d_temp, "yyyy-mm-dd");
         break;
         case 1:
-          $to = $(this).val();
+          $to = dateFormat($d_temp, "yyyy-mm-dd");
         break;
         case 2:
           $price = $(this).val();
@@ -631,13 +633,13 @@ function numberWithSpaces(x) {
     	var dateindex = $(this).closest('.form-group').index();
 	    $('.content.dp .form-group:eq('+dateindex+') .date.from').datepicker({
 	    	buttonText: "Select date",
-	      	dateFormat: 'yy-mm-dd',
+	      	dateFormat: 'dd/mm/yy',
 	        onSelect: function(date){
 	            var to = $(this).datepicker('getDate');
 	            var daytrip = parseInt($('select[name="daytrip"]').val());
 	            $(this).closest('.form-group').find('.date.to').datepicker({
 			      	buttonText: "Select date",
-			      	dateFormat: 'yy-mm-dd' });
+			      	dateFormat: 'dd/mm/yy' });
 	            to.setDate(to.getDate()+daytrip);
 	            $(this).closest('.form-group').find('.date.to').datepicker('setDate', to);}
 	    	});

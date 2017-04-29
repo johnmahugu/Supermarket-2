@@ -25,8 +25,7 @@ if(isset($price_range)){
 	<link rel="stylesheet" href="assets/css/dropzone.css">
 	<script src="assets/js/ckeditor/ckeditor.js"></script>
 	<script src="assets/js/jquery.cropit.js"></script>
-  <script src="http://malsup.github.com/jquery.form.js"></script>
-
+  <script src="assets/js/date.format.js"></script>
 	<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="">
@@ -246,7 +245,7 @@ if(isset($price_range)){
 								    <div class="btn upload">Choose Cover Image</div>
 								</div>
 								<div class="col-md-8">
-									<label>Tour Agency</label>
+									<label>Wholesale Agency Company</label>
                   <select name="agent">
   	              <?php
   	                if(isset($agency)){
@@ -284,6 +283,11 @@ if(isset($price_range)){
 									<div class="col-md-6 col-xs-12 text-center">
 										<div class="btn border light full" data-toggle="modal" id="pdf" data-target="#addFile">
 											<i class="fa fa-file-pdf-o" aria-hidden="true"></i> Click Upload pdf file
+										</div>
+									</div>
+                  <div class="col-md-6 col-xs-12 text-center">
+										<div class="btn border light full" data-toggle="modal" id="word" data-target="#addFile">
+											<i class="fa fa-file-word-o" aria-hidden="true"></i> Click Upload word file
 										</div>
 									</div>
 									<div class="clear"></div><br>
@@ -333,13 +337,13 @@ if(isset($price_range)){
 									<div class="col-md-3 col-sm-6 form-inline">
 										<label>From</label>
 										<span>
-											<input type="text" class="date from" value="<?=$booking_timerange[$i]['from']?>" readonly="readonly">
+											<input type="text" class="date from" value="<?=date_format(date_create($booking_timerange[$i]['from']), 'd/m/Y')?>" readonly="readonly">
 										</span>
 									</div>
 									<div class="col-md-3 col-sm-6 form-inline">
 										<label>To</label>
 										<span>
-											<input type="text" class="date to" value="<?=$booking_timerange[$i]['to']?>" readonly="readonly" disabled>
+											<input type="text" class="date to" value="<?=date_format(date_create($booking_timerange[$i]['to']), 'd/m/Y')?>" readonly="readonly" disabled>
 										</span>
 									</div>
 									<div class="col-md-3 col-md-offset-1 col-sm-8 form-inline">
@@ -386,7 +390,7 @@ if(isset($price_range)){
               <input name="advanceBooking" type="hidden" required>
               <input name="dayNight" type="hidden" required>
               <input name="priceRange" type="hidden" required>
-						  <button id="submit" type="submit" class="btn bold">Add Package</button>
+						  <button id="submit" type="submit" class="btn bold">Update Package</button>
             </form>
 					</div>
 				</div>
@@ -466,8 +470,8 @@ $(document).ready(function(){
   $('a[href="outbound-package?type='+$('#isTourType').val()+'"]').find('li').eq(0).addClass('current');
   $start_price = $('#startPrice').val();
   $('#startPrice').val(numberWithSpaces($start_price));
-
 });
+
 
 $('#submitfile').click(function(){
   var formData = new FormData($("#update-pdf")[0]);
@@ -539,12 +543,14 @@ function submit(){
   $result = '[';
   for($i=0;$i<$priceRange.length;$i++){
     $($priceRange[$i]).find('input').each(function(i){
+      $d_temp = $(this).val().split("/");
+      $d_temp = new Date($d_temp[2]+'-'+$d_temp[1]+'-'+$d_temp[0]);
       switch(i%3){
         case 0:
-          $from = $(this).val();
+          $from = dateFormat($d_temp, "yyyy-mm-dd");
         break;
         case 1:
-          $to = $(this).val();
+          $to = dateFormat($d_temp, "yyyy-mm-dd");
         break;
         case 2:
           $price = $(this).val();
@@ -632,13 +638,13 @@ function numberWithSpaces(x) {
     	var dateindex = $(this).closest('.form-group').index();
 	    $('.content.dp .form-group:eq('+dateindex+') .date.from').datepicker({
 	    	buttonText: "Select date",
-	      	dateFormat: 'yy-mm-dd',
+	      	dateFormat: 'dd/mm/yy',
 	        onSelect: function(date){
 	            var to = $(this).datepicker('getDate');
 	            var daytrip = parseInt($('select[name="daytrip"]').val());
 	            $(this).closest('.form-group').find('.date.to').datepicker({
 			      	buttonText: "Select date",
-			      	dateFormat: 'yy-mm-dd' });
+			      	dateFormat: 'dd/mm/yy' });
 	            to.setDate(to.getDate()+daytrip);
 	            $(this).closest('.form-group').find('.date.to').datepicker('setDate', to);}
 	    	});

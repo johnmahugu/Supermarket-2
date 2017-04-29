@@ -131,7 +131,7 @@
               <p><?=$package['tour_type'];?></p>
             </div>
             <div class="description">
-              <p>Price: $<?=number_format($package['tour_startPrice']);?> <?=$package['tour_currency']?><br>
+              <p>Price: <?=number_format($package['tour_startPrice']);?> <?=$package['tour_currency']?><br>
                 <?php
                   $est_date = explode(",",$package['tour_dayNight']);
                   ?>
@@ -157,7 +157,7 @@
               ?>
             <tr>
               <td><?=date_format(date_create($booking_timerange[$i]['from']),"j M Y");?> - <?=date_format(date_create($booking_timerange[$i]['to']),"j M Y");?></td>
-              <td>$<?=number_format($booking_timerange[$i]['price']);?> <?=$package['tour_currency']?></td>
+              <td><?=number_format($booking_timerange[$i]['price']);?> <?=$package['tour_currency']?></td>
             </tr>
             <?php
                 }

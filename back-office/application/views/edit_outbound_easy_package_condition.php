@@ -637,9 +637,9 @@ foreach($condition->result_array() as $row){
 									<span>
                     <?php
                     if($package['tour_minimum'] > 0){
-                      echo '<input id="paxminimum" type="number" placeholder="People" value="'.$package['tour_minimum'].'">';
+                      echo '<input id="paxminimum" type="number" placeholder="Person" value="'.$package['tour_minimum'].'">';
                     }else{
-                      echo '<input id="paxminimum" type="number" placeholder="People" disabled>';
+                      echo '<input id="paxminimum" type="number" placeholder="Person" disabled>';
                     }
                      ?>
 										<span class="unit">Pax</span>
@@ -673,7 +673,7 @@ foreach($condition->result_array() as $row){
               <input name="pridiscountRate" type="hidden" required>
               <input name="paxdouble" type="hidden" required>
               <input name="paxminimum" type="hidden" required>
-              <button id="submit" type="submit" class="btn bold">Add Package</button>
+              <button id="submit" type="submit" class="btn bold">Update Package</button>
             </form>
 					</div>
 				</div>

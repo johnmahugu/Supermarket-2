@@ -19,6 +19,12 @@ class HomepageCL extends CI_Controller {
     redirect('thai-tour');
   }
 
+  function hilight(){
+    $query = $this->HomepageMD->getHiLightPackage();
+    $data['package'] = $query->result();
+    echo json_encode($data);
+  }
+
   function thai_tour() {
     /********************Initial Variable********************/
     $this->country = 'thailand';

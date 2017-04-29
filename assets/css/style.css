@@ -214,8 +214,7 @@ div.ui-datepicker {
   position: relative;
   height: 100%;
   margin: 0px 0;
-  padding: 10px 0;
-  background-color: white; }
+  padding: 10px 0; }
 
 .owl-carousel .owl-controls {
   position: absolute;
@@ -226,10 +225,6 @@ div.ui-datepicker {
 .owl-theme .owl-controls .owl-page span {
   margin: 5 20px;
   background-color: white; }
-
-.owl-carousel .owl-item .item img {
-  width: 100%;
-  display: block; }
 
 .owl-theme .owl-controls .owl-page {
   margin: 10px 5px !important; }
@@ -1435,6 +1430,41 @@ div.ui-datepicker {
 #multiple tr td:last-child {
   width: 30%; }
 
+.owl-theme .owl-controls {
+  margin-top: -30px;
+  position: relative; }
+  .owl-theme .owl-controls .owl-buttons div {
+    position: absolute;
+    color: gray;
+    background-color: transparent; }
+
+.owl-carousel {
+  position: relative;
+  height: 100%;
+  margin: 30px 0;
+  min-height: 250px; }
+  .owl-carousel .owl-item .item {
+    min-width: 290px;
+    display: inline-block; }
+  .owl-carousel.owl-theme .owl-controls .owl-buttons > div {
+    position: absolute;
+    background-color: transparent;
+    color: #2e3193;
+    font-size: 3em;
+    font-family: FontAwesome; }
+  .owl-carousel.owl-theme .owl-controls .owl-buttons .owl-prev {
+    left: -50px;
+    top: calc(50% - 240px); }
+  .owl-carousel.owl-theme .owl-controls .owl-buttons .owl-next {
+    right: -50px;
+    top: calc(50% - 240px); }
+
+#jointour:checked + span {
+  color: #2e3193; }
+
+#joinchart {
+  opacity: 0.5; }
+
 @media only screen and (max-width: 992px) {
   .hilight-box {
     margin-top: 0px; }
@@ -1547,10 +1577,10 @@ div.ui-datepicker {
       .form-group table tbody tr td:nth-of-type(3), .form-group table tbody tr td:nth-of-type(4) {
         width: 50%;
         padding-left: 10px; }
-      .form-group table tbody tr td:nth-of-type(5), .form-group table tbody tr td:nth-of-type(6), .form-group table tbody tr td:nth-of-type(7) {
-        width: 33.33%;
+      .form-group table tbody tr td:nth-of-type(n+5) {
+        width: 50%;
         float: left;
-        padding-left: 10px; }
+        padding: 0  0 0 10px; }
       .form-group table tbody tr td span {
         display: block;
         font-size: 0.9em;

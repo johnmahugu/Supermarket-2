@@ -216,7 +216,7 @@
           </div>
             <?php
           }
-          if(isset($condition_option_activity)){
+          if(isset($condition_option_activity) && $condition_option_activity->num_rows() > 0){
            ?>
           <div class="form-group" id="multiple">
             <?php
@@ -422,6 +422,7 @@
       if($('#minimum').val() > 0){
         $('#tourist-total-num').val($('#minimum').val());
         $('#tourist-total-num').prop('min',$('#minimum').val());
+        $('#total-tourist').html($('#minimum').val());
       }
     });
 
@@ -481,6 +482,11 @@
       }
     }
 
+    $daterange = $('#daterange').val().split("'").join("\"");
+    $daterange = JSON.parse($daterange);
+    $dateStart = new Date($daterange[0]['from']);
+    $dateFinish = new Date($daterange[$daterange.length-1]['to']);
+
     $('.date').datepicker({
       dateFormat:"dd/mm/yy",
       beforeShowDay: function(date) {
@@ -493,7 +499,8 @@
             return [true,""];
           }
         return [false,""];
-      }
+      },minDate: $dateStart,
+      maxDate: $dateFinish
     });
 
     $('.date').change(function(){
@@ -852,11 +859,15 @@
         $total_amount += $num*$extension_price[1]['price'];
       }
     }
-    $extension_activity_price = $('input:radio[name=extension-activity]:checked').attr('price');
-    for($i=0;$i<$count;$i++){
-      $num = parseInt($('.tourist-num').eq($i).val(),10);
-      $total_amount += $num*$extension_activity_price;
+
+    if($('input:radio[name=extension-activity]:checked').attr('price') != undefined){
+      $extension_activity_price = $('input:radio[name=extension-activity]:checked').attr('price');
+      for($i=0;$i<$count;$i++){
+        $num = parseInt($('.tourist-num').eq($i).val(),10);
+        $total_amount += $num*$extension_activity_price;
+      }
     }
+
     $('.totalamount').html(numeral($total_amount).format('0,0'));
 
     $isPrivateGroup = $('#isPrivateGroup').val();

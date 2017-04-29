@@ -182,15 +182,6 @@ foreach($condition->result_array() as $row){
 					<li>Tour Agency Management</li>
 				</a>
 			</ul>
-			<div class="title-line">
-				<h3>Tour Agency</h3>
-				<hr>
-			</div>
-			<ul>
-				<a href="tm-touragency-main.html">
-					<li>Tour Agency Management</li>
-				</a>
-			</ul>
 		</aside>
 		<main>
 			<div class="title-bar-wrapper">
@@ -641,7 +632,7 @@ foreach($condition->result_array() as $row){
               <input name="roomtype" type="hidden" required>
               <input name="roomprice" type="hidden" required>
               <input name="hotel" type="hidden" required>
-  						<button id="submit" type="submit" class="btn bold">Add Package</button>
+  						<button id="submit" type="submit" class="btn bold">Update Package</button>
             </form>
 					</div>
 				</div>

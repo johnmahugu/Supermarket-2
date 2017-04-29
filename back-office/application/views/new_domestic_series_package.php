@@ -16,6 +16,7 @@
 	<script src="assets/js/ckeditor/ckeditor.js"></script>
 	<script src="assets/js/jquery.cropit.js"></script>
   <script src="assets/js/date.js"></script>
+	<script src="assets/js/date.format.js"></script>
 	<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="">
@@ -219,7 +220,7 @@
 								    <div class="btn upload">Choose Cover Image</div>
 								</div>
 								<div class="col-md-8">
-									<label>Tour Agency</label>
+									<label>Wholesale Agency Company</label>
                   <select name="agent">
   	              <?php
   	                if(isset($agency)){
@@ -561,13 +562,13 @@ function numberWithSpaces(x) {
     	var dateindex = $(this).closest('.form-group').index();
 	    $('.content.dp .form-group:eq('+dateindex+') .date.from').datepicker({
 	    	buttonText: "Select date",
-	      	dateFormat: 'yy-mm-dd',
+	      	dateFormat: 'dd/mm/yy',
 	        onSelect: function(date){
 	            var to = $(this).datepicker('getDate');
 	            var daytrip = parseInt($('select[name="daytrip"]').val());
 	            $(this).closest('.form-group').find('.date.to').datepicker({
 			      	buttonText: "Select date",
-			      	dateFormat: 'yy-mm-dd' });
+			      	dateFormat: 'dd/mm/yy' });
 	            to.setDate(to.getDate()+daytrip);
 	            $(this).closest('.form-group').find('.date.to').datepicker('setDate', to);}
 	    	});

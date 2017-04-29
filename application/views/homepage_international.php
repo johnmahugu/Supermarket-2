@@ -206,7 +206,7 @@
         </div>
       </div>
     </div>
-    <div class="container normal">
+    <div class="container tourprogram show">
       <div class="hilight-box row">
         <div class="hilight-title">
           <div class="col-md-12">
@@ -423,19 +423,119 @@
         }
       	$result = getPackage($base_url, $type, $region, $province, $continent, $country, $season, $keysearch, $ref_url, $offset);
         if($result != ''){
-          $('.tour-package').html('');
-        	$('.pagination').html('');
-        	$('.tour-package').html($result['list_package']);
-        	$('.pagination').html($result['pagination_links']);
+          if($region != '' || $province != '' || $continent != ''){
+            $('.tour-package').html('');
+            $('.tourprogram.show').html('');
+          	$('.tourprogram.show').html($result['list_package']);
+          }else{
+            $('.tourprogram.show').html('');
+            $('.tourprogram.show').html(getHilight());
+            $('.tour-package').html('');
+            $('.tour-package').html($result['list_package']);
+            $(".hilight-slide").owlCarousel({
+                pagination : false,
+                navigation: true,
+                items:3,
+                autoPlay: 5000,
+                nav:true,
+                navigationText: ["&#xf104","&#xf105"],
+                responsiveClass:true,
+                responsive:{
+                    480:{
+                        items:1,
+                    },
+                    768:{
+                        items:2,
+                    },
+                    1000:{
+                        items:3,
+                        loop:false
+                    }
+                      }
+                    });
+          }
         }else{
-          $result = getPackage($base_url, $type, $region, $province, $continent, $country, $season, $keysearch, $ref_url, 0);
-          $('.tour-package').html('');
-        	$('.pagination').html('');
-        	$('.tour-package').html($result['list_package']);
-        	$('.pagination').html($result['pagination_links']);
+          if($region == '' && $province == '' && $continent == '' && $season == ''){
+            if($country == 'thailand' || $country == 'international'){
+              $('.tourprogram.show').html('');
+              $('.tourprogram.show').html(getHilight());
+              $result = getPackage($base_url, $type, $region, $province, $continent, $country, $season, $keysearch, $ref_url, 0,1);
+              $('.tourprogram.show').append($result['list_package']);
+              $(".hilight-slide").owlCarousel({
+                  pagination : false,
+                  navigation: true,
+                  items:3,
+                  autoPlay: 5000,
+                  nav:true,
+                  navigationText: ["&#xf104","&#xf105"],
+                  responsiveClass:true,
+                  responsive:{
+                      480:{
+                          items:1,
+                      },
+                      768:{
+                          items:2,
+                      },
+                      1000:{
+                          items:3,
+                          loop:false
+                      }
+                  }
+              });
+            }else{
+              $('.tourprogram.show').html('');
+              $result = getPackage($base_url, $type, $region, $province, $continent, $country, $season, $keysearch, $ref_url, 0,2);
+              $('.tourprogram.show').html($result['list_package']);
+            }
+          }else{
+            $('.tourprogram.show').html('');
+            $result = getPackage($base_url, $type, $region, $province, $continent, $country, $season, $keysearch, $ref_url, 0,2);
+            $('.tourprogram.show').html($result['list_package']);
+          }
         }
 
-      	function getPackage($base_url, $type, $region, $province, $continent, $country, $season, $keysearch, $ref_url, $offset){
+        $('.pagination').html('');
+        $('.pagination').html($result['pagination_links']);
+
+        function getHilight(){
+          $result = '';
+          $.ajax({
+      			type: 'POST',
+      			async : false,
+      			url:'/hilight',
+      			dataType: 'json',
+      			success:function(data){
+      				$result_hilight = listHilight(data);
+      			}
+      		});
+      		return $result_hilight;
+        }
+
+        function listHilight(data){
+          $result_hilight = '<div class="hilight-box row"><div class="hilight-title"><div class="col-md-12"><h2>HIGHLIGHT PROGRAM<br>';
+          $result_hilight += '<span>โปรแกรมทัวร์แนะนำ</span></h2></div></div><div class="hilight-slide owl-theme">';
+          for($i=0;$i<data['package'].length;$i++){
+            $date_range = JSON.parse(data['package'][$i].tour_priceRange);
+            $last_btr = $date_range.length-1;
+            $open_booking = new Date($date_range[0].from);
+            $close_booking = new Date($date_range[$last_btr].to);
+            $result_hilight += '<div class="item"><div class="tour-box"><div class="img">';
+            $result_hilight += '<img src="'+$base_url+data['package'][$i].img_source+'" alt="tour image cover">';
+            $result_hilight += '<div class="img-des"><p>Price: '+numeral(data['package'][$i].tour_startPrice).format('0,0')+' '+data['package'][$i].tour_currency+'<br>';
+            $est_dayNight = data['package'][$i].tour_dayNight.split(",");
+            $result_hilight += '<span>'+$est_dayNight[0]+' Day '+$est_dayNight[1]+' Night</span>';
+            $result_hilight += '</p></div></div><div class="tag"><p>'+data['package'][$i].tour_type+'</p></div>';
+            $result_hilight += '<div class="description">';
+            $result_hilight += '<p class="date">'+$open_booking.format("d mmmm yyyy")+' - '+$close_booking.format("d mmmm yyyy")+'</p>';
+            $result_hilight += '<a href="'+$base_url+'readmore?tour='+data['package'][$i].tour_nameSlug+'" class="btn bold"> Detail & Booking </a>';
+            $result_hilight += '<hr><a href="'+$base_url+'filestorage/pdf/'+data['package'][$i].tour_pdf+'">Download Program</a>';
+            $result_hilight += '</div></div></div>';
+          }
+          $result_hilight += '</div></div></div>';
+          return $result_hilight;
+        }
+
+      	function getPackage($base_url, $type, $region, $province, $continent, $country, $season, $keysearch, $ref_url, $offset, $mode){
       		$result = '';
       		$.ajax({
       			type: 'POST',
@@ -454,43 +554,90 @@
       				},
       			dataType: 'json',
       			success:function(data){
-      				$result = listPackage($base_url,data);
+      				$result = listPackage($base_url,data,$mode);
       			}
       		});
       		return $result;
       	}
 
-      	function listPackage($base_url, data){
+      	function listPackage($base_url, data, $mode){
       		$result = new Array();
       		$result['list_package'] = '';
       		$result['pagination_links'] = '';
       		if($.trim(data['package'])){
-      			$result = new Array();
-      			$result['list_package'] = '';
-      			for($i=0;$i<data['package'].length;$i++){
-      				$date_range = JSON.parse(data['package'][$i].tour_priceRange);
-      				$last_btr = $date_range.length-1;
-      				$open_booking = new Date($date_range[0].from);
-      				$close_booking = new Date($date_range[$last_btr].to);
-      				$result['list_package'] += '<div class="col-md-4 col-sm-6">';
-      				$result['list_package'] += '<div class="tour-box">';
-      				$result['list_package'] += '<div class="img">';
-      				$result['list_package'] += '<img src="'+$base_url+data['package'][$i].img_source+'" alt="tour image cover">';
-      				$result['list_package'] += '<div class="img-des">';
-              $result['list_package'] += '<p>Price: '+numeral(data['package'][$i].tour_startPrice).format('0,0')+' '+data['package'][$i].tour_currency+'<br>';
-      				$est_dayNight = data['package'][$i].tour_dayNight.split(",");
-      				$result['list_package'] += '<span>'+$est_dayNight[0]+' Day '+$est_dayNight[1]+' Night</span></p>';
-      				$result['list_package'] += '</div></div>';
-      				$result['list_package'] += '<div class="tag">';
-      				$result['list_package'] += '<p>'+data['package'][$i].tour_type+'</p>';
-      				$result['list_package'] += '</div>';
-      				$result['list_package'] += '<div class="description">';
-      				$result['list_package'] += '<p class="date">'+$open_booking.format("d mmmm yyyy")+' - '+$close_booking.format("d mmmm yyyy")+'</p>';
-      				$result['list_package'] += '<a href="'+$base_url+'readmore?tour='+data['package'][$i].tour_nameSlug+'" class="btn bold"> Detail & Booking </a>';
-      				$result['list_package'] += '<hr>';
-      				$result['list_package'] += '<a href="'+$base_url+'filestorage/pdf/'+data['package'][$i].tour_pdf+'">Download Program</a>';
-      				$result['list_package'] += '</div></div></div>';
-      			}
+            switch($mode){
+              case 1:
+              $result = new Array();
+          		$result['list_package'] = '';
+          		$result['pagination_links'] = '';
+          		if($.trim(data['package'])){
+          			$result = new Array();
+          			$result['list_package'] = '';
+                $result['list_package'] += '<div class="tours-program-box row"><div class="col-xs-12"><div class="title-header">';
+                $result['list_package'] += '<h2>ALL TOURS PROGRAM</h2><div class="line"><div class="tab"></div>';
+                $result['list_package'] += '</div></div></div>';
+                $result['list_package'] += '<div class="clear top-mg"></div><div class="tour-package">';
+          			for($i=0;$i<data['package'].length;$i++){
+          				$date_range = JSON.parse(data['package'][$i].tour_priceRange);
+          				$last_btr = $date_range.length-1;
+          				$open_booking = new Date($date_range[0].from);
+          				$close_booking = new Date($date_range[$last_btr].to);
+          				$result['list_package'] += '<div class="col-md-4 col-sm-6">';
+          				$result['list_package'] += '<div class="tour-box">';
+          				$result['list_package'] += '<div class="img">';
+          				$result['list_package'] += '<img src="'+$base_url+data['package'][$i].img_source+'" alt="tour image cover">';
+          				$result['list_package'] += '<div class="img-des">';
+                  $result['list_package'] += '<p>Price: '+numeral(data['package'][$i].tour_startPrice).format('0,0')+' '+data['package'][$i].tour_currency+'<br>';
+          				$est_dayNight = data['package'][$i].tour_dayNight.split(",");
+          				$result['list_package'] += '<span>'+$est_dayNight[0]+' Day '+$est_dayNight[1]+' Night</span></p>';
+          				$result['list_package'] += '</div></div>';
+          				$result['list_package'] += '<div class="tag">';
+          				$result['list_package'] += '<p>'+data['package'][$i].tour_type+'</p>';
+          				$result['list_package'] += '</div>';
+          				$result['list_package'] += '<div class="description">';
+          				$result['list_package'] += '<p class="date">'+$open_booking.format("d mmmm yyyy")+' - '+$close_booking.format("d mmmm yyyy")+'</p>';
+          				$result['list_package'] += '<a href="'+$base_url+'readmore?tour='+data['package'][$i].tour_nameSlug+'" class="btn bold"> Detail & Booking </a>';
+          				$result['list_package'] += '<hr>';
+          				$result['list_package'] += '<a href="'+$base_url+'filestorage/pdf/'+data['package'][$i].tour_pdf+'">Download Program</a>';
+          				$result['list_package'] += '</div></div></div>';
+          			}
+                $result['list_package'] += '</div>';
+          		}
+              break;
+              case 2:
+              $result = new Array();
+        			$result['list_package'] = '';
+              $result['list_package'] += '<div class="hilight-box row"><div class="col-xs-12"><div class="tour-header-bar result"><div class="title-header">';
+              $result['list_package'] += '<h2><i class="fa fa-plane" aria-hidden="true"></i> ALL TOURS PROGRAM</h2></div>';
+              $result['list_package'] += '<div class="digi">'+data['package'].length+' Programs</div><div class="clear"></div><h3>ALL OF OUTBOUND PACKAGE</h3></div>';
+              $result['list_package'] += '</div>';
+        			for($i=0;$i<data['package'].length;$i++){
+        				$date_range = JSON.parse(data['package'][$i].tour_priceRange);
+        				$last_btr = $date_range.length-1;
+        				$open_booking = new Date($date_range[0].from);
+        				$close_booking = new Date($date_range[$last_btr].to);
+        				$result['list_package'] += '<div class="col-md-4 col-sm-6">';
+        				$result['list_package'] += '<div class="tour-box">';
+        				$result['list_package'] += '<div class="img">';
+        				$result['list_package'] += '<img src="'+$base_url+data['package'][$i].img_source+'" alt="tour image cover">';
+        				$result['list_package'] += '<div class="img-des">';
+                $result['list_package'] += '<p>Price: '+numeral(data['package'][$i].tour_startPrice).format('0,0')+' '+data['package'][$i].tour_currency+'<br>';
+        				$est_dayNight = data['package'][$i].tour_dayNight.split(",");
+        				$result['list_package'] += '<span>'+$est_dayNight[0]+' Day '+$est_dayNight[1]+' Night</span></p>';
+        				$result['list_package'] += '</div></div>';
+        				$result['list_package'] += '<div class="tag">';
+        				$result['list_package'] += '<p>'+data['package'][$i].tour_type+'</p>';
+        				$result['list_package'] += '</div>';
+        				$result['list_package'] += '<div class="description">';
+        				$result['list_package'] += '<p class="date">'+$open_booking.format("d mmmm yyyy")+' - '+$close_booking.format("d mmmm yyyy")+'</p>';
+        				$result['list_package'] += '<a href="'+$base_url+'readmore?tour='+data['package'][$i].tour_nameSlug+'" class="btn bold"> Detail & Booking </a>';
+        				$result['list_package'] += '<hr>';
+        				$result['list_package'] += '<a href="'+$base_url+'filestorage/pdf/'+data['package'][$i].tour_pdf+'">Download Program</a>';
+        				$result['list_package'] += '</div></div></div>';
+        			}
+              $result['list_package'] += '</div>';
+              break;
+            }
       		}
       		if(data['pagination_links'] != "undefined"){
       			$result['pagination_links'] = data['pagination_links'];

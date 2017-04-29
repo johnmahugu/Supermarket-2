@@ -12,6 +12,7 @@ $route['_signin']                   = 'AuthenticationCL/signin_page';
 $route['signin']                    = 'AuthenticationCL/signin';
 $route['signup-page']               = 'AuthenticationCL/signup_page';
 $route['signout']                   = 'AuthenticationCL/signout';
+$route['hilight']                   = 'HomepageCL/hilight';
 $route['thai-tour']                 = 'HomepageCL/thai_tour';
 $route['thai-tour/(:num)']          = 'HomepageCL/thai_tour';
 $route['international-tour']        = 'HomepageCL/international_tour';
