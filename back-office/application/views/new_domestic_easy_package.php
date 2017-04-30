@@ -20,7 +20,7 @@
 	<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="">
-  <form id="insert-outbound-package" action="insert-outbound-package" method="post" enctype="multipart/form-data">
+  <form id="insert-domestic-package" action="insert-domestic-package" method="post" enctype="multipart/form-data">
 	<header>
 		<div class="header-bar">
 			<div class="logo">
@@ -352,7 +352,8 @@
             <input name="dayNight" type="hidden" required>
             <input name="priceRange" type="hidden" required>
             <input name="closeBooking" type="hidden" required>
-            <button id="submit" type="button" class="btn bold">Add Package</button>
+            <button id="submit" type="submit" class="btn bold">Add Package</button>
+					</form>
 					</div>
 				</div>
 			</div>

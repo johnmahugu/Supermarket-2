@@ -69,7 +69,7 @@ class PackageCL extends CI_Controller {
 	function delete_package() {
 		$tour_nameSlug = $this->input->get('tour');
 		$query = $this->PackageMD->removePackage($tour_nameSlug);
-		redirect('outbound-package?type=sp', 'refresh');
+		redirect($_SERVER['HTTP_REFERER']);
 	}
 
 	function change_public() {
@@ -114,9 +114,9 @@ class PackageCL extends CI_Controller {
 		$data['package'] = $query;
 		$data['condition'] = $this->PackageMD->editCondition($tour_nameSlug);
 		if($tour_type == 'sp'){
-			$this->load->view('edit_domestic_series_package_service',$data);
+			$this->load->view('edit_domestic_series_package_condition',$data);
 		}else{
-			echo 'Someting wrong. Please contact to developer.';
+			$this->load->view('edit_domestic_easy_package_condition',$data);
 		}
 	}
 
@@ -130,7 +130,11 @@ class PackageCL extends CI_Controller {
 		$query = $this->PackageMD->editPackageService($tour_nameSlug);
 		$data['package'] = $query;
 		$data['condition'] = $this->PackageMD->editCondition($tour_nameSlug);
-		$this->load->view('edit_domestic_easy_package_service',$data);
+		if($tour_type == 'sp'){
+			$this->load->view('edit_domestic_series_package_service',$data);
+		}else{
+			$this->load->view('edit_domestic_easy_package_service',$data);
+		}
 	}
 
 	function edit_outbound_package() {
@@ -222,7 +226,7 @@ class PackageCL extends CI_Controller {
 		$advanceBooking = $this->input->post('advanceBooking');
 		$dayNight = $this->input->post('dayNight');
 		$priceRange = $this->input->post('priceRange');
-		$result = $this->PackageMD->updatePackage($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$agent,$startPrice,$overviewTH,$overviewEN,$descTH,$descEN,$briefTH,$briefEN,$advanceBooking,$dayNight,$priceRange);
+		$result = $this->PackageMD->updatePackage($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$startPrice,$agent,$overviewTH,$overviewEN,$descTH,$descEN,$briefTH,$briefEN,$advanceBooking,$dayNight,$priceRange);
 		$this->PackageMD->updateDomesticLocation($newNameSlug,$regionId,$province);
 		$encoded = $_POST['image-data'];
 		if($encoded != ''){
@@ -261,6 +265,25 @@ class PackageCL extends CI_Controller {
 		$paxdouble = $this->input->post('paxdouble');
 		$paxminimum = $this->input->post('paxminimum');
 		$this->PackageMD->updatePackageCondition($oldNameSlug,$newNameSlug,$type,$nameTH,$nameEN,$startPrice,$roomtype,$roomprice,$optionname,$optioncond,$optionprice,$multidesc,$multicond,$multioption,$multiprice,$priincrease,$pridiscountRate,$paxdouble,$paxminimum);
+		$this->PackageMD->updateDomesticLocation($newNameSlug,$regionId,$province);
+		redirect('domestic-package?type='.$type, 'refresh');
+	}
+
+	function update_domestic_package_service(){
+		/********************Initial valiable********************/
+		$oldNameSlug = $this->input->post('oldNameSlug');
+		$newNameSlug = $this->input->post('newNameSlug');
+		$type = $this->input->post('type');
+		$this->session->set_flashdata('f1', $type);
+		$nameTH = $this->input->post('nameTH');
+		$nameEN = $this->input->post('nameEN');
+		$regionId = $this->input->post('region');
+		$province = $this->input->post('province');
+		$startPrice = $this->input->post('startPrice');
+		$roomtype = $this->input->post('roomtype');
+		$roomprice = $this->input->post('roomprice');
+		$hotel = $this->input->post('hotel');
+		$this->PackageMD->updatePackageService($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$startPrice,$roomtype,$roomprice,$hotel);
 		$this->PackageMD->updateDomesticLocation($newNameSlug,$regionId,$province);
 		redirect('domestic-package?type='.$type, 'refresh');
 	}
@@ -386,7 +409,7 @@ class PackageCL extends CI_Controller {
 		file_put_contents('filestorage/temp/'.$file, $a);
 		$this->upload_cover($file);
 		sleep(3);
-		redirect('edit-domestic-package?tour='.$newnameSlug.'&type='.$type, 'refresh');
+		redirect('edit-domestic-package?tour='.$newNameSlug.'&type='.$type, 'refresh');
 	}
 
 	function insert_outbound_package(){
@@ -416,7 +439,7 @@ class PackageCL extends CI_Controller {
 		file_put_contents('filestorage/temp/'.$file, $a);
 		$this->upload_cover($file);
 		sleep(3);
-		redirect('edit-outbound-package?tour='.$newnameSlug.'&type='.$type, 'refresh');
+		redirect('edit-outbound-package?tour='.$newNameSlug.'&type='.$type, 'refresh');
 	}
 
 	function update_pdf(){

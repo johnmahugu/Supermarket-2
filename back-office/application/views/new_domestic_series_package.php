@@ -471,12 +471,14 @@ function submit(){
   $result = '[';
   for($i=0;$i<$priceRange.length;$i++){
     $($priceRange[$i]).find('input').each(function(i){
+			$d_temp = $(this).val().split("/");
+      $d_temp = new Date($d_temp[2]+'-'+$d_temp[1]+'-'+$d_temp[0]);
       switch(i%3){
         case 0:
-          $from = $(this).val();
+          $from = dateFormat($d_temp, "yyyy-mm-dd");
         break;
         case 1:
-          $to = $(this).val();
+          $to = dateFormat($d_temp, "yyyy-mm-dd");
         break;
         case 2:
           $price = $(this).val();

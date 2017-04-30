@@ -158,8 +158,8 @@ if(isset($price_range)){
 				<div class="main-wrapper">
 					<div class="row">
 						<div class="col-xs-12">
-							<h1>Edit Join Group Tour</h1>
-							<p>Outbound | Supermarket Tours</p><br>
+							<h1>Edit Easy Package</h1>
+							<p>Domestic | Supermarket Tours</p><br>
 						</div>
 						<div class="col-sm-6 col-xs-12">
 							<input id="nameTH" type="text" value="<?=$package['tour_nameTH']?>">
@@ -216,10 +216,13 @@ if(isset($price_range)){
 			<div class="main-wrapper">
 				<div class="row">
 					<div class="card-btn-tab">
-						<div class="col-sm-6 no-pd">
-							<a href="tm-domestic-series-new.html" class="btn current">TOUR INFO</a>
+            <div class="col-sm-4 no-pd">
+							<a href="edit-domestic-package?tour=<?=$package['tour_nameSlug']?>&type=<?=$this->session->flashdata('f1')?>" class="btn current">TOUR INFO</a>
 						</div>
-						<div class="col-sm-6 no-pd">
+						<div class="col-sm-4 no-pd">
+							<a href="edit-domestic-package-service?tour=<?=$package['tour_nameSlug']?>&type=<?=$this->session->flashdata('f1')?>" class="btn no-setting">SERVICES</a>
+						</div>
+						<div class="col-sm-4 no-pd">
 							<a href="edit-domestic-package-condition?tour=<?=$package['tour_nameSlug']?>&type=<?=$this->session->flashdata('f1')?>" class="btn no-setting">CONDITION</a>
 						</div>
 					</div>

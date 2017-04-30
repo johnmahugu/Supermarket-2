@@ -378,16 +378,18 @@ class PackageMD extends CI_Model {
 
     $query = 'DELETE FROM tour_condition WHERE tour_id = "'.$tour_id.'" AND tc_type="hotel"';
     self::$db->query($query);
-    $data = array(
-      'tour_id' => $tour_id,
-      'tc_condition' => NULL,
-      'tc_price' => NULL,
-      'tc_type' => 'hotel',
-      'tc_title' => NULL,
-      'tc_data' => $hotel,
-      'tc_order' => '1'
-    );
-    self::$db->insert('tour_condition',$data);
+    if(strlen($hotel)>0){
+      $data = array(
+        'tour_id' => $tour_id,
+        'tc_condition' => NULL,
+        'tc_price' => NULL,
+        'tc_type' => 'hotel',
+        'tc_title' => NULL,
+        'tc_data' => $hotel,
+        'tc_order' => '1'
+      );
+      self::$db->insert('tour_condition',$data);
+    }
 
     self::$db->trans_complete();
     if (self::$db->trans_status() === FALSE) {
