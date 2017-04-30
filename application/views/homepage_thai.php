@@ -164,7 +164,7 @@
               <?php
                 if(isset($region)){
                   foreach($region->result_array() as $row){
-                  	echo "<option value=".$row['geography_id'].">".$row['geography_name'.$lang]."</option>";
+                  	echo "<option value=".$row['region_id'].">".$row['region_nameEN']."</option>";
                   }
                 }
                 ?>

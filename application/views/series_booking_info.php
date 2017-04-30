@@ -14,7 +14,6 @@
   $package = $package->row_array(0);
   $b_detail = json_decode($booking_detail,true);
   $totaltourist = $b_detail['tourist'][0]['total_tourist'];
-  echo $totaltourist;
   $datestart = $b_detail['date'][0]['start'];
   $datefinish = $b_detail['date'][0]['end'];
   if(isset($price_range)){
@@ -65,7 +64,7 @@
       <div class="container">
         <div class="row">
           <div class="col-sm-2">
-            <a href="<?=base_url()?><?php if($country == 'thailand'){ echo "thai-tour"; }else{ echo "international-tour"; }?>"><img src="<?=base_url()?>assets/images/logo.png" alt="" class="logo"></a>
+            <a href="<?php if($country == 'thailand'){ echo "thai-tour"; }else{ echo "international-tour"; }?>"><img src="assets/images/logo.png" alt="" class="logo"></a>
           </div>
           <div class="col-sm-10">
             <div class="menu-burger">
@@ -98,7 +97,7 @@
         <div class="row">
           <div class="col-xs-12">
             <?php
-              if($package['country_name'] == 'Thailand'){
+              if($package['country_id'] == '215 '){
               ?>
             <h1>
             THAILAND DOMESTIC TOURS<br>
@@ -194,7 +193,7 @@
                     <option value="select-nationality" disabled selected>Select your nationality</option>
                     <?php
                       foreach($nationality->result_array() as $row){
-                      	echo '<option value="'.$row['country_nationality'].'">'.$row['country_nationality'].'</option>';
+                      	echo '<option value="'.$row['nationality_id'].'">'.$row['nationality_name'].'</option>';
                       }
                       ?>
                   </select>

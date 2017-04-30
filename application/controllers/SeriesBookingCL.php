@@ -193,7 +193,7 @@ class SeriesBookingCL extends CI_Controller {
       $b_detail               = substr($booking_room_detail, 0, -1) . ',' . substr($booking_tourist_detail, 1, strlen($booking_tourist_detail));
       $status_booking         = $this->SeriesBookingMD->submitBooking($booking_code, $user_id, $tour_id, $b_detail, $total_amount, $tour_currency);
       if ($status_booking) {
-        $this->session->set_flashdata('f1', 'Thinks for booking with us.');
+        $this->session->set_flashdata('f1', 'Thanks for booking with us.');
         $this->session->set_flashdata('f2', 'We will contact you in 24 hours via email.');
         $this->session->set_flashdata('username', $email);
         $this->session->set_flashdata('password', $tel);

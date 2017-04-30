@@ -85,7 +85,7 @@
         <div class="row">
           <div class="col-xs-12">
             <?php
-              if($package['country_name'] == 'Thailand'){
+              if($package['country_id'] == '215'){
               ?>
             <h1>
             THAILAND DOMESTIC TOURS<br>

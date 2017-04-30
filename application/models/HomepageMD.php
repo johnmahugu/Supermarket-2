@@ -16,20 +16,18 @@ class HomepageMD extends CI_Model {
 			IF(tour.tour_type = 'sp', 'SERIES PACKAGE', 'EASY PACKAGE') AS tour_type,
 			tour.tour_imgCover,
 			tour.tour_pdf,
+      tour.tour_word,
 			tour.tour_dayNight,
 			tour.tour_startPrice,
 			tour.tour_priceRange,
 			tour.tour_currency,
 			image.img_source,
-			countries.country_name,
       tour.tour_advanceBooking,
       tour.tour_closeBooking
 		");
     $this->db->from('tour');
     $this->db->join('image', 'tour.tour_imgCover = image.img_refid', 'inner');
-    $this->db->join('tour_address', 'tour.tour_id = tour_address.tour_id', 'inner');
-    $this->db->join('address', 'tour_address.address_id = address.address_id', 'inner');
-    $this->db->join('countries', 'address.country_id = countries.country_id', 'inner');
+    $this->db->join('address', 'tour.address_id = address.address_id', 'inner');
     $this->db->where('image.img_type', 'tour cover');
     $this->db->where('tour.tour_type', $type);
     $this->db->where('tour.tour_public','1');
@@ -57,18 +55,16 @@ class HomepageMD extends CI_Model {
 				IF(tour.tour_type = 'sp', 'SERIES PACKAGE', 'EASY PACKAGE') AS tour_type,
 				tour.tour_imgCover,
 				tour.tour_pdf,
+        tour.tour_word,
 				tour.tour_dayNight,
 				tour.tour_startPrice,
 				tour.tour_priceRange,
 				tour.tour_currency,
-				image.img_source,
-				countries.country_name
+				image.img_source
 				FROM
 				tour
 				INNER JOIN image ON tour.tour_imgCover = image.img_refid
-				INNER JOIN tour_address ON tour.tour_id = tour_address.tour_id
-				INNER JOIN address ON tour_address.address_id = address.address_id
-				INNER JOIN countries ON address.country_id = countries.country_id
+				INNER JOIN address ON tour.address_id = address.address_id
 				WHERE
 				image.img_type = 'tour cover' AND
         tour.tour_public = 1 AND
@@ -89,6 +85,7 @@ class HomepageMD extends CI_Model {
 			IF(tour.tour_type = 'sp', 'SERIES PACKAGE', 'EASY PACKAGE') AS tour_type,
 			tour.tour_imgCover,
 			tour.tour_pdf,
+      tour.tour_word,
 			tour.tour_dayNight,
 			tour.tour_startPrice,
 			tour.tour_priceRange,
@@ -97,8 +94,7 @@ class HomepageMD extends CI_Model {
 		");
     $this->db->from('tour');
     $this->db->join('image', 'tour.tour_imgCover = image.img_refid', 'inner');
-    $this->db->join('tour_address', 'tour.tour_id = tour_address.tour_id', 'inner');
-    $this->db->join('address', 'tour_address.address_id = address.address_id', 'inner');
+    $this->db->join('address', 'tour.address_id = address.address_id', 'inner');
     $this->db->where('image.img_type', 'tour cover');
     $this->db->where('tour.tour_type', $type);
     $this->db->where('tour.tour_public','1');
@@ -106,10 +102,10 @@ class HomepageMD extends CI_Model {
       $this->db->where('tour.tour_season', $season);
     }
     if ($region != '') {
-      $this->db->where('address.geography_id', $region);
+      $this->db->where('address.region_id', $region);
     }
     if ($province != '') {
-      $this->db->where('address.address_province', $province);
+      $this->db->where('address.province_id', $province);
     }
     if ($continent != '') {
       $this->db->where('address.continent_id', $continent);
@@ -138,28 +134,28 @@ class HomepageMD extends CI_Model {
   }
 
   function getRegion() {
-    $this->db->select("geography.geography_id,geography.geography_nameTH, geography.geography_nameEN");
-    $this->db->from('geography');
+    $this->db->select("region.*");
+    $this->db->from('region');
     return $this->db->get();
   }
 
   function getProvince() {
-    $this->db->select("province.province_nameTH, province.province_nameEN");
+    $this->db->select("province.*");
     $this->db->from('province');
     return $this->db->get();
   }
 
   function getContinent() {
-    $this->db->select("continents.continent_id, continents.continent_name");
-    $this->db->from('continents');
-    $this->db->order_by('continents.continent_name', 'ASC');
+    $this->db->select("continent.*");
+    $this->db->from('continent');
+    $this->db->order_by('continent.continent_name', 'ASC');
     return $this->db->get();
   }
 
   function getCountry() {
-    $this->db->select("countries.country_id, countries.country_name");
-    $this->db->from('countries');
-    $this->db->order_by('countries.country_name', 'ASC');
+    $this->db->select("country.*");
+    $this->db->from('country');
+    $this->db->order_by('country.country_nameEN', 'ASC');
     return $this->db->get();
   }
 }
