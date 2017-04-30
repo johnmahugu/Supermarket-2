@@ -674,7 +674,7 @@ foreach($condition->result_array() as $row){
               <input name="pridiscountRate" type="hidden" required>
               <input name="paxdouble" type="hidden" required>
               <input name="paxminimum" type="hidden" required>
-              <button id="submit" type="submit" class="btn bold">Add Package</button>
+              <button id="submit" type="submit" class="btn bold">Update Package</button>
             </form>
 					</div>
 				</div>

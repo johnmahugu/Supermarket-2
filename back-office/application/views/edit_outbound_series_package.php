@@ -217,7 +217,7 @@ if(isset($price_range)){
 				<div class="row">
 					<div class="card-btn-tab">
 						<div class="col-sm-6 no-pd">
-							<a href="tm-domestic-series-new.html" class="btn current">TOUR INFO</a>
+							<a href="edit-outbound-package?tour=<?=$package['tour_nameSlug']?>&type=<?=$this->session->flashdata('f1')?>" class="btn current">TOUR INFO</a>
 						</div>
 						<div class="col-sm-6 no-pd">
 							<a href="edit-outbound-package-condition?tour=<?=$package['tour_nameSlug']?>&type=<?=$this->session->flashdata('f1')?>" class="btn no-setting">CONDITION</a>

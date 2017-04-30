@@ -273,13 +273,13 @@ foreach($condition->result_array() as $row){
 				<div class="row">
 					<div class="card-btn-tab">
             <div class="col-sm-4 no-pd">
-							<a href="edit-outbound-package?tour=<?=$package['tour_nameSlug']?>&type=<?=$this->session->flashdata('f1')?>" class="btn no-setting">TOUR INFO</a>
+							<a href="edit-domestic-package?tour=<?=$package['tour_nameSlug']?>&type=<?=$this->session->flashdata('f1')?>" class="btn no-setting">TOUR INFO</a>
 						</div>
             <div class="col-sm-4 no-pd">
-							<a href="edit-outbound-package-service?tour=<?=$package['tour_nameSlug']?>&type=<?=$this->session->flashdata('f1')?>" class="btn current">SERVICES</a>
+							<a href="edit-domestic-package-service?tour=<?=$package['tour_nameSlug']?>&type=<?=$this->session->flashdata('f1')?>" class="btn current">SERVICES</a>
 						</div>
 						<div class="col-sm-4 no-pd">
-							<a href="edit-outbound-package-condition?tour=<?=$package['tour_nameSlug']?>&type=<?=$this->session->flashdata('f1')?>" class="btn no-setting">CONDITION</a>
+							<a href="edit-domestic-package-condition?tour=<?=$package['tour_nameSlug']?>&type=<?=$this->session->flashdata('f1')?>" class="btn no-setting">CONDITION</a>
 						</div>
 					</div>
 				</div>
@@ -645,7 +645,7 @@ foreach($condition->result_array() as $row){
 <script src="assets/js/script.js"></script>
 <script>
 $(document).ready(function(){
-  $('a[href="outbound-package?type='+$('#isTourType').val()+'"]').find('li').eq(0).addClass('current');
+  $('a[href="domestic-package?type='+$('#isTourType').val()+'"]').find('li').eq(0).addClass('current');
   $startPrice = $('#startPrice').val();
   $('#startPrice').val(numberWithSpaces($startPrice));
 });

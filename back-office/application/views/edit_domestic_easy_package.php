@@ -388,7 +388,7 @@ if(isset($price_range)){
               <input name="advanceBooking" type="hidden" required>
               <input name="dayNight" type="hidden" required>
               <input name="priceRange" type="hidden" required>
-						  <button id="submit" type="submit" class="btn bold">Add Package</button>
+						  <button id="submit" type="submit" class="btn bold">Update Package</button>
             </form>
 					</div>
 				</div>
