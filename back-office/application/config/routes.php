@@ -79,3 +79,7 @@ $route['edit-domestic-package-service'] = 'PackageCL/edit_domestic_package_servi
 $route['edit-outbound-package-service'] = 'PackageCL/edit_outbound_package_service';
 $route['update-domestic-package-service'] = 'PackageCL/update_domestic_package_service';
 $route['update-outbound-package-service'] = 'PackageCL/update_outbound_package_service';
+$route['domestic-location-data'] = 'PackageCL/domestic_location_data';
+$route['outbound-location-data'] = 'PackageCL/outbound_location_data';
+$route['insert-domestic-location'] = 'PackageCL/insert_domestic_location';
+$route['insert-outbound-location'] = 'PackageCL/insert_outbound_location';

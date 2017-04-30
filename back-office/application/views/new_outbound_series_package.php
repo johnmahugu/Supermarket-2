@@ -103,19 +103,19 @@
 					<li>Others</li>
 				</a>
 			</ul>
-      <h2 class="top-mg">Supermarket Tours</h2>
+			<h2 class="top-mg">Supermarket Tours</h2>
 			<div class="title-line">
 				<h3>Domestic Tours</h3>
 				<hr>
 			</div>
 			<ul>
 				<a href="domestic-package?type=ep">
-					<li>Private Group Tours</li>
+					<li>Easy Package</li>
 				</a>
 				<a href="domestic-package?type=sp">
-					<li>Join Group Tours</li>
+					<li>Series Package</li>
 				</a>
-				<a href="tm-domestic-locationdata.html">
+				<a href="domestic-location-data">
 					<li>Location Data</li>
 				</a>
 			</ul>
@@ -125,22 +125,13 @@
 			</div>
 			<ul>
 				<a href="outbound-package?type=ep">
-					<li>Private Group Tours</li>
+					<li>Easy Package</li>
 				</a>
 				<a href="outbound-package?type=sp">
-					<li>Join Group Tours</li>
+					<li>Series Package</li>
 				</a>
-				<a href="tm-outbound-locationdata.html">
+				<a href="outbound-location-data">
 					<li>Location Data</li>
-				</a>
-			</ul>
-			<div class="title-line">
-				<h3>Tour Agency</h3>
-				<hr>
-			</div>
-			<ul>
-				<a href="tm-touragency-main.html">
-					<li>Tour Agency Management</li>
 				</a>
 			</ul>
 		</aside>
@@ -149,7 +140,15 @@
 				<div class="main-wrapper">
 					<div class="row">
 						<div class="col-xs-12">
-							<h1>New Join Group Tour</h1>
+							<h1>Edit
+                <?php
+                if($this->session->flashdata('f1') == 'ep'){
+									echo 'Easy Package';
+								}else{
+									echo 'Series Package';
+								}
+                 ?>
+              </h1>
 							<p>Outbound | Supermarket Tours</p><br>
 						</div>
 						<div class="col-sm-6 col-xs-12">

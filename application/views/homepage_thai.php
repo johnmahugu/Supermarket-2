@@ -340,7 +340,7 @@
 
   $('document').ready(function(){
   $(".hilight-slide").owlCarousel({
-        pagination : false,
+      pagination : false,
       navigation: true,
       items:3,
       autoPlay: 5000,

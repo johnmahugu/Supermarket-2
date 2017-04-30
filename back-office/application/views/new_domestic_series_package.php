@@ -103,19 +103,19 @@
 					<li>Others</li>
 				</a>
 			</ul>
-      <h2 class="top-mg">Supermarket Tours</h2>
+			<h2 class="top-mg">Supermarket Tours</h2>
 			<div class="title-line">
 				<h3>Domestic Tours</h3>
 				<hr>
 			</div>
 			<ul>
 				<a href="domestic-package?type=ep">
-					<li>Private Group Tours</li>
+					<li>Easy Package</li>
 				</a>
 				<a href="domestic-package?type=sp">
-					<li>Join Group Tours</li>
+					<li>Series Package</li>
 				</a>
-				<a href="tm-domestic-locationdata.html">
+				<a href="domestic-location-data">
 					<li>Location Data</li>
 				</a>
 			</ul>
@@ -125,22 +125,13 @@
 			</div>
 			<ul>
 				<a href="outbound-package?type=ep">
-					<li>Private Group Tours</li>
+					<li>Easy Package</li>
 				</a>
 				<a href="outbound-package?type=sp">
-					<li>Join Group Tours</li>
+					<li>Series Package</li>
 				</a>
-				<a href="tm-outbound-locationdata.html">
+				<a href="outbound-location-data">
 					<li>Location Data</li>
-				</a>
-			</ul>
-			<div class="title-line">
-				<h3>Tour Agency</h3>
-				<hr>
-			</div>
-			<ul>
-				<a href="tm-touragency-main.html">
-					<li>Tour Agency Management</li>
 				</a>
 			</ul>
 		</aside>
@@ -149,8 +140,16 @@
 				<div class="main-wrapper">
 					<div class="row">
 						<div class="col-xs-12">
-							<h1>New Join Group Tour</h1>
-							<p>Outbound | Supermarket Tours</p><br>
+							<h1>Edit
+                <?php
+                if($this->session->flashdata('f1') == 'ep'){
+									echo 'Easy Package';
+								}else{
+									echo 'Series Package';
+								}
+                 ?>
+              </h1>
+							<p>Domestic | Supermarket Tours</p><br>
 						</div>
 						<div class="col-sm-6 col-xs-12">
 							<input id="nameTH" type="text" placeholder="Thai Tour Name">
@@ -166,13 +165,13 @@
 								<label class="filter">Region</label>
                 <select name="region">
                   <option disabled selected>Select Region</option>
-                  <?php
-                   if(isset($region)){
-                     foreach($region->result_array() as $row){
-                       echo "<option value=".$row['geography_id'].">".$row['geography_nameEN']."</option>";
-                     }
-                   }
-                   ?>
+									<?php
+										if(isset($region)){
+										foreach($region->result_array() as $row){
+											echo "<option value=".$row['region_id'].">".$row['region_nameEN']."</option>";
+										}
+										}
+										?>
                 </select>
 							</div>
 						</div>
@@ -181,10 +180,10 @@
 								<label class="filter">Province</label>
                 <select name="province">
                   <option disabled selected>Select Province</option>
-                  <?php
+									<?php
                     if(isset($province)){
                       foreach($province->result_array() as $row){
-                        echo "<option value=".$row['province_nameEN'].">".$row['province_nameEN']."</option>";
+                        echo "<option value=".$row['province_id'].">".$row['province_nameEN']."</option>";
                       }
                     }
                     ?>
@@ -437,8 +436,8 @@ function submit(){
     .replace(/^-+/, '')
     .replace(/-+$/, '');
   $agentId = $('select[name=agent]').val();
-  $province = $('select[name=province]').find('option:selected').text();
-  $regionId = $('select[name=region]').val();
+  $province = $('select[name=province]').val();
+  $region = $('select[name=region]').val();
   $overviewTH = $('#overviewTH').val();
   $overviewEN = $('#overviewEN').val();
   $descTH = $('#descTH').val();
@@ -454,7 +453,7 @@ function submit(){
   $('input[name=nameEN]').val($nameEN);
   $('input[name=agentId]').val($agentId);
   $('input[name=province]').val($province);
-  $('input[name=regionId]').val($regionId);
+  $('input[name=region]').val($region);
   $('input[name=overviewTH]').val($overviewTH);
   $('input[name=overviewEN]').val($overviewEN);
   $('input[name=descTH]').val($descTH);

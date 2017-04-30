@@ -18,7 +18,6 @@ class PackageMD extends CI_Model {
 			tour.tour_nameSlug,
 			IF(tour.tour_type = 'sp', 'SERIES PACKAGE', 'EASY PACKAGE') AS tour_type,
 			tour.tour_imgCover,
-			tour.tour_pdf,
 			tour.tour_dayNight,
 			tour.tour_startPrice,
 			tour.tour_priceRange,
@@ -29,9 +28,6 @@ class PackageMD extends CI_Model {
 		");
     self::$db->from('tour');
     self::$db->join('image', 'tour.tour_imgCover = image.img_refid', 'inner');
-    self::$db->join('tour_address', 'tour.tour_id = tour_address.tour_id', 'inner');
-    self::$db->join('address', 'tour_address.address_id = address.address_id', 'inner');
-    self::$db->join('countries', 'address.country_id = countries.country_id', 'inner');
     self::$db->where('image.img_type', 'tour cover');
     self::$db->where('tour.tour_type', $type);
     self::$db->where('tour.tour_remove !=', '1');
@@ -47,12 +43,9 @@ class PackageMD extends CI_Model {
   function getFilter($type, $country, $region, $province, $continent) {
     self::$db->select("
     tour.tour_id,
-    tour.tour_nameTH,
-    tour.tour_nameEN,
     tour.tour_nameSlug,
     IF(tour.tour_type = 'sp', 'SERIES PACKAGE', 'EASY PACKAGE') AS tour_type,
     tour.tour_imgCover,
-    tour.tour_pdf,
     tour.tour_dayNight,
     tour.tour_startPrice,
     tour.tour_priceRange,
@@ -63,16 +56,15 @@ class PackageMD extends CI_Model {
 		");
     self::$db->from('tour');
     self::$db->join('image', 'tour.tour_imgCover = image.img_refid', 'inner');
-    self::$db->join('tour_address', 'tour.tour_id = tour_address.tour_id', 'inner');
-    self::$db->join('address', 'tour_address.address_id = address.address_id', 'inner');
+    self::$db->join('address', 'tour.address_id = address.address_id', 'inner');
     self::$db->where('image.img_type', 'tour cover');
     self::$db->where('tour.tour_type', $type);
     self::$db->where('tour.tour_remove !=', '1');
     if ($region != '') {
-      self::$db->where('address.geography_id', $region);
+      self::$db->where('address.region_id', $region);
     }
     if ($province != '') {
-      self::$db->where('address.address_province', $province);
+      self::$db->where('address.province_id', $province);
     }
     if ($continent != '') {
       self::$db->where('address.continent_id', $continent);
@@ -142,8 +134,7 @@ class PackageMD extends CI_Model {
 		");
     self::$db->from('tour');
     self::$db->join('image', 'tour.tour_imgCover = image.img_refid', 'inner');
-    self::$db->join('tour_address', 'tour.tour_id = tour_address.tour_id', 'inner');
-    self::$db->join('address', 'tour_address.address_id = address.address_id', 'inner');
+    self::$db->join('address', 'tour.address_id = address.address_id', 'inner');
     self::$db->join('agent', 'tour.tour_agentId = agent.agent_id', 'inner');
     self::$db->where('image.img_type', 'tour cover');
     self::$db->where('tour.tour_nameSlug', $tour_nameSlug);
@@ -171,8 +162,7 @@ class PackageMD extends CI_Model {
 		");
     self::$db->from('tour');
     self::$db->join('image', 'tour.tour_imgCover = image.img_refid', 'inner');
-    self::$db->join('tour_address', 'tour.tour_id = tour_address.tour_id', 'inner');
-    self::$db->join('address', 'tour_address.address_id = address.address_id', 'inner');
+    self::$db->join('address', 'tour.address_id = address.address_id', 'inner');
     self::$db->join('tour_condition', 'tour.tour_id = tour_condition.tour_id','left');
     self::$db->join('agent', 'tour.tour_agentId = agent.agent_id', 'inner');
     self::$db->where('image.img_type', 'tour cover');
@@ -196,8 +186,7 @@ class PackageMD extends CI_Model {
     ");
     self::$db->from('tour');
     self::$db->join('image', 'tour.tour_imgCover = image.img_refid', 'inner');
-    self::$db->join('tour_address', 'tour.tour_id = tour_address.tour_id', 'inner');
-    self::$db->join('address', 'tour_address.address_id = address.address_id', 'inner');
+    self::$db->join('address', 'tour.address_id = address.address_id', 'inner');
     self::$db->join('tour_condition', 'tour.tour_id = tour_condition.tour_id','left');
     self::$db->join('agent', 'tour.tour_agentId = agent.agent_id', 'inner');
     self::$db->where('image.img_type', 'tour cover');
@@ -402,15 +391,13 @@ class PackageMD extends CI_Model {
     }
   }
 
-  function updateDomesticLocation($newNameSlug,$regionId,$province){
+  function updateDomesticLocation($newNameSlug,$region,$province){
       self::$db->trans_begin();
-      $query = "UPDATE tour_address ta
-      JOIN address a ON ta.address_id = a.address_id
-      JOIN tour t ON ta.tour_id = t.tour_id
-      SET a.address_province = '".$province."', a.geography_id = '".$regionId."'
-      WHERE t.tour_nameSlug = '".$newNameSlug."'";
+      $query = "UPDATE address
+      JOIN tour ON tour.address_id = address.address_id
+      SET address.province_id = '".$province."', address.region_id = '".$region."'
+      WHERE tour.tour_nameSlug = '".$newNameSlug."'";
       self::$db->query($query);
-
       self::$db->trans_complete();
       if (self::$db->trans_status() === FALSE) {
         self::$db->trans_rollback();
@@ -440,11 +427,11 @@ class PackageMD extends CI_Model {
     }
   }
 
-  function insertDomesticPackage($newNameSlug,$type,$agentId,$nameTH,$nameEN,$province,$regionId,$overviewTH,$overviewEN,$descTH,$descEN,$briefTH,$briefEN,$startPrice,$advanceBooking,$dayNight,$priceRange,$closeBooking){
+  function insertDomesticPackage($newNameSlug,$type,$agentId,$nameTH,$nameEN,$province,$region,$overviewTH,$overviewEN,$descTH,$descEN,$briefTH,$briefEN,$startPrice,$advanceBooking,$dayNight,$priceRange,$closeBooking){
     self::$db->trans_begin();
     $data = array(
-      'address_province' => $province,
-      'geography_id' => $regionId,
+      'province_id' => $province,
+      'region_id' => $region,
       'country_id' => '215'
     );
     self::$db->insert('address', $data);
@@ -476,7 +463,8 @@ class PackageMD extends CI_Model {
      'tour_season' => '0',
      'tour_hilight' => '0',
      'tour_public' => '0',
-     'tour_remove' => '0'
+     'tour_remove' => '0',
+     'address_id' => $addressId
     );
     self::$db->insert('tour', $data);
     $tourId = self::$db->insert_id();
@@ -485,11 +473,6 @@ class PackageMD extends CI_Model {
     );
     self::$db->where('tour_id', $tourId);
     self::$db->update('tour', $data);
-    $data = array(
-      'tour_id' => $tourId,
-      'address_id' => $addressId
-    );
-    self::$db->insert('tour_address', $data);
     $data = array(
       'img_type' => 'tour cover',
       'img_refid' => $tourId,
@@ -507,11 +490,11 @@ class PackageMD extends CI_Model {
     }
   }
 
-  function insertOutboundPackage($newNameSlug,$type,$agentId,$nameTH,$nameEN,$countryId,$continentId,$overviewTH,$overviewEN,$descTH,$descEN,$briefTH,$briefEN,$startPrice,$advanceBooking,$dayNight,$priceRange,$closeBooking){
+  function insertOutboundPackage($newNameSlug,$type,$agentId,$nameTH,$nameEN,$country,$continent,$overviewTH,$overviewEN,$descTH,$descEN,$briefTH,$briefEN,$startPrice,$advanceBooking,$dayNight,$priceRange,$closeBooking){
     self::$db->trans_begin();
     $data = array(
-      'continent_id' => $continentId,
-      'country_id' => $countryId
+      'continent_id' => $continent,
+      'country_id' => $country
     );
     self::$db->insert('address', $data);
     $addressId = self::$db->insert_id();
@@ -542,7 +525,8 @@ class PackageMD extends CI_Model {
      'tour_season' => '0',
      'tour_hilight' => '0',
      'tour_public' => '0',
-     'tour_remove' => '0'
+     'tour_remove' => '0',
+     'address_id' => $addressId
     );
     self::$db->insert('tour', $data);
     $tourId = self::$db->insert_id();
@@ -597,6 +581,76 @@ class PackageMD extends CI_Model {
     return self::$db->get();
   }
 
+  function insertDomesticLocation($region,$provinceEN,$provinceTH){
+    self::$db->trans_begin();
+    self::$db->select("
+      region_id
+		");
+    self::$db->from('region');
+    self::$db->where('region_nameEN', $region);
+    self::$db->limit(1);
+    $query = self::$db->get();
+    $regionId = $query->row()->region_id;
+    self::$db->select("
+      province_id
+		");
+    self::$db->from('province');
+    self::$db->where('province_nameEN', $provinceEN);
+    self::$db->limit(1);
+    $query = self::$db->get();
+    $ck_province = $query->num_rows();
+    if($ck_province == 0){
+      $data = array(
+        'region_id' => $regionId,
+        'province_nameEN' => $provinceEN,
+        'province_nameTH' => $provinceTH
+      );
+      self::$db->insert('province', $data);
+    }
+    self::$db->trans_complete();
+    if (self::$db->trans_status() === FALSE) {
+      self::$db->trans_rollback();
+    } else {
+      self::$db->trans_commit();
+    }
+    return $ck_province;
+  }
+
+  function insertOutboundLocation($continent,$countryEN,$countryTH){
+    self::$db->trans_begin();
+    self::$db->select("
+      continent_id
+		");
+    self::$db->from('continent');
+    self::$db->where('continent_name', $continent);
+    self::$db->limit(1);
+    $query = self::$db->get();
+    $continentId = $query->row()->continent_id;
+    self::$db->select("
+      country_id
+    ");
+    self::$db->from('country');
+    self::$db->where('country.country_nameEN', $countryEN);
+    self::$db->limit(1);
+    $query = self::$db->get();
+    $ck_country = $query->num_rows();
+    if($ck_country == 0){
+      $data = array(
+        'continent_id' => $continentId,
+        'country_nameEN' => $countryEN,
+        'country_nameTH' => $countryTH,
+      );
+      self::$db->insert('country', $data);
+    }
+    self::$db->trans_complete();
+    if (self::$db->trans_status() === FALSE) {
+      self::$db->trans_rollback();
+    } else {
+      self::$db->trans_commit();
+    }
+    return $ck_country;
+  }
+
   function getAgency() {
     self::$db->select("agent.agent_id, agent.agent_code, agent.agent_compName");
     self::$db->from('agent');
@@ -604,28 +658,28 @@ class PackageMD extends CI_Model {
   }
 
   function getRegion() {
-    self::$db->select("geography.geography_id, geography.geography_nameEN");
-    self::$db->from('geography');
+    self::$db->select("region.*");
+    self::$db->from('region');
     return self::$db->get();
   }
 
   function getProvince() {
-    self::$db->select("province.province_id, province.province_nameEN");
+    self::$db->select("province.*");
     self::$db->from('province');
     return self::$db->get();
   }
 
   function getContinent() {
-    self::$db->select("continents.continent_id,continents.continent_name");
-    self::$db->from('continents');
-    self::$db->order_by('continents.continent_name', 'ASC');
+    self::$db->select("continent.*");
+    self::$db->from('continent');
+    self::$db->order_by('continent.continent_name', 'ASC');
     return self::$db->get();
   }
 
   function getCountry() {
-    self::$db->select("countries.country_id,countries.country_name");
-    self::$db->from('countries');
-    self::$db->order_by('countries.country_name', 'ASC');
+    self::$db->select("country.*");
+    self::$db->from('country');
+    self::$db->order_by('country.country_nameEN', 'ASC');
     return self::$db->get();
   }
 

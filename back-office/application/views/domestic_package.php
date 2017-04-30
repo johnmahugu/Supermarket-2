@@ -127,12 +127,12 @@
 			</div>
 			<ul>
 				<a href="domestic-package?type=ep">
-					<li>Private Group Tours</li>
+					<li>Easy Package</li>
 				</a>
 				<a href="domestic-package?type=sp">
-					<li>Join Group Tours</li>
+					<li>Series Package</li>
 				</a>
-				<a href="tm-domestic-locationdata.html">
+				<a href="domestic-location-data">
 					<li>Location Data</li>
 				</a>
 			</ul>
@@ -142,22 +142,13 @@
 			</div>
 			<ul>
 				<a href="outbound-package?type=ep">
-					<li>Private Group Tours</li>
+					<li>Easy Package</li>
 				</a>
 				<a href="outbound-package?type=sp">
-					<li>Join Group Tours</li>
+					<li>Series Package</li>
 				</a>
-				<a href="tm-outbound-locationdata.html">
+				<a href="outbound-location-data">
 					<li>Location Data</li>
-				</a>
-			</ul>
-			<div class="title-line">
-				<h3>Tour Agency</h3>
-				<hr>
-			</div>
-			<ul>
-				<a href="tm-touragency-main.html">
-					<li>Tour Agency Management</li>
 				</a>
 			</ul>
 		</aside>
@@ -166,7 +157,15 @@
 				<div class="main-wrapper">
 					<div class="row">
 						<div class="col-sm-8 col-xs-12">
-							<h1>Join Group Tour Packages</h1>
+							<h1>
+								<?php
+								if($this->session->flashdata('f1') == 'ep'){
+									echo 'Easy Package';
+								}else{
+									echo 'Series Package';
+								}
+								 ?>
+							</h1>
 							<p>Domestic | Supermarket Tours</p>
 						</div>
 						<div class="col-sm-4 col-xs-12">
@@ -186,7 +185,7 @@
 		              <?php
 		                if(isset($region)){
 		                foreach($region->result_array() as $row){
-		                	echo "<option value=".$row['geography_id'].">".$row['geography_nameEN']."</option>";
+		                	echo "<option value=".$row['region_id'].">".$row['region_nameEN']."</option>";
 		                }
 		                }
 		                ?>
@@ -393,7 +392,7 @@ function filter(){
 				$result['list_package'] += '<p class="date">'+$open_booking.format("d mmmm yyyy")+' - '+$close_booking.format("d mmmm yyyy")+'</p>';
 				$result['list_package'] += '<div class="btn-wrapper">';
 				$result['list_package'] += '<a href="delete-package?tour='+data['package'][$i].tour_nameSlug+'" class="btn gray">Delete</a>';
-				$result['list_package'] += '<a href="edit-outbound-package?tour='+data['package'][$i].tour_nameSlug+'&type='+data['package'][$i].tour_type+'" class="btn"> Edit </a>';
+				$result['list_package'] += '<a href="edit-domestic-package?tour='+data['package'][$i].tour_nameSlug+'&type='+data['package'][$i].tour_type+'" class="btn"> Edit </a>';
 				$result['list_package'] += '</div></div></div></div>';
 			}
 		}

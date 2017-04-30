@@ -149,12 +149,12 @@ foreach($condition->result_array() as $row){
 			</div>
 			<ul>
 				<a href="domestic-package?type=ep">
-					<li>Private Group Tours</li>
+					<li>Easy Package</li>
 				</a>
 				<a href="domestic-package?type=sp">
-					<li>Join Group Tours</li>
+					<li>Series Package</li>
 				</a>
-				<a href="tm-domestic-locationdata.html">
+				<a href="domestic-location-data">
 					<li>Location Data</li>
 				</a>
 			</ul>
@@ -164,22 +164,13 @@ foreach($condition->result_array() as $row){
 			</div>
 			<ul>
 				<a href="outbound-package?type=ep">
-					<li>Private Group Tours</li>
+					<li>Easy Package</li>
 				</a>
 				<a href="outbound-package?type=sp">
-					<li>Join Group Tours</li>
+					<li>Series Package</li>
 				</a>
-				<a href="tm-outbound-locationdata.html">
+				<a href="outbound-location-data">
 					<li>Location Data</li>
-				</a>
-			</ul>
-			<div class="title-line">
-				<h3>Tour Agency</h3>
-				<hr>
-			</div>
-			<ul>
-				<a href="tm-touragency-main.html">
-					<li>Tour Agency Management</li>
 				</a>
 			</ul>
 		</aside>
@@ -188,7 +179,15 @@ foreach($condition->result_array() as $row){
 				<div class="main-wrapper">
 					<div class="row">
 						<div class="col-xs-12">
-							<h1>Edit Easy Package</h1>
+              <h1>Edit
+                <?php
+                if($this->session->flashdata('f1') == 'ep'){
+									echo 'Easy Package';
+								}else{
+									echo 'Series Package';
+								}
+                 ?>
+              </h1>
 							<p>Domestic	 | Supermarket Tours</p><br>
 						</div>
 						<div class="col-sm-6 col-xs-12">
@@ -204,18 +203,17 @@ foreach($condition->result_array() as $row){
 							<div class="input-box">
 								<label class="filter">Region</label>
 								<select name="region">
-                <?php
-                if(isset($region)){
-                  foreach($region->result_array() as $row){
-                    if($package['geography_id'] == $row['geography_id']){
-                      echo "<option value=".$row['geography_id']." selected>".$row['geography_nameEN']."</option>";
-                    }else{
-                      echo "<option value=".$row['geography_id'].">".$row['geography_nameEN']."</option>";
-                    }
-                  }
-                }
-                ?>
-                  ?>
+                  <?php
+                   if(isset($region)){
+                     foreach($region->result_array() as $row){
+                       if($package['region_id'] == $row['region_id']){
+                         echo "<option value=".$row['region_id']." selected>".$row['region_nameEN']."</option>";
+                       }else{
+                         echo "<option value=".$row['region_id'].">".$row['region_nameEN']."</option>";
+                       }
+                     }
+                   }
+                   ?>
                 </select>
 							</div>
 						</div>
@@ -223,17 +221,17 @@ foreach($condition->result_array() as $row){
 							<div class="input-box">
 								<label class="filter">Province</label>
 								<select name="province">
-	              <?php
-                if(isset($province)){
-                  foreach($province->result_array() as $row){
-                    if($package['address_province'] == $row['province_nameEN']){
-                      echo "<option value=".$row['province_nameEN']." selected>".$row['province_nameEN']."</option>";
-                    }else{
-                      echo "<option value=".$row['province_nameEN'].">".$row['province_nameEN']."</option>";
+                  <?php
+                    if(isset($province)){
+                      foreach($province->result_array() as $row){
+                        if($package['province_id'] == $row['province_id']){
+                          echo "<option value=".$row['province_id']." selected>".$row['province_nameEN']."</option>";
+                        }else{
+                          echo "<option value=".$row['province_id'].">".$row['province_nameEN']."</option>";
+                        }
+                      }
                     }
-                  }
-                }
-	                ?>
+                    ?>
 	              </select>
 							</div>
 						</div>
@@ -701,7 +699,7 @@ $('#submit').click(function(){
     .replace(/^-+/, '')
     .replace(/-+$/, '');
   $region = $('select[name=region]').val();
-  $province = $('select[name=province]').find('option:selected').text();
+  $province = $('select[name=province]').val();
   $startPrice = $('#startPrice').val().replace(' ','');
 
   $room = $('.room');
