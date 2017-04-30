@@ -128,6 +128,7 @@ class PackageMD extends CI_Model {
       tour.tour_briefingTH,
 			tour.tour_imgCover,
 			tour.tour_pdf,
+      tour.tour_word,
 			tour.tour_dayNight,
 			tour.tour_startPrice,
 			tour.tour_priceRange,
@@ -572,10 +573,16 @@ class PackageMD extends CI_Model {
     }
   }
 
-  function updatePDF($nameSlug){
-    $data = array(
-      'tour_pdf' => $nameSlug.'.pdf'
-    );
+  function updateFile($nameSlug,$filetype){
+    if($filetype == 'pdf'){
+      $data = array(
+        'tour_pdf' => $nameSlug.'.pdf'
+      );
+    }else{
+      $data = array(
+        'tour_word' => $nameSlug.'.'.$filetype
+      );
+    }
     self::$db->where('tour_nameSlug', $nameSlug);
     self::$db->update('tour', $data);
   }

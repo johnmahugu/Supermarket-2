@@ -282,7 +282,7 @@ if(isset($price_range)){
 
 									<div class="col-md-6 col-xs-12 text-center">
 										<div class="btn border light full" data-toggle="modal" id="pdf" data-target="#addFile">
-											<i class="fa fa-file-pdf-o" aria-hidden="true"></i> Click Upload pdf file
+											<i class="fa fa-file-pdf-o" aria-hidden="true"></i> Click Upload PDF file
 										</div>
 									</div>
                   <div class="col-md-6 col-xs-12 text-center">
@@ -400,7 +400,7 @@ if(isset($price_range)){
 
 	<!-- modal -->
 	<div class="modal fade" id="addFile" role="dialog">
-    <form id="update-pdf" style="margin-top:-35%;">
+    <form id="update-itinerary" style="margin-top:-35%;">
 	    <div class="modal-dialog modal-md">
 	      <div class="modal-content">
 	        <div class="modal-header">
@@ -409,13 +409,16 @@ if(isset($price_range)){
 	          <hr>
 	        </div>
 	        <div class="modal-body">
+            <label class="filter">Select File
             <?php
             if($package['tour_pdf'] != ''){
-              echo '<label class="filter">Select File (Uploaded)</label>';
-            }else{
-              echo '<label class="filter">Select File</label>';
+              echo '(PDF Uploaded) ';
+            }
+            if($package['tour_word'] != ''){
+              echo '(Word Uploaded)';
             }
              ?>
+             </label>
              <br>
 				<input name="file" type="file">
 	        </div>
@@ -474,16 +477,17 @@ $(document).ready(function(){
 
 
 $('#submitfile').click(function(){
-  var formData = new FormData($("#update-pdf")[0]);
+  var formData = new FormData($("#update-itinerary")[0]);
   $.ajax({
     type: 'POST',
-    url:'/update-pdf',
+    url:'/update-itinerary',
     data: formData,
     mimeType: "multipart/form-data",
     contentType: false,
     cache: false,
     processData: false,
     success:function(data){
+      alert(data);
       $('#addFile').removeClass('in');
       $('.modal-backdrop.fade').removeClass('in');
     }

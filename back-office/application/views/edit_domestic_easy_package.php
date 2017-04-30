@@ -288,6 +288,11 @@ if(isset($price_range)){
 											<i class="fa fa-file-pdf-o" aria-hidden="true"></i> Click Upload pdf file
 										</div>
 									</div>
+                  <div class="col-md-6 col-xs-12 text-center">
+										<div class="btn border light full" data-toggle="modal" id="word" data-target="#addFile">
+											<i class="fa fa-file-word-o" aria-hidden="true"></i> Click Upload word file
+										</div>
+									</div>
 									<div class="clear"></div><br>
 									<label>Advance booking days</label><br>
 									<input id="advanceBooking" type="number" value="<?=$package['tour_advanceBooking']?>" min="0">
@@ -398,7 +403,7 @@ if(isset($price_range)){
 
 	<!-- modal -->
   <div class="modal fade" id="addFile" role="dialog">
-    <form id="update-pdf" style="margin-top:-35%;">
+    <form id="update-itinerary" style="margin-top:-35%;">
 	    <div class="modal-dialog modal-md">
 	      <div class="modal-content">
 	        <div class="modal-header">
@@ -407,13 +412,16 @@ if(isset($price_range)){
 	          <hr>
 	        </div>
 	        <div class="modal-body">
+            <label class="filter">Select File
             <?php
             if($package['tour_pdf'] != ''){
-              echo '<label class="filter">Select File (Uploaded)</label>';
-            }else{
-              echo '<label class="filter">Select File</label>';
+              echo '(PDF Uploaded) ';
+            }
+            if($package['tour_word'] != ''){
+              echo '(DOC Uploaded)';
             }
              ?>
+             </label>
              <br>
 				<input name="file" type="file">
 	        </div>

@@ -442,15 +442,17 @@ class PackageCL extends CI_Controller {
 		redirect('edit-outbound-package?tour='.$newNameSlug.'&type='.$type, 'refresh');
 	}
 
-	function update_pdf(){
+	function update_itinerary(){
 		$nameSlug = $this->input->post('nameSlug');
 		$config['upload_path'] = 'filestorage/temp/';
-    $config['allowed_types'] = 'pdf|word';
+    $config['allowed_types'] = 'pdf|doc|docx';
     $config['file_name'] = $nameSlug;
 		$this->upload->initialize($config);
 		if($this->upload->do_upload("file")){
-			$this->upload_pdf($nameSlug.'.pdf');
-			$this->PackageMD->updatePDF($nameSlug);
+			$data['upload_data'] = $this->upload->data();
+			$filetype = $data['upload_data']['file_ext'];
+			$this->upload_filestorage($nameSlug.$filetype,$filetype);
+			$this->PackageMD->updateFile($nameSlug,$filetype);
 		}
 	}
 
@@ -467,14 +469,18 @@ class PackageCL extends CI_Controller {
 		@unlink($source);
 	}
 
-	function upload_pdf($fileName){
+	function upload_filestorage($fileName,$filetype){
 		$source = './filestorage/temp/'.$fileName;
 		$ftp_config['hostname'] = 'ftp://travelshop-center.tk';
 		$ftp_config['username'] = 'travelshop';
 		$ftp_config['password'] = 'V2zmx9N33';
 		$ftp_config['debug']    = TRUE;
 		$this->ftp->connect($ftp_config);
-		$destination = '/public_html/filestorage/pdf/'.$fileName;
+		if($filetype == 'pdf'){
+			$destination = '/public_html/filestorage/pdf/'.$fileName;
+		}else{
+			$destination = '/public_html/filestorage/word/'.$fileName;
+		}
 		$this->ftp->upload($source, $destination);
 		$this->ftp->close();
 		@unlink($source);
