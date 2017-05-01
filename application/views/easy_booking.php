@@ -88,7 +88,7 @@
         </div>
         <div class="row">
           <div class="col-xs-12">
-            <?php if($package['country_name'] == 'Thailand'){ ?>
+            <?php if($package['country_id'] == '215'){ ?>
             <h1>
             THAILAND DOMESTIC TOURS<br>
             <?php }else{ ?>
@@ -159,7 +159,7 @@
             <div class="col-md-6">
               <label for="">Tourist</label><br>
               <input id="tourist-total-num" type="number" min="1" value="1">
-              <span class="unit">people</span>
+              <span class="unit">person</span>
             </div>
           </div>
           <?php
@@ -628,9 +628,12 @@
         					$b_detail += '{"roomtype":"'+$roomtype+'","tourist_num":'+$tourist_num+'}';
         					if($i != $count){
         						$b_detail += ',';
-        					}
+        					}else{
+                    $b_detail += '}';
+                  }
         				}
         				if($i == $count){
+                  $b_detail = $b_detail.substr(0,$b_detail.length-1);
         					$b_detail += '],';
         				}
         			}
@@ -761,14 +764,14 @@
       		$result += '<div class="list">';
       		$n_price = $twin_price+parseInt(data[$i]['price'],10);
       		$result += '<div class="col-sm-5"><label>'+data[$i]['roomtype']+'</label></div>';
-      		$result += '<div class="col-sm-4 col-xs-7"><p>'+numeral($n_price).format('0,0')+' '+$currency+' / prople</p></div>';
+      		$result += '<div class="col-sm-4 col-xs-7"><p>'+numeral($n_price).format('0,0')+' '+$currency+' / person</p></div>';
       		$result += '<div class="col-sm-3 col-xs-5"><input class="tourist-num" roomtype="'+data[$i]['roomtype'].replace(' ','-')+'" type="number" value="1" min="0" max="1" price="'+$n_price+'"><span class="unit">people</span></div>';
       		$result += '</div>';
       	}else{
       		$result += '<div class="list">';
       		$n_price = $twin_price+parseInt(data[$i]['price'],10);
       		$result += '<div class="col-sm-5"><label>'+data[$i]['roomtype']+'</label></div>';
-      		$result += '<div class="col-sm-4 col-xs-7"><p>'+numeral($n_price).format('0,0')+' '+$currency+' / prople</p></div>';
+      		$result += '<div class="col-sm-4 col-xs-7"><p>'+numeral($n_price).format('0,0')+' '+$currency+' / person</p></div>';
       		$result += '<div class="col-sm-3 col-xs-5"><input class="tourist-num" roomtype="'+data[$i]['roomtype'].replace(' ','-')+'" type="number" value="0" min="0" max="1" price="'+$n_price+'"><span class="unit">people</span></div>';
       		$result += '</div>';
       	}
@@ -779,7 +782,7 @@
           $result += '<div class="list">';
       		$n_price = $twin_price+parseInt(data[$i]['price'],10);
       		$result += '<div class="col-sm-5"><label>'+data[$i]['roomtype']+'</label></div>';
-      		$result += '<div class="col-sm-4 col-xs-7"><p>'+numeral($n_price).format('0,0')+' '+$currency+' / prople</p></div>';
+      		$result += '<div class="col-sm-4 col-xs-7"><p>'+numeral($n_price).format('0,0')+' '+$currency+' / person</p></div>';
       		$result += '<div class="col-sm-3 col-xs-5"><input class="tourist-num" roomtype="'+data[$i]['roomtype'].replace(' ','-')+'" type="number" value="1" min="0" max="1" price="'+$n_price+'"><span class="unit">people</span></div>';
       		$result += '</div>';
         }

@@ -14,6 +14,7 @@
   $package = $package->row_array(0);
   $b_detail = json_decode($booking_detail,true);
   $totaltourist = $b_detail['tourist'][0]['total_tourist'];
+  echo $totaltourist;
   $datestart = $b_detail['date'][0]['start'];
   $datefinish = $b_detail['date'][0]['end'];
   if(isset($price_range)){
@@ -96,7 +97,7 @@
         <div class="row">
           <div class="col-xs-12">
             <?php
-              if($package['country_name'] == 'Thailand'){
+              if($package['country_id'] == '215'){
               ?>
             <h1>
             THAILAND DOMESTIC TOURS<br>
@@ -266,38 +267,6 @@
               <div class="col-md-6">
                 <label for="">Date of Birth *</label><br>
                 <input id="session-date" type="text" class="dob-picker" value="<?=date_format(date_create($session['client_dob']),"Y-m-d");?>"><br>
-              </div>
-            </div>
-            <?php
-              }
-              ?>
-            <?php
-              for($i=1;$i<$totaltourist;$i++){
-              ?>
-            <div id="tourist<?=$i+1?>" class="form-group tourist">
-              <h3>Travel companion <?=$i?></h3>
-              <div class="col-md-6">
-                <label for="">Name - Surname *</label><br>
-                <input type="text"><br>
-              </div>
-              <div class="col-md-6">
-                <label for="">Telephone Number *</label><br>
-                <input type="text"><br>
-              </div>
-              <div class="col-md-6 hide">
-                <label for="">Passport Image *</label><br>
-                <div class="upload">
-                  <img src="<?=base_url()?>assets/images/ico-passport.png" alt="passport image">
-                  <input pointer="img[<?=$i+1?>]" name="passportImg[]" class="img" type="file"><br>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <label for="">Passport No. *</label><br>
-                <input type="text"><br>
-              </div>
-              <div class="col-md-6">
-                <label for="">Date of Birth *</label><br>
-                <input type="text" class="dob-picker"><br>
               </div>
             </div>
             <?php
@@ -614,81 +583,6 @@
     				}
     			}
     		);
-    		$total_tourist = $('#total-tourist').val();
-    		if($total_tourist > 1){
-    			$('.tourist input').each(
-    				function(i,v){
-    					switch(i){
-    						case 0:
-    							if(v.value == ''){
-    								$status = false;
-    								$('#alert-warning').html('Please fill each tourist name and surname.');
-    								$('#popup').modal('show');
-    								return false;
-    							}
-    						break;
-    						case 1:
-    							if(v.value == ''){
-    								$status = false;
-    								$('#alert-warning').html('Please fill each tourist telephone number.');
-    								$('#popup').modal('show');
-    								return false;
-    							}
-    						break;
-    						case 2:
-    							if(v.value == ''){
-    								//$status = false;
-    								$('#alert-warning').html('Please fill each tourist passport image.');
-    								$('#popup').modal('show');
-    								//return false;
-    							}
-    						break;
-    						case 3:
-    							if(v.value == ''){
-    								$status = false;
-    								$('#alert-warning').html('Please fill each tourist passport number.');
-    								$('#popup').modal('show');
-    								return false;
-    							}
-    						break;
-    						case 4:
-    							if(v.value == ''){
-    								$status = false;
-    								$('#alert-warning').html('Please fill each tourist date of birth.');
-    								$('#popup').modal('show');
-    								return false;
-    								}
-    							break;
-    					}
-    					$index = i%5;
-    					switch($index){
-    						case 0:
-    							if(i!=0){
-    								$b_detail += ',';
-    							}
-    							$b_detail += ',{"fullname":"'+v.value+'",';
-    						break;
-    						case 1:
-    							$b_detail += '"tel":"'+v.value+'",';
-    						break;
-    						case 2:
-    							if(v.value == ""){
-    								$b_detail += '"passportImg":"'+$('#session-passportImg').attr('session-path')+'",';
-    							}else{
-    								$b_detail += '"passportImg":"'+v.value+'",';
-    							}
-    						break;
-    						case 3:
-    							$b_detail += '"passportNo":"'+v.value+'",';
-    						break;
-    						case 4:
-    							$dob = new Date(v.value).format('yyyy-mm-dd');
-    							$b_detail += '"dob":"'+$dob+'"}';
-    						break;
-    					}
-    				}
-    			);
-    		}
     		$b_detail += ']}';
     		$('input[name=booking-tourist-detail]').val($b_detail);
     		if($status){

@@ -17,18 +17,16 @@ class EasyBookingMD extends CI_Model {
 			tour.tour_startPrice,
 			tour.tour_priceRange,
 			tour.tour_currency,
-			countries.country_name,
       tour.tour_advanceBooking,
       tour.tour_privateGroup,
       tour.tour_discountRate,
       tour.tour_doublePack,
       tour.tour_privateGroupPrice,
-      tour.tour_minimum
+      tour.tour_minimum,
+      address.country_id
 		");
     $this->db->from('tour');
-    $this->db->join('tour_address', 'tour.tour_id = tour_address.tour_id', 'inner');
-    $this->db->join('address', 'tour_address.address_id = address.address_id', 'inner');
-    $this->db->join('countries', 'address.country_id = countries.country_id', 'inner');
+    $this->db->join('address', 'tour.address_id = address.address_id', 'inner');
     $this->db->where('tour.tour_nameSlug', $tour_nameSlug);
     $this->db->group_by('tour.tour_id');
     return $this->db->get();
@@ -83,9 +81,9 @@ class EasyBookingMD extends CI_Model {
   }
 
   function getNationality() {
-    $this->db->select("countries.country_nationality");
-    $this->db->from('countries');
-    $this->db->where('countries.country_nationality !=', '');
+    $this->db->select("nationality.nationality_name");
+    $this->db->from('nationality');
+    $this->db->order_by('nationality.nationality_name', 'ASC');
     return $this->db->get();
   }
 
@@ -94,16 +92,15 @@ class EasyBookingMD extends CI_Model {
     switch ($mode) {
       case 1:
         $query = "SELECT
-					IF(countries.country_name = 'Thailand', 'T', 'I') AS tour_country,
+					IF(country.country_nameEN = 'thailand', 'T', 'I') AS tour_country,
 					tour.tour_currency,
 					RIGHT(10000+tour.tour_id,4) AS tour_id,
 					agent.agent_code
 					FROM
 					tour
-					INNER JOIN tour_address ON tour.tour_id = tour_address.tour_id
-					INNER JOIN address ON tour_address.address_id = address.address_id
+					INNER JOIN address ON tour.address_id = address.address_id
 					INNER JOIN agent ON tour.tour_agentId = agent.agent_id
-					INNER JOIN countries ON address.country_id = countries.country_id
+					INNER JOIN country ON address.country_id = country.country_id
 					WHERE
 					tour.tour_nameSlug = '" . $data . "'
 					GROUP BY

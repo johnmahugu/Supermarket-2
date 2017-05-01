@@ -153,7 +153,7 @@
                 ?>
               </label><br>
               <h4><?php echo date_format(date_create($b_detail['date'][0]['start']),"j F Y")?> - <?php echo date_format(date_create($b_detail['date'][0]['end']),"j F Y")?></h4>
-              <h3 class="top-mg"><?php echo count($b_detail['touristinfo'])?> Persons</h3>
+              <h3 class="top-mg"><?=$b_detail['tourist'][0]['total_tourist']?> Persons</h3>
               <p data-toggle="modal" data-target="#tourists<?php echo $i?>" class="tourist">See Tourists</p>
             </div>
             <div class="col-sm-3 col-lg-2">

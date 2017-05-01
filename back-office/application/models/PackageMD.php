@@ -330,7 +330,7 @@ class PackageMD extends CI_Model {
     }
   }
 
-  function updatePackageService($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$startPrice,$roomtype,$roomprice,$hotel){
+  function updatePackageService($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$startPrice,$hotel){
     self::$db->trans_begin();
     $data = array(
       'tour_nameSlug' => $newNameSlug,
@@ -345,26 +345,6 @@ class PackageMD extends CI_Model {
     $result = self::$db->query($query);
     $result = $result->row_array(0);
     $tour_id = $result['tour_id'];
-
-    $query = 'DELETE FROM tour_condition WHERE tour_id = "'.$tour_id.'" AND tc_type="room"';
-    self::$db->query($query);
-    $roomtype = explode(",",$roomtype);
-    $c_roomtype = count($roomtype);
-    $roomprice = explode(",",$roomprice);
-    for($i=0;$i<$c_roomtype;$i++){
-      if($roomprice[$i] != 0){
-        $data = array(
-          'tour_id' => $tour_id,
-          'tc_condition' => 'increase',
-          'tc_price' => $roomprice[$i],
-          'tc_type' => 'room',
-          'tc_title' => NULL,
-          'tc_data' => '[{"roomtype":"'.$roomtype[$i].'","roomdetail":""}]',
-          'tc_order' => ($i+1)
-        );
-        self::$db->insert('tour_condition',$data);
-      }
-    }
 
     $query = 'DELETE FROM tour_condition WHERE tour_id = "'.$tour_id.'" AND tc_type="hotel"';
     self::$db->query($query);

@@ -284,114 +284,6 @@ foreach($condition->result_array() as $row){
 					</div>
 				</div>
 				<div class="row">
-					<div class="list-card card-header" id="room">
-						<div class="header">
-							<h2>Room Condition</h2>
-						</div>
-						<div class="content">
-              <?php
-              if($sr>0){
-                echo '<div class="form-group"><div class="col-md-4 col-sm-6">';
-                echo '<input class="roomcheck" type="checkbox" checked>';
-              }else{
-                echo '<div class="form-group cb-nonselect"><div class="col-md-4 col-sm-6">';
-                echo '<input class="roomcheck" type="checkbox">';
-              }
-               ?>
-									<p>Single Room</p>
-								</div>
-								<div class="col-md-4 col-sm-6 form-inline">
-									<label>Add</label>
-									<span>
-                    <?php
-                    if($sr>0){
-                      echo '<input class="room" roomtype="Single room" type="number" placeholder="Price"  value="'.$sr_price.'">';
-                    }else{
-                      echo '<input class="room" roomtype="Single room" type="number" placeholder="Price"disabled>';
-                    }
-                    ?>
-										<span class="unit"><?=$package['tour_currency']?></span>
-									</span>
-								</div>
-							</div>
-              <?php
-              if($cwd>0){
-                echo '<div class="form-group"><div class="col-md-4 col-sm-6">';
-                echo '<input class="roomcheck" type="checkbox" checked>';
-              }else{
-                echo '<div class="form-group cb-nonselect"><div class="col-md-4 col-sm-6">';
-                echo '<input class="roomcheck" type="checkbox">';
-              }
-               ?>
-									<p>Children 2 - 12 yrs (with bed)</p>
-								</div>
-								<div class="col-md-4 col-sm-6 form-inline">
-									<label>Add</label>
-									<span>
-                    <?php
-                    if($cwd>0){
-                      echo '<input class="room" roomtype="Children 2 - 12 yrs (with bed)" type="number" placeholder="Price"  value="'.$cwd_price.'">';
-                    }else{
-                      echo '<input class="room" roomtype="Children 2 - 12 yrs (with bed)" type="number" placeholder="Price"disabled>';
-                    }
-                    ?>
-										<span class="unit"><?=$package['tour_currency']?></span>
-									</span>
-								</div>
-							</div>
-              <?php
-              if($cwod>0){
-                echo '<div class="form-group"><div class="col-md-4 col-sm-6">';
-                echo '<input class="roomcheck" type="checkbox" checked>';
-              }else{
-                echo '<div class="form-group cb-nonselect"><div class="col-md-4 col-sm-6">';
-                echo '<input class="roomcheck" type="checkbox">';
-              }
-               ?>
-									<p>Children 2 - 12 yrs (without bed)</p>
-								</div>
-								<div class="col-md-4 col-sm-6 form-inline">
-									<label>Add</label>
-									<span>
-                    <?php
-                    if($cwod>0){
-                      echo '<input class="room" roomtype="Children 2 - 12 yrs (without bed)" type="number" placeholder="Price"  value="'.$cwod_price.'">';
-                    }else{
-                      echo '<input class="room" roomtype="Children 2 - 12 yrs (without bed)" type="number" placeholder="Price"disabled>';
-                    }
-                    ?>
-										<span class="unit"><?=$package['tour_currency']?></span>
-									</span>
-								</div>
-							</div>
-              <?php
-              if($c>0){
-                echo '<div class="form-group"><div class="col-md-4 col-sm-6">';
-                echo '<input class="roomcheck" type="checkbox" checked>';
-              }else{
-                echo '<div class="form-group cb-nonselect"><div class="col-md-4 col-sm-6">';
-                echo '<input class="roomcheck" type="checkbox">';
-              }
-               ?>
-									<p>Children < 2 yrs</p>
-								</div>
-								<div class="col-md-4 col-sm-6 form-inline">
-									<label>Add</label>
-									<span>
-                    <?php
-                    if($c>0){
-                      echo '<input class="room" roomtype="Children < 2 yrs" type="number" placeholder="Price"  value="'.$c_price.'">';
-                    }else{
-                      echo '<input class="room" roomtype="Children < 2 yrs" type="number" placeholder="Price"disabled>';
-                    }
-                    ?>
-										<span class="unit"><?=$package['tour_currency']?></span>
-									</span>
-								</div>
-							</div>
-						</div>
-					</div>
-
           <div class="list-card card-header hide" id="multi">
             <div class="header">
               <h2>Hotel</h2>
@@ -629,8 +521,6 @@ foreach($condition->result_array() as $row){
               <input name="nameTH" type="hidden" required>
               <input name="nameEN" type="hidden" required>
               <input name="startPrice" type="hidden" required>
-              <input name="roomtype" type="hidden" required>
-              <input name="roomprice" type="hidden" required>
               <input name="hotel" type="hidden" required>
   						<button id="submit" type="submit" class="btn bold">Update Package</button>
             </form>
@@ -663,20 +553,6 @@ $('#submit').click(function(){
   $region = $('select[name=region]').val();
   $province = $('select[name=province]').val();
   $startPrice = $('#startPrice').val().replace(' ','');
-
-  $room = $('.room');
-  $c_room = $room.length;
-  $roomcheck = $('.roomcheck');
-  $roomtype = new Array();
-  $roomprice = new Array();
-  for($i=0;$i<$c_room;$i++){
-    if($roomcheck.eq($i).prop('checked') == true){
-      if($room.eq($i).val() != ''){
-        $roomtype.push($room.eq($i).attr('roomtype'));
-        $roomprice.push($room.eq($i).val());
-      }
-    }
-  }
 
   $hotelname = $('.hotelname');
   $c_hotel = $hotelname.length;
@@ -776,8 +652,6 @@ $('#submit').click(function(){
   $('input[name=region]').val($region);
   $('input[name=province]').val($province);
   $('input[name=startPrice]').val($startPrice);
-  $('input[name=roomtype]').val($roomtype);
-  $('input[name=roomprice]').val($roomprice);
   if($hotel != '[]'){
     $('input[name=hotel]').val($hotel);
   }

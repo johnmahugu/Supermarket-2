@@ -197,10 +197,8 @@ class PackageCL extends CI_Controller {
 		$country = $this->input->post('country');
 		$continent = $this->input->post('continent');
 		$startPrice = $this->input->post('startPrice');
-		$roomtype = $this->input->post('roomtype');
-		$roomprice = $this->input->post('roomprice');
 		$hotel = $this->input->post('hotel');
-		$this->PackageMD->updatePackageService($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$startPrice,$roomtype,$roomprice,$hotel);
+		$this->PackageMD->updatePackageService($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$startPrice,$hotel);
 		$this->PackageMD->updateOutboundLocation($newNameSlug,$country,$continent);
 		redirect('outbound-package?type='.$type, 'refresh');
 	}
@@ -280,10 +278,8 @@ class PackageCL extends CI_Controller {
 		$region = $this->input->post('region');
 		$province = $this->input->post('province');
 		$startPrice = $this->input->post('startPrice');
-		$roomtype = $this->input->post('roomtype');
-		$roomprice = $this->input->post('roomprice');
 		$hotel = $this->input->post('hotel');
-		$this->PackageMD->updatePackageService($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$startPrice,$roomtype,$roomprice,$hotel);
+		$this->PackageMD->updatePackageService($oldNameSlug,$newNameSlug,$nameTH,$nameEN,$startPrice,$hotel);
 		$this->PackageMD->updateDomesticLocation($newNameSlug,$region,$province);
 		redirect('domestic-package?type='.$type, 'refresh');
 	}
