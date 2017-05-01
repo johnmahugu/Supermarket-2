@@ -423,7 +423,7 @@
         }
       	$result = getPackage($base_url, $type, $region, $province, $continent, $country, $season, $keysearch, $ref_url, $offset);
         if($result != ''){
-          if($region != '' || $province != '' || $continent != ''){
+          if($region != '' || $province != '' || $continent != '' || $keysearch != ''){
             $('.tour-package').html('');
             $('.tourprogram.show').html('');
           	$('.tourprogram.show').html($result['list_package']);
@@ -455,7 +455,7 @@
                     });
           }
         }else{
-          if($region == '' && $province == '' && $continent == '' && $season == ''){
+          if($region == '' && $province == '' && $continent == '' && $season == '' && $keysearch == ''){
             if($country == 'thailand' || $country == 'international'){
               $('.tourprogram.show').html('');
               $('.tourprogram.show').html(getHilight());

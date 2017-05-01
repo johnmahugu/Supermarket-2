@@ -247,7 +247,7 @@
         <?php
       } ?>
           <div class="form-group" id="hotel">
-            <h3>Select Hotel</h3>
+            <h3>Select Hotel (Price/Person)</h3>
             <div class="col-md-12">
               <?php
                 if(isset($condition_hotel)){
