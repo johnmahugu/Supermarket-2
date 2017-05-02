@@ -157,7 +157,7 @@
 				<div class="main-wrapper">
 					<div class="row">
 						<div class="col-sm-8 col-xs-12">
-							<h1>Edit
+							<h1>
                 <?php
                 if($this->session->flashdata('f1') == 'ep'){
 									echo 'Easy Package';
@@ -201,7 +201,7 @@
                   <?php
                     if(isset($country)){
                     	foreach($country->result_array() as $row){
-                    		echo "<option value=".$row['country_id'].">".$row['country_name']."</option>";
+                    		echo "<option value=".$row['country_id'].">".$row['country_nameEN']."</option>";
                     	}
                     }
                     ?>

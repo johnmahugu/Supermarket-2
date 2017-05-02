@@ -20,7 +20,7 @@
 	<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="">
-  <form id="insert-domestic-package" action="insert-domestic-package" method="post" enctype="multipart/form-data">
+  <form id="insert-domestic-package" action="insert-domestic-package" method="post" enctype="multipart/form-data" onsubmit="return submitform();">
 	<header>
 		<div class="header-bar">
 			<div class="logo">
@@ -412,6 +412,23 @@
 	      </div>
 	    </div>
   	</div>
+		<!-- Modal -->
+		<div class="modal fade" id="popup" role="dialog">
+			<div class="modal-dialog modal-md">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i></button>
+					</div>
+					<div class="modal-body text-center">
+						<img src="<?=base_url()?>assets/images/ico-alert.png" alt="">
+						<h4>Something wrong</h4>
+						<p id="alert-warning">Please fill in all fields.</p>
+					</div>
+					<div class="modal-footer">
+					</div>
+				</div>
+			</div>
+		</div>
     <input id="isTourType" type="hidden" value="<?=$this->session->flashdata('f1')?>">
 </body>
 <script src="assets/js/script.js"></script>
@@ -420,12 +437,8 @@ $(document).ready(function(){
 	$('a[href="outbound-package?type='+$('#isTourType').val()+'"]').find('li').eq(0).addClass('current');
 });
 
-$('#submit').click(function(){
-  submit();
-});
-
-function submit(){
-  for ( instance in CKEDITOR.instances ) {
+function submitform(){
+	for ( instance in CKEDITOR.instances ) {
     CKEDITOR.instances[instance].updateElement();
   }
   $nameTH = $('#nameTH').val();
@@ -449,51 +462,122 @@ function submit(){
   $startPrice = $('#startPrice').val().replace(' ','');
   $day = $('select[name=daytrip]').val();
   $night = $day-1;
-  $('input[name=nameSlug]').val($newNameSlug);
-  $('input[name=nameTH]').val($nameTH);
-  $('input[name=nameEN]').val($nameEN);
-  $('input[name=agentId]').val($agentId);
-  $('input[name=region]').val($region);
-  $('input[name=province]').val($province);
-  $('input[name=overviewTH]').val($overviewTH);
-  $('input[name=overviewEN]').val($overviewEN);
-  $('input[name=descTH]').val($descTH);
-  $('input[name=descEN]').val($descEN);
-  $('input[name=briefTH]').val($briefTH);
-  $('input[name=briefEN]').val($briefEN);
-  $('input[name=advanceBooking]').val($advanceBooking);
-  $('input[name=startPrice]').val($startPrice);
-  $('input[name=dayNight]').val($day+","+$night);
-  $priceRange = $('.priceRange');
-  $from = '';
-  $to = '';
-  $price = '';
-  $result = '[';
-  for($i=0;$i<$priceRange.length;$i++){
-    $($priceRange[$i]).find('input').each(function(i){
-      $d_temp = $(this).val().split("/");
-      $d_temp = new Date($d_temp[2]+'-'+$d_temp[1]+'-'+$d_temp[0]);
-      switch(i%3){
-        case 0:
-          $from = dateFormat($d_temp, "yyyy-mm-dd");
-        break;
-        case 1:
-          $to = dateFormat($d_temp, "yyyy-mm-dd");
-        break;
-        case 2:
-          $price = $(this).val();
-        break;
-      }
-    });
-    $result += '{"from":"'+$from+'","to":"'+$to+'","price":'+$price+'},';
-  }
-  $result = $result.substr(0,$result.length-1);
-  $result += ']';
-  $('input[name=priceRange]').val($result);
-  $closeBooking = Date.parse($to).addDays(-$advanceBooking).toString("yyyy-MM-dd");
-  $('input[name=closeBooking]').val($closeBooking);
-  var imageData = $('.image-editor').cropit('export');
-	$('.hidden-image-data').val(imageData);
+	var imageData = $('.image-editor').cropit('export');
+	$status = true;
+	switch(true){
+		case ($nameTH == ''):
+			$status = false;
+			$('#popup').modal('show');
+		break;
+		case ($nameEN == ''):
+			$status = false;
+			$('#popup').modal('show');
+		break;
+		case (imageData == 'undefined' || imageData == '' || imageData == undefined):
+			$status = false;
+			$('#popup').modal('show');
+		break;
+		case ($agentId == ''):
+			$status = false;
+			$('#popup').modal('show');
+		break;
+		case ($region == ''):
+			$status = false;
+			$('#popup').modal('show');
+		break;
+		case ($province == ''):
+			$status = false;
+			$('#popup').modal('show');
+		break;
+		case ($overviewTH == ''):
+			$status = false;
+			$('#popup').modal('show');
+		break;
+		case ($overviewEN == ''):
+			$status = false;
+			$('#popup').modal('show');
+		break;
+		case ($descTH == ''):
+			$status = false;
+			$('#popup').modal('show');
+		break;
+		case ($descEN == ''):
+			$status = false;
+			$('#popup').modal('show');
+		break;
+		case ($briefTH == ''):
+			$status = false;
+			$('#popup').modal('show');
+		break;
+		case ($briefEN == ''):
+			$status = false;
+			$('#popup').modal('show');
+		break;
+		case ($advanceBooking == ''):
+			$status = false;
+			$('#popup').modal('show');
+		break;
+		case ($startPrice == ''):
+			$status = false;
+			$('#popup').modal('show');
+		break;
+		case ($day == ''):
+			$status = false;
+			$('#popup').modal('show');
+		break;
+		case ($night == ''):
+			$status = false;
+			$('#popup').modal('show');
+		break;
+	}
+
+	if($status == true){
+		$('input[name=nameSlug]').val($newNameSlug);
+	  $('input[name=nameTH]').val($nameTH);
+	  $('input[name=nameEN]').val($nameEN);
+	  $('input[name=agentId]').val($agentId);
+	  $('input[name=region]').val($region);
+	  $('input[name=province]').val($province);
+	  $('input[name=overviewTH]').val($overviewTH);
+	  $('input[name=overviewEN]').val($overviewEN);
+	  $('input[name=descTH]').val($descTH);
+	  $('input[name=descEN]').val($descEN);
+	  $('input[name=briefTH]').val($briefTH);
+	  $('input[name=briefEN]').val($briefEN);
+	  $('input[name=advanceBooking]').val($advanceBooking);
+	  $('input[name=startPrice]').val($startPrice);
+	  $('input[name=dayNight]').val($day+","+$night);
+	  $priceRange = $('.priceRange');
+	  $from = '';
+	  $to = '';
+	  $price = '';
+	  $result = '[';
+	  for($i=0;$i<$priceRange.length;$i++){
+	    $($priceRange[$i]).find('input').each(function(i){
+	      $d_temp = $(this).val().split("/");
+	      $d_temp = new Date($d_temp[2]+'-'+$d_temp[1]+'-'+$d_temp[0]);
+	      switch(i%3){
+	        case 0:
+	          $from = dateFormat($d_temp, "yyyy-mm-dd");
+	        break;
+	        case 1:
+	          $to = dateFormat($d_temp, "yyyy-mm-dd");
+	        break;
+	        case 2:
+	          $price = $(this).val();
+	        break;
+	      }
+	    });
+	    $result += '{"from":"'+$from+'","to":"'+$to+'","price":'+$price+'},';
+	  }
+	  $result = $result.substr(0,$result.length-1);
+	  $result += ']';
+	  $('input[name=priceRange]').val($result);
+	  $closeBooking = Date.parse($to).addDays(-$advanceBooking).toString("yyyy-MM-dd");
+	  $('input[name=closeBooking]').val($closeBooking);
+		$('.hidden-image-data').val(imageData);
+	}
+	return $status;
 }
 
 $('#startPrice').click(function(){
