@@ -48,110 +48,11 @@
 				</div>
 				<img src="assets/images/logo.png" alt="">
 			</div>
-			<div class="menu">
-				<ul>
-					<li><a class="current" href="#">Tour Management</a></li>
-					<li><a href="#">Tour Operation</a></li>
-					<li><a href="#">Dashboard</a></li>
-					<li><span>Admin</span>
-						<ul class="">
-							<li><a href="profile.html">
-								View Profile
-							</a></li>
-							<li><a href="member-account.html">
-								Account Setting
-							</a></li>
-							<li><a href="login.html">
-								Logout
-							</a></li>
-						</ul>
-					</li>
-
-				</ul>
-				<p class="menu-btn">MENU</p>
-			</div>
+			<?php include('pagepart/backtop.php') ;?>
 		</div>
 	</header>
 	<div class="body-wrapper">
-		<aside>
-			<h2>Myanmar Center</h2>
-			<div class="title-line">
-				<h3>Tour</h3>
-				<hr>
-			</div>
-			<ul>
-				<a href="tm-std-main.html">
-					<li>Standard Tours</li>
-				</a>
-				<a href="tm-mc-easy-main.html">
-					<li>Easy Packages</li>
-				</a>
-				<a href="tm-mc-promotion-main.html">
-					<li>Promotion</li>
-				</a>
-				<a href="tm-mc-locationdata.html">
-					<li>Location Data</li>
-				</a>
-				<a href="tm-mc-locationimages.html">
-					<li>Location Images</li>
-				</a>
-			</ul>
-			<div class="title-line">
-				<h3>Shop Travel</h3>
-				<hr>
-			</div>
-			<ul>
-				<a href="tm-hotel-main.html">
-					<li>Hotel</li>
-				</a>
-				<a href="tm-vehicle-main.html">
-					<li>Vehicle</li>
-				</a>
-				<a href="tm-meal-main.html">
-					<li>Meal</li>
-				</a>
-				<a href="tm-ticket-main.html">
-					<li>Ticket</li>
-				</a>
-				<a href="tm-guide-main.html">
-					<li>Guide</li>
-				</a>
-				<a href="tm-other-main.html">
-					<li>Others</li>
-				</a>
-			</ul>
-			<h2 class="top-mg">Supermarket Tours</h2>
-			<div class="title-line">
-				<h3>Domestic Tours</h3>
-				<hr>
-			</div>
-			<ul>
-				<a href="domestic-package?type=ep">
-					<li>Easy Package</li>
-				</a>
-				<a href="domestic-package?type=sp">
-					<li>Series Package</li>
-				</a>
-				<a href="domestic-location-data">
-					<li>Location Data</li>
-				</a>
-			</ul>
-			<div class="title-line">
-				<h3>Outbound Tours</h3>
-				<hr>
-			</div>
-			<ul>
-				<a href="outbound-package?type=ep">
-					<li>Easy Package</li>
-				</a>
-				<a href="outbound-package?type=sp">
-					<li>Series Package</li>
-				</a>
-				<a href="outbound-location-data">
-					<li>Location Data</li>
-				</a>
-			</ul>
-		</aside>
+		<?php include('pagepart/backside.php') ; ?>
 		<main>
 			<div class="title-bar-wrapper">
 				<div class="main-wrapper">

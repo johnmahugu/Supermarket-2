@@ -962,6 +962,7 @@
     	$('.tourist-num[roomtype=Twin-room]').val($twin_room-1);
     	$single_room = parseInt($('.tourist-num[roomtype=Single-room]').val());
     	$('.tourist-num[roomtype=Single-room]').val($single_room+1);
+      sum_amount();
     	return false;
     }else{
     	return true;

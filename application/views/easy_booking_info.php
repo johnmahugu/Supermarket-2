@@ -266,7 +266,7 @@
               </div>
               <div class="col-md-6">
                 <label for="">Date of Birth *</label><br>
-                <input id="session-date" type="text" class="dob-picker" value="<?=date_format(date_create($session['client_dob']),"Y-m-d");?>"><br>
+                <input id="session-date" type="text" class="dob-picker" value="<?=date_format(date_create($session['client_dob']),"d/m/Y");?>"><br>
               </div>
             </div>
             <?php
@@ -351,7 +351,7 @@
     });
 
     $('.dob-picker').datepicker({
-    	dateFormat: 'yy-mm-dd',
+    	dateFormat: 'dd/mm/yy',
     	changeMonth: true,
     	changeYear: true,
     	maxDate: "0D",
@@ -419,6 +419,11 @@
                     $('#alert-warning').html('Please fill each tourist passport number.');
                     $('#popup').modal('show');
                     return false;
+                  }else if(validatePassport(v.value) == false){
+                    $status = false;
+      							$('#alert-warning').html('Passport is not yet valid.');
+      							$('#popup').modal('show');
+      							return false;
                   }
       					break;
                 case 4:
@@ -455,7 +460,8 @@
     							$b_detail += '"passportNo":"'+v.value+'",';
     						break;
     						case 4:
-    							$b_detail += '"dob":"'+v.value+'"}';
+                  $dob = new Date(v.value).format('yyyy-mm-dd');
+    							$b_detail += '"dob":"'+$dob+'"}';
     						break;
     					}
           }
@@ -544,7 +550,12 @@
     							$('#alert-warning').html('Please fill your passport number.');
     							$('#popup').modal('show');
     							return false;
-    						}
+    						}else if(validatePassport(v.value) == false){
+                  $status = false;
+                  $('#alert-warning').html('Passport is not yet valid.');
+                  $('#popup').modal('show');
+                  return false;
+                }
     					break;
     					case 7:
     						if(v.value == ''){
@@ -627,6 +638,15 @@
             }
             reader.readAsDataURL(input.files[0]);
         }
+    }
+
+    function validatePassport(passport){
+      var regsaid = /[a-zA-Z]{2}[0-9]{7}/;
+      if(regsaid.test(passport) == false){
+          return false;
+      }else{
+          return true;
+      }
     }
 
     $('.menu-burger').click(function(){
