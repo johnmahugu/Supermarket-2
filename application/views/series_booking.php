@@ -180,7 +180,7 @@
             <div class="col-md-6">
               <label for="">Tourist</label><br>
               <input id="tourist-total-num" type="number" min="1" value="1">
-              <span class="unit">person</span>
+              <span class="unit">person(s)</span>
             </div>
           </div>
           <?php
@@ -267,7 +267,7 @@
             <div class="form-group">
               <div class="list">
                 <div class="amount">
-                  <p>Total <span>0</span> / <span id="total-tourist">1</span> person</p>
+                  <p>Total <span>0</span> / <span id="total-tourist">1</span> person(s)</p>
                 </div>
               </div>
               <div class="list" room-type="Twin / Tripple room">
@@ -276,7 +276,7 @@
                   <p class="priceroom"><?=number_format($package['tour_startPrice']);?></p>
                   <p>&nbsp;/ person</p>
                 </div>
-                <div class="col-sm-3 col-xs-5"><input type="hidden"><input class="tourist-num" type="number" value="0" min="0" max="1"><span class="unit">person</span></div>
+                <div class="col-sm-3 col-xs-5"><input type="hidden"><input class="tourist-num" type="number" value="0" min="0" max="1"><span class="unit">person(s)</span></div>
               </div>
               <?php
                 foreach($room->result_array() as $row){
@@ -295,11 +295,11 @@
                   </label>
                 </div>
                 <div class="col-sm-4 col-xs-7">
-                  <input type="hidden" value="<?=$row['tc_price'];?>">
-                  <p class="priceroom"><?=number_format($package['tour_startPrice']+$row['tc_price']);?></p>
+                  <input class="room_add" type="hidden" value="<?=$row['tc_price'];?>">
+                  <p class="priceroom"><?=number_format(intval($package['tour_startPrice'])+intval($row['tc_price']));?></p>
                   <p>&nbsp;/ person</p>
                 </div>
-                <div class="col-sm-3 col-xs-5"><input class="tourist-num" type="number" value="0" min="0" max="1"><span class="unit">person</span></div>
+                <div class="col-sm-3 col-xs-5"><input class="tourist-num" type="number" value="0" min="0" max="1"><span class="unit">person(s)</span></div>
               </div>
               <?php }
                 }
@@ -407,14 +407,12 @@
     	$price_starting = $(this).val();
     	$index = 0;
     	$('.priceroom').eq($index).text(numeral($price_starting).format('0,0'));
-    	$count_input = $('.list').find('input').length;
-    	for($i=0;$i<$count_input;$i++){
-    		if($('.list').find('input').eq($i).val() != 0){
-    			$index++;
-    			$result = parseInt($price_starting);
-    			$result += parseInt($('.list').find('input').eq($i).val());
-    			$('.priceroom').eq($index).text(numeral($result).format('0,0'));
-    		}
+    	$count_input = $('.room_add').length;
+    	for($i=1;$i<=$count_input;$i++){
+    		$result = parseInt($price_starting);
+    		$result += parseInt($('.room_add').eq($index).val());
+    		$('.priceroom').eq($i).text(numeral($result).format('0,0'));
+        $index++;
     	}
     	set_room(3);
     	sum_amount();

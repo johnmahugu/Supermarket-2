@@ -448,6 +448,13 @@ class PackageMD extends CI_Model {
     );
     self::$db->insert('tour', $data);
     $tourId = self::$db->insert_id();
+
+    $data = array(
+      'tour_id' => $tourId,
+      'address_id' => $addressId
+    );
+    self::$db->insert('tour_address', $data);
+
     $data = array(
       'tour_imgCover' => $tourId
     );
@@ -516,11 +523,6 @@ class PackageMD extends CI_Model {
     self::$db->where('tour_id', $tourId);
     self::$db->update('tour', $data);
     $data = array(
-      'tour_id' => $tourId,
-      'address_id' => $addressId
-    );
-    self::$db->insert('tour_address', $data);
-    $data = array(
       'img_type' => 'tour cover',
       'img_refid' => $tourId,
       'img_source' => 'filestorage/image/tour/'.$newNameSlug.'.jpg'
@@ -538,13 +540,13 @@ class PackageMD extends CI_Model {
   }
 
   function updateFile($nameSlug,$filetype){
-    if($filetype == 'pdf'){
+    if($filetype == '.pdf'){
       $data = array(
         'tour_pdf' => $nameSlug.'.pdf'
       );
     }else{
       $data = array(
-        'tour_word' => $nameSlug.'.'.$filetype
+        'tour_word' => $nameSlug.$filetype
       );
     }
     self::$db->where('tour_nameSlug', $nameSlug);

@@ -181,7 +181,7 @@
               <?php
                 if(isset($province)){
                 	foreach($province->result_array() as $row){
-                		echo "<option value=".$row['province_nameEN'].">".$row['province_name'.$lang]."</option>";
+                		echo "<option value=".$row['province_id'].">".$row['province_name'.$lang]."</option>";
                 	}
                 }
                 ?>
@@ -609,7 +609,7 @@
         			$result['list_package'] = '';
               $result['list_package'] += '<div class="hilight-box row"><div class="col-xs-12"><div class="tour-header-bar result"><div class="title-header">';
               $result['list_package'] += '<h2><i class="fa fa-plane" aria-hidden="true"></i> ALL TOURS PROGRAM</h2></div>';
-              $result['list_package'] += '<div class="digi">'+data['package'].length+' Programs</div><div class="clear"></div><h3>ALL OF OUTBOUND PACKAGE</h3></div>';
+              $result['list_package'] += '<div class="digi">'+data['package'].length+' Programs</div><div class="clear"></div><h3>ALL OF DOMESTIC PACKAGE</h3></div>';
               $result['list_package'] += '</div>';
         			for($i=0;$i<data['package'].length;$i++){
         				$date_range = JSON.parse(data['package'][$i].tour_priceRange);

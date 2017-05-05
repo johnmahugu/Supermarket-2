@@ -500,7 +500,7 @@ class PackageCL extends CI_Controller {
 		$ftp_config['password'] = 'V2zmx9N33';
 		$ftp_config['debug']    = TRUE;
 		$this->ftp->connect($ftp_config);
-		if($filetype == 'pdf'){
+		if($filetype == '.pdf'){
 			$destination = '/public_html/filestorage/pdf/'.$fileName;
 		}else{
 			$destination = '/public_html/filestorage/word/'.$fileName;

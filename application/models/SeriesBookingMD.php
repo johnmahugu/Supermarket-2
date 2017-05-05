@@ -25,7 +25,6 @@ class SeriesBookingMD extends CI_Model {
       address.country_id
 		");
     $this->db->from('tour');
-    $this->db->join('tour_address', 'tour.tour_id = tour_address.tour_id', 'inner');
     $this->db->join('address', 'tour.address_id = address.address_id', 'inner');
     $this->db->where('tour.tour_nameSlug', $tour_nameSlug);
     $this->db->group_by('tour.tour_id');

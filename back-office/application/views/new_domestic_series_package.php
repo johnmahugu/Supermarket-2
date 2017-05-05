@@ -559,7 +559,7 @@ function numberWithSpaces(x) {
 	            $(this).closest('.form-group').find('.date.to').datepicker({
 			      	buttonText: "Select date",
 			      	dateFormat: 'dd/mm/yy' });
-	            to.setDate(to.getDate()+daytrip);
+	            to.setDate(to.getDate()+(daytrip-1));
 	            $(this).closest('.form-group').find('.date.to').datepicker('setDate', to);}
 	    	});
 	});

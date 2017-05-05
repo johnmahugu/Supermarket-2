@@ -383,7 +383,6 @@ $('#submitfile').click(function(){
     cache: false,
     processData: false,
     success:function(data){
-      alert(data);
       $('#addFile').removeClass('in');
       $('.modal-backdrop.fade').removeClass('in');
     }
