@@ -466,6 +466,11 @@ class PackageCL extends CI_Controller {
 		echo $result;
 	}
 
+	function check_nameEN(){
+		$nameEN = $this->input->post('nameEN');
+		echo $this->PackageMD->checkNameEN($nameEN);
+	}
+
 	function update_itinerary(){
 		$nameSlug = $this->input->post('nameSlug');
 		$config['upload_path'] = 'filestorage/temp/';

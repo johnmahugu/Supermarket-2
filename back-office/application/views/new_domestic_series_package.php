@@ -337,8 +337,42 @@ $(document).ready(function(){
 	$('a[href="domestic-package?type='+$('#isTourType').val()+'"]').find('li').eq(0).addClass('current');
 });
 
-$('#submit').click(function(){
-  submit();
+$('#nameEN').blur(function(){
+	if($(this).val() != ''){
+		$.ajax({
+			type: 'POST',
+			url:'/check-nameEN',
+			data:{
+				'nameEN': $(this).val()
+			},
+			success:function(data){
+				if(data == '0'){
+					alert('Name is duplicate. Please change tour name.');
+				}
+				$('#nameEN').val('');
+				$('#nameEN').focus();
+			}
+		});
+	}
+});
+
+$('#nameEN').blur(function(){
+	if($(this).val() != ''){
+		$.ajax({
+			type: 'POST',
+			url:'/check-nameEN',
+			data:{
+				'nameEN': $(this).val()
+			},
+			success:function(data){
+				if(data == '0'){
+					alert('Name is duplicate. Please change tour name.');
+					$('#nameEN').val('');
+					$('#nameEN').focus();
+				}
+			}
+		});
+	}
 });
 
 function submitform(){
@@ -494,9 +528,11 @@ $('#startPrice').blur(function(){
   if($.isNumeric($start_price.replace(' ',''))){
     $('#startPrice').val(numberWithSpaces($start_price));
   }else{
-    alert('Invalid number');
-    $('#startPrice').val(0);
-    $('#startPrice').focus();
+		if($('#startPrice').val() != ''){
+			alert('Invalid number');
+	    $('#startPrice').val(0);
+	    $('#startPrice').focus();
+		}
   }
 });
 
@@ -520,10 +556,10 @@ function numberWithSpaces(x) {
 
 
 	$('.image-editor.cover').cropit({
-      	exportZoom: 2,
-      	imageBackgroundBorderWidth: 20,
-      	allowDragNDrop: true,
-      	imageBackground: true,
+    exportZoom: 2,
+    imageBackgroundBorderWidth: 20,
+    allowDragNDrop: true,
+    imageBackground: true,
 		imageBackgroundBorderWidth: 15,
         onImageError: function(e) {
             if (e.code === 1) {

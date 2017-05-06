@@ -88,3 +88,4 @@ $route['domestic-location-data'] = 'PackageCL/domestic_location_data';
 $route['outbound-location-data'] = 'PackageCL/outbound_location_data';
 $route['insert-domestic-location'] = 'PackageCL/insert_domestic_location';
 $route['insert-outbound-location'] = 'PackageCL/insert_outbound_location';
+$route['check-nameEN'] = 'PackageCL/check_nameEN';

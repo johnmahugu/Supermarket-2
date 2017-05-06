@@ -337,6 +337,25 @@ $(document).ready(function(){
 	$('a[href="outbound-package?type='+$('#isTourType').val()+'"]').find('li').eq(0).addClass('current');
 });
 
+$('#nameEN').blur(function(){
+	if($(this).val() != ''){
+		$.ajax({
+			type: 'POST',
+			url:'/check-nameEN',
+			data:{
+				'nameEN': $(this).val()
+			},
+			success:function(data){
+				if(data == '0'){
+					alert('Name is duplicate. Please change tour name.');
+					$('#nameEN').val('');
+					$('#nameEN').focus();
+				}
+			}
+		});
+	}
+});
+
 function submitform(){
   for ( instance in CKEDITOR.instances ) {
     CKEDITOR.instances[instance].updateElement();
@@ -491,9 +510,11 @@ $('#startPrice').blur(function(){
   if($.isNumeric($start_price.replace(' ',''))){
     $('#startPrice').val(numberWithSpaces($start_price));
   }else{
-    alert('Invalid number');
-    $('#startPrice').val(0);
-    $('#startPrice').focus();
+		if($('#startPrice').val() != ''){
+			alert('Invalid number');
+	    $('#startPrice').val(0);
+	    $('#startPrice').focus();
+		}
   }
 });
 

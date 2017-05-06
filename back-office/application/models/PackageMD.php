@@ -633,6 +633,22 @@ class PackageMD extends CI_Model {
     return $ck_country;
   }
 
+  function checkNameEN($nameEN){
+    self::$db->select("
+      tour_id
+    ");
+    self::$db->from('tour');
+    self::$db->where('tour_nameEN', $nameEN);
+    self::$db->limit(1);
+    $query = self::$db->get();
+    $ck_nameEN = $query->num_rows();
+    if($ck_nameEN == 0){
+      return '1';
+    }else{
+      return '0';
+    }
+  }
+
   function getAgency() {
     self::$db->select("agent.agent_id, agent.agent_code, agent.agent_compName");
     self::$db->from('agent');
