@@ -46,7 +46,9 @@
 					<span></span>
 					<span></span>
 				</div>
-				<img src="assets/images/logo.png" alt="">
+				<a href="http://back-office.travelshop-center.tk/mainmenu">
+					<img src="assets/images/logo.png" alt="">
+				</a>
 			</div>
 			<?php include('pagepart/backtop.php') ;?>
 		</div>
@@ -148,7 +150,7 @@
 							<div class="description">
 								<p class="date"><?=date_format(date_create($booking_timerange[$i][0]['from']),"j F Y");?> - <?=date_format(date_create($booking_timerange[$i][$last_btr[$i]]['to']),"j F Y");?></p>
 								<div class="btn-wrapper">
-									<a href="delete-package?tour=<?=$row['tour_nameSlug']?>" class="btn gray">Delete</a>
+									<a href="delete-package?tour=<?=$row['tour_nameSlug']?>" nameSlug="<?=$row['tour_nameSlug']?>" class="btn gray delete">Delete</a>
 									<a href="edit-outbound-package?tour=<?=$row['tour_nameSlug']?>&type=<?=$this->session->flashdata('f1')?>" class="btn"> Edit </a>
 								</div>
 							</div>
@@ -172,6 +174,15 @@ $base_url = 'http://travelshop-center.tk:80/';
 
 $(document).ready(function(){
 	$('a[href="outbound-package?type='+$('#isTourType').val()+'"]').find('li').eq(0).addClass('current');
+});
+
+$('.delete').click(function(e){
+	$nameSlug = $(this).attr('nameSlug');
+	$status_public = $('.public[nameSlug='+$nameSlug+']').prop('checked');
+	if($status_public == true){
+		alert('Please uncheck public');
+		e.preventDefault();
+	}
 });
 
 $('select').change(function(){

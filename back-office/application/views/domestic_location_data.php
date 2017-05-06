@@ -23,7 +23,9 @@
 					<span></span>
 					<span></span>
 				</div>
-				<img src="assets/images/logo.png" alt="">
+				<a href="http://back-office.travelshop-center.tk/mainmenu">
+					<img src="assets/images/logo.png" alt="">
+				</a>
 			</div>
 			<?php include('pagepart/backtop.php') ;?>
 		</div>
@@ -118,6 +120,10 @@
 </body>
 <script src="assets/js/script.js"></script>
 <script>
+	$(document).ready(function(){
+		$('a[href="domestic-location-data"]').find('li').eq(0).addClass('current');
+	});
+
 	$('.title-bar-wrapper .btn').click(function(){
 		$('.list-card .btn.gray').toggleClass('hide');
 		if($(this).find('span').text()=='Delete Location'){

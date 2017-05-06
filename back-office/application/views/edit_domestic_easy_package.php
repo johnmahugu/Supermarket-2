@@ -38,7 +38,9 @@ if(isset($price_range)){
 					<span></span>
 					<span></span>
 				</div>
-				<img src="assets/images/logo.png" alt="">
+        <a href="http://back-office.travelshop-center.tk/mainmenu">
+					<img src="assets/images/logo.png" alt="">
+				</a>
 			</div>
       <?php include('pagepart/backtop.php') ;?>
 		</div>
