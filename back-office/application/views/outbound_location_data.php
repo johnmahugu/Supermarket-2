@@ -73,7 +73,7 @@
 									</div>
 								</div>
 								<div class="input-box btn-inline">
-									<a class="btn gray hide delete" region="<?=$index?>" province="<?=$row['country_nameEN']?>">Delete</a>
+									<a class="btn gray hide delete" href="delete-outbound-location?country=<?=$row['country_id']?>">Delete</a>
 								</div>
 							</div>
 						</div>

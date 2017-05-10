@@ -14,6 +14,10 @@ class PackageCL extends CI_Controller {
   }
 
 	function domestic_package() {
+		/*********************Check session**********************/
+		if($this->session->userdata('admin_id') == ''){
+    	redirect('');
+		}
 		/********************Initital valiable*******************/
 		$tour_type = $this->input->get('type');
 		$this->session->set_flashdata('f1', $tour_type);
@@ -34,6 +38,10 @@ class PackageCL extends CI_Controller {
 	}
 
 	function outbound_package() {
+		/*********************Check session**********************/
+		if($this->session->userdata('admin_id') == ''){
+    	redirect('');
+		}
 		/********************Initital valiable*******************/
 		$tour_type = $this->input->get('type');
 		$this->session->set_flashdata('f1', $tour_type);
@@ -85,6 +93,10 @@ class PackageCL extends CI_Controller {
 	}
 
 	function edit_domestic_package() {
+		/*********************Check session**********************/
+		if($this->session->userdata('admin_id') == ''){
+    	redirect('');
+		}
 		/********************Initial valiable********************/
 		$tour_nameSlug = $this->input->get('tour');
 		$tour_type = $this->input->get('type');
@@ -104,6 +116,10 @@ class PackageCL extends CI_Controller {
 	}
 
 	function edit_domestic_package_condition() {
+		/*********************Check session**********************/
+		if($this->session->userdata('admin_id') == ''){
+    	redirect('');
+		}
 		/********************Initial valiable********************/
 		$tour_nameSlug = $this->input->get('tour');
 		$tour_type = $this->input->get('type');
@@ -121,6 +137,10 @@ class PackageCL extends CI_Controller {
 	}
 
 	function edit_domestic_package_service(){
+		/*********************Check session**********************/
+		if($this->session->userdata('admin_id') == ''){
+    	redirect('');
+		}
 		/********************Initial valiable********************/
 		$tour_nameSlug = $this->input->get('tour');
 		$tour_type = $this->input->get('type');
@@ -138,6 +158,10 @@ class PackageCL extends CI_Controller {
 	}
 
 	function edit_outbound_package() {
+		/*********************Check session**********************/
+		if($this->session->userdata('admin_id') == ''){
+    	redirect('');
+		}
 		/********************Initial valiable********************/
 		$tour_nameSlug = $this->input->get('tour');
 		$tour_type = $this->input->get('type');
@@ -157,6 +181,10 @@ class PackageCL extends CI_Controller {
 	}
 
 	function edit_outbound_package_condition() {
+		/*********************Check session**********************/
+		if($this->session->userdata('admin_id') == ''){
+    	redirect('');
+		}
 		/********************Initial valiable********************/
 		$tour_nameSlug = $this->input->get('tour');
 		$tour_type = $this->input->get('type');
@@ -174,6 +202,10 @@ class PackageCL extends CI_Controller {
 	}
 
 	function edit_outbound_package_service(){
+		/*********************Check session**********************/
+		if($this->session->userdata('admin_id') == ''){
+    	redirect('');
+		}
 		/********************Initial valiable********************/
 		$tour_nameSlug = $this->input->get('tour');
 		$tour_type = $this->input->get('type');
@@ -349,6 +381,10 @@ class PackageCL extends CI_Controller {
 	}
 
 	function new_domestic_package(){
+		/*********************Check session**********************/
+		if($this->session->userdata('admin_id') == ''){
+    	redirect('');
+		}
 		/********************Initial valiable********************/
 		$tour_nameSlug = $this->input->get('tour');
 		$tour_type = $this->input->get('type');
@@ -364,6 +400,10 @@ class PackageCL extends CI_Controller {
 	}
 
 	function new_outbound_package(){
+		/*********************Check session**********************/
+		if($this->session->userdata('admin_id') == ''){
+    	redirect('');
+		}
 		/********************Initial valiable********************/
 		$tour_nameSlug = $this->input->get('tour');
 		$tour_type = $this->input->get('type');
@@ -439,12 +479,20 @@ class PackageCL extends CI_Controller {
 	}
 
 	function domestic_location_data(){
+		/*********************Check session**********************/
+		if($this->session->userdata('admin_id') == ''){
+    	redirect('');
+		}
 		$data['region'] = $this->PackageMD->getRegion();
 		$data['province'] = $this->PackageMD->getProvince();
 		$this->load->view('domestic_location_data',$data);
 	}
 
 	function outbound_location_data(){
+		/*********************Check session**********************/
+		if($this->session->userdata('admin_id') == ''){
+    	redirect('');
+		}
 		$data['continent'] = $this->PackageMD->getContinent();
 		$data['country'] = $this->PackageMD->getCountry();
 		$this->load->view('outbound_location_data',$data);
@@ -464,6 +512,18 @@ class PackageCL extends CI_Controller {
 		$countryTH = $this->input->post('countryTH');
 		$result = $this->PackageMD->insertOutboundLocation($continent,$countryEN,$countryTH);
 		echo $result;
+	}
+
+	function delete_domestic_location(){
+		$province = $this->input->get('province');
+		$this->PackageMD->deleteLocation('d',$province,'');
+		redirect('domestic-location-data');
+	}
+
+	function delete_outbound_location(){
+		$country = $this->input->get('country');
+		$this->PackageMD->deleteLocation('o','',$country);
+		redirect('outbound-location-data');
 	}
 
 	function check_nameEN(){

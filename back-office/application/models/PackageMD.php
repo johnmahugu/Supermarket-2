@@ -649,6 +649,16 @@ class PackageMD extends CI_Model {
     }
   }
 
+  function deleteLocation($mode,$province,$country){
+    if($mode == 'd'){
+      $query = 'DELETE FROM province WHERE province_id = "'.$province.'"';
+      self::$db->query($query);
+    }else{
+      $query = 'DELETE FROM country WHERE country_id = "'.$country.'"';
+      self::$db->query($query);
+    }
+  }
+
   function getAgency() {
     self::$db->select("agent.agent_id, agent.agent_code, agent.agent_compName");
     self::$db->from('agent');
