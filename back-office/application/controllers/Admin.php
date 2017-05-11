@@ -4,7 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Admin extends CI_Controller {
 	function __construct(){
 	  parent::__construct();
-    $this->load->database();
+    $this->load->database('mm',TRUE);
+		$this->load->database('supermarket',TRUE);
 	  $this->load->library('session');
 		$this->load->helper(array('form','url'));
     $this->load->model('AdminMD');
@@ -35,10 +36,10 @@ class Admin extends CI_Controller {
 				$data['AllCity'] = $getCity ;
 				$data['HotelCity'] = $getHotelCat ;
 
-				$this->load->view('/Backend/tm-hotel-main.php',$data);
+				$this->load->view('mm/backend/tm-hotel-main.php',$data);
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -55,10 +56,10 @@ class Admin extends CI_Controller {
 				$getTicketCat = $this->AdminMD->getTicketCat();
 				$data['AllCity'] = $getCity ;
 				$data['TicketCity'] = $getTicketCat ;
-			$this->load->view('/Backend/tm-ticket-main.php',$data);
+			$this->load->view('mm/backend/tm-ticket-main.php',$data);
 		}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 		}
 
 	}
@@ -77,10 +78,10 @@ class Admin extends CI_Controller {
 				$viewstar = $this->input->get('star');
 				$getHotel = $this->AdminMD->getHotelByCity($viewcity,$viewstar);
 				$data['HotelCityStar'] = $getHotel ;
-				$this->load->view('/Backend/tm-hotel-all.php',$data);
+				$this->load->view('mm/backend/tm-hotel-all.php',$data);
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -96,10 +97,10 @@ class Admin extends CI_Controller {
 				$getCarType = $this->AdminMD->getCarType();
 
 				$data['carType'] = $getCarType ;
-				$this->load->view('/Backend/tm-vehicle-all.php',$data);
+				$this->load->view('mm/backend/tm-vehicle-all.php',$data);
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -121,10 +122,10 @@ class Admin extends CI_Controller {
 			//DATA SEND ZONE//
 			$data['city2'] = $getCity ;
 			$data['place2'] = $getOther ;
-			$this->load->view('/Backend/tm-other-all.php',$data);
+			$this->load->view('mm/backend/tm-other-all.php',$data);
 		}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 		}
 	}
 
@@ -137,10 +138,10 @@ class Admin extends CI_Controller {
 
 			if($checkAuth == "T") {
 
-				$this->load->view('/Backend/tm-meal-all.php');
+				$this->load->view('mm/backend/tm-meal-all.php');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -177,10 +178,10 @@ class Admin extends CI_Controller {
 				$data['viewdate'] = $viewdatenew;
 				$data['viewdateold'] = $viewdateold;
 
-				$this->load->view('/Backend/tm-ticket-all.php',$data);
+				$this->load->view('mm/backend/tm-ticket-all.php',$data);
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -196,10 +197,10 @@ class Admin extends CI_Controller {
 
 				$getAirline = $this->AdminMD->getAirline();
 				$data['Airline'] = $getAirline ;
-				$this->load->view('/Backend/tm-airline-list.php',$data);
+				$this->load->view('mm/backend/tm-airline-list.php',$data);
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -213,10 +214,10 @@ class Admin extends CI_Controller {
 
 			if($checkAuth == "T") {
 
-				$this->load->view('/Backend/tm-vehicle-new.php');
+				$this->load->view('mm/backend/tm-vehicle-new.php');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -246,10 +247,10 @@ class Admin extends CI_Controller {
 
 				$resultAdd = $this->AdminMD->addHotel($cityid,$namestring,$hotelstar,$guidecost,$currency,$hotelurl,$hoteladdress);
 
-				redirect('admin/HotelAll?star='.$star.'&city='.$cityid.'','refresh');
+				redirect('st-hotelAll?star='.$star.'&city='.$cityid.'','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -306,11 +307,11 @@ class Admin extends CI_Controller {
 					// Price Scale
 				}
 
-				//redirect('admin/VehiAll?city='.$cityid.'','refresh');
+				//redirect('st-vehicle?city='.$cityid.'','refresh');
 
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -341,10 +342,10 @@ class Admin extends CI_Controller {
 
 				$resultAdd = $this->AdminMD->addRoom($hotelid,$roomType,$roomname,$gitmin,$gitcost,$currencyedit,$cost,$roomsize,$intercost,$currencyinter);
 
-				redirect('admin/HotelAll?star='.$star.'&city='.$cityid.'','refresh');
+				redirect('st-hotelAll?star='.$star.'&city='.$cityid.'','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -367,7 +368,7 @@ class Admin extends CI_Controller {
 				redirect('admin/VehiAll?city='.$cityid.'','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -393,7 +394,7 @@ class Admin extends CI_Controller {
 				redirect('admin/HotelAll?star='.$viewstar.'&city='.$viewcity.'','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -417,7 +418,7 @@ class Admin extends CI_Controller {
 				redirect('admin/HotelAll?star='.$viewstar.'&city='.$viewcity.'','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -445,11 +446,11 @@ class Admin extends CI_Controller {
 
 
 				$resultadd = $this->AdminMD->addFullFlight($flightcode,$airlinecode,$flightvia,$originid,$destinationid,$departTime,$duration,$cost,$currency,$timediff);
-				redirect('admin/FlightAll?originid='.$originid.'','refresh');
+				redirect('st-flightAll?originid='.$originid.'','refresh');
 
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -480,12 +481,12 @@ class Admin extends CI_Controller {
 				if($dateforedit == "--" || $dateforedit == ""){
 					//EDIT Main SO call editFullFlight
 					$resultadd = $this->AdminMD->editFullFlight($originidforedit,$airlinecodeforedit,$destinationidforedit,$flightcodeedit,$costedit,$currencyedit,$flightviaedit,$durationedit,$departTimeedit);
-					redirect('admin/FlightAll?originid='.$originidforedit.'&viewdate='.$dateforgoback,'refresh');
+					redirect('st-flightAll?originid='.$originidforedit.'&viewdate='.$dateforgoback,'refresh');
 
 				}else{
 					//EDIT That Date or ADD Date
 					$resultadd = $this->AdminMD->editFlightDate($dateforedit,$airlinecodeforedit,$originidforedit,$destinationidforedit,$flightcodeedit,$costedit,$currencyedit,$flightviaedit,$durationedit,$departTimeedit);
-					redirect('admin/FlightAll?originid='.$originidforedit.'&viewdate='.$dateforgoback,'refresh');
+					redirect('st-flightAll?originid='.$originidforedit.'&viewdate='.$dateforgoback,'refresh');
 				}
 
 
@@ -494,7 +495,7 @@ class Admin extends CI_Controller {
 
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -521,11 +522,11 @@ class Admin extends CI_Controller {
 
 					//EDIT That Date or ADD Date
 					$resultadd = $this->AdminMD->updateOther($otheridedit2,$namestring,$feeedit2,$currencyedit);
-					redirect('admin/OtherAll?cityid='.$cityid,'refresh');
+					redirect('st-other?cityid='.$cityid,'refresh');
 
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -551,7 +552,7 @@ class Admin extends CI_Controller {
 
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -570,11 +571,11 @@ class Admin extends CI_Controller {
 				$hotelid = $this->input->get('hotelid');
 
 					$resultadd = $this->AdminMD->delHotelandRoom($hotelid);
-					redirect('admin/HotelAll?star='.$star.'&city='.$city.'','refresh');
+					redirect('st-hotelAll?star='.$star.'&city='.$city.'','refresh');
 
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -601,11 +602,11 @@ class Admin extends CI_Controller {
 
 
 				$resultadd = $this->AdminMD->updatePlace($entidedit,$namestring,$costedit,$currencyedit);
-				redirect('admin/Place?cityid='.$cityid,'refresh');
+				redirect('mm-place?cityid='.$cityid,'refresh');
 
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -624,10 +625,10 @@ class Admin extends CI_Controller {
 				$data['cityid'] = $cityid ;
 				$getCity = $this->AdminMD->getCity2($cityid);
 				$data['city2'] = $getCity ;
-				$this->load->view('/Backend/tm-meal-new.php',$data);
+				$this->load->view('mm/backend/tm-meal-new.php',$data);
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -644,10 +645,10 @@ class Admin extends CI_Controller {
 				$getMealCat = $this->AdminMD->getMealCat();
 				$data['AllCity'] = $getCity ;
 				$data['MealCity'] = $getMealCat ;
-			$this->load->view('/Backend/tm-meal-main.php',$data);
+			$this->load->view('mm/backend/tm-meal-main.php',$data);
 		}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 		}
 
 	}
@@ -662,10 +663,10 @@ class Admin extends CI_Controller {
 		if($checkAuth == "T") {
 			$getCity = $this->AdminMD->getCity();
 			$data['city'] = $getCity ;
-			$this->load->view('/Backend/tm-mc-locationdata.php',$data);
+			$this->load->view('mm/backend/tm-mc-locationdata.php',$data);
 		}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 		}
 
 	}
@@ -682,10 +683,10 @@ class Admin extends CI_Controller {
 			$getOtherCat = $this->AdminMD->getOtherCat();
 			$data['AllCity'] = $getCity ;
 			$data['OtherCity'] = $getOtherCat ;
-			$this->load->view('/Backend/tm-other-main.php',$data);
+			$this->load->view('mm/backend/tm-other-main.php',$data);
 		}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 		}
 
 	}
@@ -707,10 +708,10 @@ class Admin extends CI_Controller {
 			$data['filtertype'] = $filtertype ;
 			$data['getGuide'] = $getGuide ;
 			$data['getGuide2'] = $getGuide2 ;
-			$this->load->view('/Backend/tm-guide-main.php',$data);
+			$this->load->view('mm/backend/tm-guide-main.php',$data);
 		}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 		}
 
 	}
@@ -730,10 +731,10 @@ class Admin extends CI_Controller {
 				$getVehiCat = $this->AdminMD->getVehiCat();
 				$data['AllCity'] = $getCity ;
 				$data['VehiCity'] = $getVehiCat ;
-			$this->load->view('/Backend/tm-vehicle-main.php',$data);
+			$this->load->view('mm/backend/tm-vehicle-main.php',$data);
 		}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 		}
 
 	}
@@ -748,10 +749,10 @@ class Admin extends CI_Controller {
 
 		if($checkAuth == "T") {
 
-			$this->load->view('/Backend/tm-setting-pricing.php');
+			$this->load->view('mm/backend/tm-setting-pricing.php');
 		}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 		}
 
 	}
@@ -765,10 +766,10 @@ class Admin extends CI_Controller {
 
 		if($checkAuth == "T") {
 
-			$this->load->view('/Backend/tm-setting-std-pricing');
+			$this->load->view('mm/backend/tm-setting-std-pricing');
 		}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 		}
 
 	}
@@ -787,10 +788,10 @@ class Admin extends CI_Controller {
 				$getVehiCat = $this->AdminMD->getVehiCat();
 				$data['AllCity'] = $getCity ;
 				$data['VehiCity'] = $getVehiCat ;
-			$this->load->view('/Backend/tm-std-main.php',$data);
+			$this->load->view('mm/backend/tm-std-main.php',$data);
 		}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 		}
 
 	}
@@ -807,10 +808,10 @@ class Admin extends CI_Controller {
 				$getVehiCat = $this->AdminMD->getVehiCat();
 				$data['AllCity'] = $getCity ;
 				$data['VehiCity'] = $getVehiCat ;
-			$this->load->view('/Backend/tm-std-programtour.php',$data);
+			$this->load->view('mm/backend/tm-std-programtour.php',$data);
 		}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 		}
 
 	}
@@ -828,10 +829,10 @@ class Admin extends CI_Controller {
 				$getVehiCat = $this->AdminMD->getVehiCat();
 				$data['AllCity'] = $getCity ;
 				$data['VehiCity'] = $getVehiCat ;
-			$this->load->view('/Backend/tm-std-newprogram.php',$data);
+			$this->load->view('mm/backend/tm-std-newprogram.php',$data);
 		}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 		}
 
 	}
@@ -854,10 +855,10 @@ class Admin extends CI_Controller {
 				$eng = $this->input->post('eng');
 				$namestring = $tha.'|'.$eng ;
 				$result = "".$this->AdminMD->addCity($namestring);
-				redirect('admin/Location','refresh');
+				redirect('mm-locationdata','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -874,10 +875,10 @@ class Admin extends CI_Controller {
 				$cost = $this->input->post('cost');
 				$currency = $this->input->post('currency');
 				$result = "".$this->AdminMD->addGuideSta($cityid,$cost,$currency);
-				redirect('admin/Guide','refresh');
+				redirect('st-guide','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -897,7 +898,7 @@ class Admin extends CI_Controller {
 				redirect('admin/Guide','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -919,7 +920,7 @@ class Admin extends CI_Controller {
 				redirect('admin/Guide','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -940,7 +941,7 @@ class Admin extends CI_Controller {
 				redirect('admin/PriceAll','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -977,7 +978,7 @@ class Admin extends CI_Controller {
 					$upload_data = $this->upload->data();
 					$file_name = $upload_data['file_name'];
 					$inserts = $this->AdminMD->UpdateAirline($editId,$newName,$file_name);
-					redirect('admin/Airline','refresh');
+					redirect('st-airline','refresh');
 
 					} else {
 					// Files Upload Not Success!!
@@ -985,9 +986,9 @@ class Admin extends CI_Controller {
 
 
 						$inserts = $this->AdminMD->UpdateAirline2($editId,$newName);
-						redirect('admin/Airline','refresh');
+						redirect('st-airline','refresh');
 
-						echo "<a href='Airline'>Back to Airline Page</a> " ;
+						echo "<a href='st-airline'>Back to Airline Page</a> " ;
 
 					} // End else
 
@@ -1025,13 +1026,13 @@ class Admin extends CI_Controller {
 					$upload_data = $this->upload->data();
 					$file_name = $upload_data['file_name'];
 					$inserts = $this->AdminMD->addAirline($airlinename,$file_name);
-					redirect('admin/Airline','refresh');
+					redirect('st-airline','refresh');
 
 					} else {
 					// Files Upload Not Success!!
 					$errors = $this->upload->display_errors();
 					echo $errors;
-					echo "<a href='Airline'>Back to Airline Page</a> " ;
+					echo "<a href='st-airline'>Back to Airline Page</a> " ;
 					}
 
 			}
@@ -1040,7 +1041,7 @@ class Admin extends CI_Controller {
 
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -1064,10 +1065,10 @@ class Admin extends CI_Controller {
 				$eng = $this->input->post('eng');
 				$namestring = $tha.'|'.$eng ;
 				$result = "".$this->AdminMD->addPlace($namestring,$fee,$currency,$city);
-				redirect('admin/Place?cityid='.$city.'','refresh');
+				redirect('mm-place?cityid='.$city.'','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -1089,10 +1090,10 @@ class Admin extends CI_Controller {
 				$currency  = $this->input->post('currency');
 				$namestring = $tha.'|'.$eng ;
 				$result = "".$this->AdminMD->AddOther($namestring,$fee,$currency,$city);
-				redirect('admin/OtherAll?cityid='.$city.'','refresh');
+				redirect('st-other?cityid='.$city.'','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -1108,10 +1109,10 @@ class Admin extends CI_Controller {
 			if($checkAuth == "T") {
 				$cityid = $this->input->get('cityid');
 				$result = "".$this->AdminMD->delCity($cityid);
-				redirect('admin/Location','refresh');
+				redirect('mm-locationdata','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -1128,10 +1129,10 @@ class Admin extends CI_Controller {
 			if($checkAuth == "T") {
 				$gid = $this->input->get('gid');
 				$result = "".$this->AdminMD->delGuide($gid);
-				redirect('admin/Guide','refresh');
+				redirect('st-guide','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -1150,10 +1151,10 @@ class Admin extends CI_Controller {
 			$getPlace = $this->AdminMD->getPlace2($cityid);
 			$data['city2'] = $getCity ;
 			$data['place2'] = $getPlace ;
-			$this->load->view('/Backend/tm-mc-citydata.php',$data);
+			$this->load->view('mm/backend/tm-mc-citydata.php',$data);
 		}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 		}
 
 	}
@@ -1168,10 +1169,10 @@ class Admin extends CI_Controller {
 
 		if($checkAuth == "T") {
 		//////////////// ON WORING ////////////////////
-			$this->load->view('/Backend/tm-mc-locationimage.php');
+			$this->load->view('mm/backend/tm-mc-locationimage.php');
 		}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 		}
 
 	}
@@ -1188,10 +1189,10 @@ class Admin extends CI_Controller {
 				$entid = $this->input->get('entid');
 				$cityid = $this->input->get('cityid');
 				$result = "".$this->AdminMD->delPlace($entid);
-				redirect('admin/Place?cityid='.$cityid.'','refresh');
+				redirect('mm-place?cityid='.$cityid.'','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -1214,7 +1215,7 @@ class Admin extends CI_Controller {
 				redirect('admin/HotelAll?city='.$cityid.'&star='.$star.'','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -1231,10 +1232,10 @@ class Admin extends CI_Controller {
 				$otherid = $this->input->get('otherid');
 				$cityid = $this->input->get('cityid');
 				$result = "".$this->AdminMD->delOther($otherid);
-				redirect('admin/OtherAll?cityid='.$cityid.'','refresh');
+				redirect('st-other?cityid='.$cityid.'','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -1243,7 +1244,7 @@ class Admin extends CI_Controller {
 	public function Test()
 	{
 
-		$this->load->view('/Backend/tm-setting-std-pricing.php');
+		$this->load->view('mm/backend/tm-setting-std-pricing.php');
 
 
 	}
@@ -1261,10 +1262,10 @@ class Admin extends CI_Controller {
 
 			if($checkAuth == "T") {
 				$result = "".$this->AdminMD->AddCityHotel($cityid);
-				redirect('admin/hotel','refresh');
+				redirect('st-hotel','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -1282,7 +1283,7 @@ class Admin extends CI_Controller {
 				redirect('admin/Vehicle','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -1300,7 +1301,7 @@ class Admin extends CI_Controller {
 				redirect('admin/Other','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -1316,10 +1317,10 @@ class Admin extends CI_Controller {
 
 			if($checkAuth == "T") {
 				$result = "".$this->AdminMD->AddCityDestination($cityid);
-				redirect('admin/FlightAll?originid='.$originid.'','refresh');
+				redirect('st-flightAll?originid='.$originid.'','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -1334,10 +1335,10 @@ class Admin extends CI_Controller {
 
 			if($checkAuth == "T") {
 				$result = "".$this->AdminMD->AddCityMeal($cityid);
-				redirect('admin/Meal','refresh');
+				redirect('st-meal','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -1353,10 +1354,10 @@ class Admin extends CI_Controller {
 
 			if($checkAuth == "T") {
 				$result = "".$this->AdminMD->AddCityTicket($cityid);
-				redirect('admin/Ticket','refresh');
+				redirect('st-ticket','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -1374,7 +1375,7 @@ class Admin extends CI_Controller {
 				redirect('admin/hotel','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -1389,10 +1390,10 @@ class Admin extends CI_Controller {
 
 			if($checkAuth == "T") {
 				$result = "".$this->AdminMD->DeleteFlight($flightid);
-				redirect('admin/Ticket','refresh');
+				redirect('st-ticket','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -1414,7 +1415,7 @@ class Admin extends CI_Controller {
 				redirect('admin/Vehicle','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -1432,7 +1433,7 @@ class Admin extends CI_Controller {
 				redirect('admin/Other','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -1447,10 +1448,10 @@ class Admin extends CI_Controller {
 
 			if($checkAuth == "T") {
 				$result = "".$this->AdminMD->DeleteCityMeal($cityid);
-				redirect('admin/Meal','refresh');
+				redirect('st-meal','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}
@@ -1465,10 +1466,10 @@ class Admin extends CI_Controller {
 
 			if($checkAuth == "T") {
 				$result = "".$this->AdminMD->DeleteCityTicket($cityid);
-				redirect('admin/Ticket','refresh');
+				redirect('st-ticket','refresh');
 			}else{
 				// NO PERMISSION
-				$this->load->view('/Backend/tm-landing.php');
+				$this->load->view('landing.php');
 			}
 
 	}

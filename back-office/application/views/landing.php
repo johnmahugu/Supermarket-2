@@ -47,7 +47,7 @@
 					<div class="col-xs-12 card-menu">
 						<?php
 						if( substr($_SESSION['allAuth'],0,1) == "T"){
-							echo '<a href="tm-std-main.html" class="card">
+							echo '<a href="mm-std-main" class="card">
 								<div class="ico tp"></div>
 								<div class="text-box">
 									<p>Standard Tours</p>
@@ -79,7 +79,7 @@
 							</a>';
 						}
 						if( substr($_SESSION['allAuth'],3,1) == "T"){
-							echo '<a href="tm-mc-locationdata.html" class="card">
+							echo '<a href="mm-locationdata" class="card">
 								<div class="ico tp"></div>
 								<div class="text-box">
 									<p>Location Data</p>
@@ -102,7 +102,7 @@
 					<div class="col-xs-12 card-menu">
 						<?php
 						if( substr($_SESSION['allAuth'],5,1) == "T"){
-							echo '<a href="Hotel" class="card">
+							echo '<a href="st-hotel" class="card">
 								<div class="ico hotel"></div>
 								<div class="text-box">
 									<p>Hotel</p>
@@ -110,7 +110,7 @@
 							</a>';
 						}
 						if( substr($_SESSION['allAuth'],6,1) == "T"){
-							echo '<a href="tm-vehicle-main.html" class="card">
+							echo '<a href="st-vehicle" class="card">
 								<div class="ico vehicle"></div>
 								<div class="text-box">
 									<p>Vehicle</p>
@@ -118,7 +118,7 @@
 							</a>';
 						}
 						if( substr($_SESSION['allAuth'],7,1) == "T"){
-							echo '<a href="tm-meal-main.html" class="card">
+							echo '<a href="st-meal" class="card">
 								<div class="ico meal"></div>
 								<div class="text-box">
 									<p>Meal</p>
@@ -126,7 +126,7 @@
 							</a>';
 						}
 						if( substr($_SESSION['allAuth'],8,1) == "T"){
-							echo '<a href="tm-ticket-main.html" class="card">
+							echo '<a href="st-ticket" class="card">
 								<div class="ico ticket"></div>
 								<div class="text-box">
 									<p>Ticket</p>
@@ -134,7 +134,7 @@
 							</a>';
 						}
 						if( substr($_SESSION['allAuth'],9,1) == "T"){
-							echo '<a href="tm-guide-main.html" class="card">
+							echo '<a href="st-guide" class="card">
 								<div class="ico guide"></div>
 								<div class="text-box">
 									<p>Guide</p>
@@ -142,7 +142,7 @@
 							</a>';
 						}
 						if( substr($_SESSION['allAuth'],10,1) == "T"){
-							echo '<a href="tm-other-main.html" class="card">
+							echo '<a href="st-other" class="card">
 								<div class="ico other"></div>
 								<div class="text-box">
 									<p>Other</p>

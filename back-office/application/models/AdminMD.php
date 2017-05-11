@@ -3,16 +3,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class AdminMD extends CI_Model {
 
+	protected static $db;
+	protected static $db_auth;
+
 	 function __construct()
 	 {
 	   parent::__construct();
+		 self::$db = $this->load->database('mm', TRUE);
+		 self::$db_auth = $this->load->database('supermarket', TRUE);
 	 }
 
 	  function getStaffLogin($username,$password){
-		$this->db->select('*');
-        $this->db->where('staff_username', $username);
-        $this->db->where('staff_password', $password);
-        $query = $this->db->get('staff');
+		self::$db_auth->select('*');
+    self::$db_auth->where('staff_username', $username);
+    self::$db_auth->where('staff_password', $password);
+    $query = self::$db_auth->get('staff');
 		if ($query->num_rows() == 0){
 			$array = "" ;
 		}else{
@@ -23,10 +28,10 @@ class AdminMD extends CI_Model {
       }
 
 		function getStaffAuth($staffid,$authCode){
-			$this->db->select('*');
-			$this->db->where('staffauth_code', $authCode);
-			$this->db->where('staff_id',$staffid);
-			$query = $this->db->get('staff_auth');
+			self::$db_auth->select('*');
+			self::$db_auth->where('staffauth_code', $authCode);
+			self::$db_auth->where('staff_id',$staffid);
+			$query = self::$db_auth->get('staff_auth');
 				if($query->num_rows() != 0){
 					$havingAuth = "T" ;
 				}else{
@@ -39,9 +44,9 @@ class AdminMD extends CI_Model {
 
 	  function getLastRow($idname,$tablename){
 
-		$this->db->select('*');
-		$this->db->order_by($idname,"desc");
-        $query = $this->db->get($tablename);
+		self::$db->select('*');
+		self::$db->order_by($idname,"desc");
+        $query = self::$db->get($tablename);
 
 		if ($query->num_rows() == 0){
 			$array = "" ;
@@ -56,8 +61,8 @@ class AdminMD extends CI_Model {
 
 	 function getCity(){
 
-			$this->db->select('*');
-			$query = $this->db->get('city');
+			self::$db->select('*');
+			$query = self::$db->get('city');
 
 
 				if($query->num_rows() != 0){
@@ -71,8 +76,8 @@ class AdminMD extends CI_Model {
 
 	  function getExRate(){
 
-			$this->db->select('*');
-			$query = $this->db->get('exchangerate');
+			self::$db->select('*');
+			$query = self::$db->get('exchangerate');
 
 
 				if($query->num_rows() != 0){
@@ -87,9 +92,9 @@ class AdminMD extends CI_Model {
 
 	   function getCity2($cityid){
 
-			$this->db->select('city_name');
-			$this->db->where('city_id',$cityid);
-			$query = $this->db->get('city');
+			self::$db->select('city_name');
+			self::$db->where('city_id',$cityid);
+			$query = self::$db->get('city');
 
 
 				if($query->num_rows() != 0){
@@ -103,8 +108,8 @@ class AdminMD extends CI_Model {
 
 	  function getCarType(){
 
-			$this->db->select('*');
-			$query = $this->db->get('car');
+			self::$db->select('*');
+			$query = self::$db->get('car');
 
 				if($query->num_rows() != 0){
 					$array = $query->result();
@@ -117,8 +122,8 @@ class AdminMD extends CI_Model {
 
 	  function getAirline(){
 
-			$this->db->select('*');
-			$query = $this->db->get('airline');
+			self::$db->select('*');
+			$query = self::$db->get('airline');
 
 
 				if($query->num_rows() != 0){
@@ -132,14 +137,14 @@ class AdminMD extends CI_Model {
 
 	  function getFlight($originid,$destinationid){
 
-			$this->db->select('*');
-			$this->db->join('airline','airline.airline_id = flight.airline_id','left');
-			$this->db->where('flight_origin_id',$originid);
-			$this->db->where('flight_destination_id',$destinationid);
-			$this->db->where("flight_code NOT LIKE 'CATEGORY'");
-			$this->db->where("flight_code NOT LIKE 'CATEGORY2'");
-			$this->db->where('flight_date','0000-00-00');
-			$query = $this->db->get('flight');
+			self::$db->select('*');
+			self::$db->join('airline','airline.airline_id = flight.airline_id','left');
+			self::$db->where('flight_origin_id',$originid);
+			self::$db->where('flight_destination_id',$destinationid);
+			self::$db->where("flight_code NOT LIKE 'CATEGORY'");
+			self::$db->where("flight_code NOT LIKE 'CATEGORY2'");
+			self::$db->where('flight_date','0000-00-00');
+			$query = self::$db->get('flight');
 
 				if($query->num_rows() != 0){
 
@@ -157,10 +162,10 @@ class AdminMD extends CI_Model {
 
 	  function getFlight2($flightcode,$viewdate){
 
-			$this->db->select('*');
-			$this->db->where('flight_code',$flightcode);
-			$this->db->where('flight_date',$viewdate);
-			$query = $this->db->get('flight');
+			self::$db->select('*');
+			self::$db->where('flight_code',$flightcode);
+			self::$db->where('flight_date',$viewdate);
+			$query = self::$db->get('flight');
 
 				if($query->num_rows() != 0){
 
@@ -175,11 +180,11 @@ class AdminMD extends CI_Model {
 
 	  function getFlight3($flightcode,$viewdate){
 
-			$this->db->select('*');
-			$this->db->join('airline','airline.airline_id = flight.airline_id','left');
-			$this->db->where('flight_code',$flightcode);
-			$this->db->where('flight_date',$viewdate);
-			$query = $this->db->get('flight');
+			self::$db->select('*');
+			self::$db->join('airline','airline.airline_id = flight.airline_id','left');
+			self::$db->where('flight_code',$flightcode);
+			self::$db->where('flight_date',$viewdate);
+			$query = self::$db->get('flight');
 
 				if($query->num_rows() != 0){
 
@@ -221,9 +226,9 @@ class AdminMD extends CI_Model {
 
 
 	   function getPlace2($cityid){
-			$this->db->select('*');
-			$this->db->where('city_id',$cityid);
-			$query = $this->db->get('entrance');
+			self::$db->select('*');
+			self::$db->where('city_id',$cityid);
+			$query = self::$db->get('entrance');
 				if($query->num_rows() != 0){
 					$array = $query->result();
 				}else{
@@ -236,10 +241,10 @@ class AdminMD extends CI_Model {
 
 
 	  function getOtherItem($cityid){
-			$this->db->select('*');
-			$this->db->where('city_id',$cityid);
-			$this->db->where("other_type NOT LIKE 'CATEGORY'");
-			$query = $this->db->get('other');
+			self::$db->select('*');
+			self::$db->where('city_id',$cityid);
+			self::$db->where("other_type NOT LIKE 'CATEGORY'");
+			$query = self::$db->get('other');
 				if($query->num_rows() != 0){
 					$array = $query->result();
 				}else{
@@ -250,11 +255,11 @@ class AdminMD extends CI_Model {
       }
 
 	  function AddCityHotel($cityid){
-			$this->db->select('*');
-			$this->db->join('city','city.city_id = hotel.city_id','left');
-			$this->db->where('hotel_name','CATEGORY');
-			$this->db->where('city.city_id',$cityid);
-			$query = $this->db->get('hotel');
+			self::$db->select('*');
+			self::$db->join('city','city.city_id = hotel.city_id','left');
+			self::$db->where('hotel_name','CATEGORY');
+			self::$db->where('city.city_id',$cityid);
+			$query = self::$db->get('hotel');
 
 			if($query->num_rows() != 0){
 					$text = "Already Have This City" ;
@@ -267,9 +272,9 @@ class AdminMD extends CI_Model {
 							'city_id' => $cityid,
 							'hotel_IsGIT' => '0'
 						);
-					$this->db->trans_start();
-					$this->db->insert('hotel',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->insert('hotel',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
 				}
@@ -277,11 +282,11 @@ class AdminMD extends CI_Model {
       }
 
 	  	  function AddCityVehi($cityid){
-			$this->db->select('*');
-			$this->db->join('city','city.city_id = route.city_id','left');
-			$this->db->where('route_name','CATEGORY');
-			$this->db->where('city.city_id',$cityid);
-			$query = $this->db->get('route');
+			self::$db->select('*');
+			self::$db->join('city','city.city_id = route.city_id','left');
+			self::$db->where('route_name','CATEGORY');
+			self::$db->where('city.city_id',$cityid);
+			$query = self::$db->get('route');
 
 			if($query->num_rows() != 0){
 					$text = "Already Have This City" ;
@@ -293,9 +298,9 @@ class AdminMD extends CI_Model {
 							'car_id' => "0",
 							'city_id' => $cityid
 						);
-					$this->db->trans_start();
-					$this->db->insert('route',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->insert('route',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
 				}
@@ -303,11 +308,11 @@ class AdminMD extends CI_Model {
       }
 
 	   function AddCityOther($cityid){
-			$this->db->select('*');
-			$this->db->join('city','city.city_id = other.city_id','left');
-			$this->db->where('other_type','CATEGORY');
-			$this->db->where('city.city_id',$cityid);
-			$query = $this->db->get('other');
+			self::$db->select('*');
+			self::$db->join('city','city.city_id = other.city_id','left');
+			self::$db->where('other_type','CATEGORY');
+			self::$db->where('city.city_id',$cityid);
+			$query = self::$db->get('other');
 
 			if($query->num_rows() != 0){
 					$text = "Already Have This City" ;
@@ -319,9 +324,9 @@ class AdminMD extends CI_Model {
 							'other_cost' => "0",
 							'city_id' => $cityid
 						);
-					$this->db->trans_start();
-					$this->db->insert('other',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->insert('other',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
 				}
@@ -329,11 +334,11 @@ class AdminMD extends CI_Model {
       }
 
 	    function AddCityDestination($cityid){
-			$this->db->select('*');
-			$this->db->join('city','city.city_id = flight.flight_origin_id','left');
-			$this->db->where('flight_code','CATEGORY2');
-			$this->db->where('city.city_id',$cityid);
-			$query = $this->db->get('flight');
+			self::$db->select('*');
+			self::$db->join('city','city.city_id = flight.flight_origin_id','left');
+			self::$db->where('flight_code','CATEGORY2');
+			self::$db->where('city.city_id',$cityid);
+			$query = self::$db->get('flight');
 
 			if($query->num_rows() != 0){
 					$text = "Already Have This City" ;
@@ -345,9 +350,9 @@ class AdminMD extends CI_Model {
 							'airline_id' => "0",
 							'flight_origin_id' => $cityid
 						);
-					$this->db->trans_start();
-					$this->db->insert('flight',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->insert('flight',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
 				}
@@ -355,11 +360,11 @@ class AdminMD extends CI_Model {
       }
 
 	   function AddCityMeal($cityid){
-			$this->db->select('*');
-			$this->db->join('city','city.city_id = restaurant.city_id','left');
-			$this->db->where('restaurant_name','CATEGORY');
-			$this->db->where('city.city_id',$cityid);
-			$query = $this->db->get('restaurant');
+			self::$db->select('*');
+			self::$db->join('city','city.city_id = restaurant.city_id','left');
+			self::$db->where('restaurant_name','CATEGORY');
+			self::$db->where('city.city_id',$cityid);
+			$query = self::$db->get('restaurant');
 
 			if($query->num_rows() != 0){
 					$text = "Already Have This City" ;
@@ -370,9 +375,9 @@ class AdminMD extends CI_Model {
 							'restaurant_name' => "CATEGORY",
 							'city_id' => $cityid
 						);
-					$this->db->trans_start();
-					$this->db->insert('restaurant',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->insert('restaurant',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
 				}
@@ -380,11 +385,11 @@ class AdminMD extends CI_Model {
       }
 
 	  function AddCityTicket($cityid){
-			$this->db->select('*');
-			$this->db->join('city','city.city_id = flight.flight_origin_id','left');
-			$this->db->where('flight_code','CATEGORY');
-			$this->db->where('city.city_id',$cityid);
-			$query = $this->db->get('flight');
+			self::$db->select('*');
+			self::$db->join('city','city.city_id = flight.flight_origin_id','left');
+			self::$db->where('flight_code','CATEGORY');
+			self::$db->where('city.city_id',$cityid);
+			$query = self::$db->get('flight');
 
 			if($query->num_rows() != 0){
 					$text = "Already Have This City" ;
@@ -396,9 +401,9 @@ class AdminMD extends CI_Model {
 							'airline_id' => "0",
 							'flight_origin_id' => $cityid
 						);
-					$this->db->trans_start();
-					$this->db->insert('flight',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->insert('flight',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
 				}
@@ -407,9 +412,9 @@ class AdminMD extends CI_Model {
 
 
 	  function AddPlace($namestring,$fee,$currency,$city){
-			$this->db->select('*');
-			$this->db->where('ent_name',$namestring);
-			$query = $this->db->get('entrance');
+			self::$db->select('*');
+			self::$db->where('ent_name',$namestring);
+			$query = self::$db->get('entrance');
 
 			if($query->num_rows() != 0){
 					$text = "Already Have This City" ;
@@ -419,17 +424,17 @@ class AdminMD extends CI_Model {
 						if ($currency == "usd") {
 							$finalfee = $fee ;
 						}else if($currency == "mmk"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','MMK');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','MMK');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
 							$finalfee = $fee/$exrate ;
 						}else if($currency == "thb"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','THB');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','THB');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
@@ -444,9 +449,9 @@ class AdminMD extends CI_Model {
 							'ent_cost' => $finalfee,
 							'city_id' => $city
 						);
-					$this->db->trans_start();
-					$this->db->insert('entrance',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->insert('entrance',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 
 
@@ -458,24 +463,24 @@ class AdminMD extends CI_Model {
       }
 
 	   function AddOther($namestring,$fee,$currency,$city){
-			$this->db->select('*');
-			$this->db->where('other_type',$namestring);
-			$query = $this->db->get('other');
+			self::$db->select('*');
+			self::$db->where('other_type',$namestring);
+			$query = self::$db->get('other');
 					// CALCULATE TO USD
 						if ($currency == "usd") {
 							$finalfee = $fee ;
 						}else if($currency == "mmk"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','MMK');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','MMK');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
 							$finalfee = $fee/$exrate ;
 						}else if($currency == "thb"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','THB');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','THB');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
@@ -494,9 +499,9 @@ class AdminMD extends CI_Model {
 							'city_id' => $city,
 							'other_cost' => $finalfee
 						);
-					$this->db->trans_start();
-					$this->db->insert('other',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->insert('other',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 
 
@@ -510,17 +515,17 @@ class AdminMD extends CI_Model {
 						if ($currency == "usd") {
 							$finalfee = $fee ;
 						}else if($currency == "mmk"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','MMK');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','MMK');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
 							$finalfee = $fee/$exrate ;
 						}else if($currency == "thb"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','THB');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','THB');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
@@ -536,9 +541,9 @@ class AdminMD extends CI_Model {
 
 
 	    function addCity($namestring){
-			$this->db->select('*');
-			$this->db->where('city_name',$namestring);
-			$query = $this->db->get('city');
+			self::$db->select('*');
+			self::$db->where('city_name',$namestring);
+			$query = self::$db->get('city');
 
 			if($query->num_rows() != 0){
 					$text = "Already Have This City" ;
@@ -549,9 +554,9 @@ class AdminMD extends CI_Model {
 							'city_name' => $namestring,
 							'city_country' => 'myanmar'
 						);
-					$this->db->trans_start();
-					$this->db->insert('city',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->insert('city',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
 				}
@@ -563,10 +568,10 @@ class AdminMD extends CI_Model {
 
 
 	  function addRoute($namestring,$cityid,$guidecostfinal){
-			$this->db->select('*');
-			$this->db->where('route_name',$namestring);
-			$this->db->where('city_id',$cityid);
-			$query = $this->db->get('route');
+			self::$db->select('*');
+			self::$db->where('route_name',$namestring);
+			self::$db->where('city_id',$cityid);
+			$query = self::$db->get('route');
 
 			if($query->num_rows() != 0){
 					$text = "Already Have This Route" ;
@@ -578,9 +583,9 @@ class AdminMD extends CI_Model {
 							'city_id' => $cityid,
 							'route_guide_cost' => $guidecostfinal
 						);
-					$this->db->trans_start();
-					$this->db->insert('route',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->insert('route',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
 				}
@@ -588,10 +593,10 @@ class AdminMD extends CI_Model {
       }
 
 	 function getRouteId($namestring,$cityid){
-			$this->db->select('*');
-			$this->db->where('route_name',$namestring);
-			$this->db->where('city_id',$cityid);
-			$query = $this->db->get('route');
+			self::$db->select('*');
+			self::$db->where('route_name',$namestring);
+			self::$db->where('city_id',$cityid);
+			$query = self::$db->get('route');
 
 			if($query->num_rows() != 0){
 				return $query->result();
@@ -602,11 +607,11 @@ class AdminMD extends CI_Model {
       }
 
 	  function addRoom($hotelid,$roomType,$roomname,$gitmin,$gitcost,$currencyedit,$cost,$roomsize,$intercost,$currencyinter){
-			$this->db->select('*');
-			$this->db->where('hotel_id',$hotelid);
-			$this->db->where('room_type',$roomType);
-			$this->db->where('room_name',$roomname);
-			$query = $this->db->get('room');
+			self::$db->select('*');
+			self::$db->where('hotel_id',$hotelid);
+			self::$db->where('room_type',$roomType);
+			self::$db->where('room_name',$roomname);
+			$query = self::$db->get('room');
 
 			if($query->num_rows() != 0){
 					$text = "Already Have This Room" ;
@@ -625,17 +630,17 @@ class AdminMD extends CI_Model {
 						if ($currencyedit == "usd") {
 							$finalfee = $fee ;
 						}else if($currencyedit == "mmk"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','MMK');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','MMK');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
 							$finalfee = $fee/$exrate ;
 						}else if($currencyedit == "thb"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','THB');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','THB');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
@@ -648,17 +653,17 @@ class AdminMD extends CI_Model {
 						if ($currencyedit == "usd") {
 							$finalfee2 = $fee2 ;
 						}else if($currencyedit == "mmk"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','MMK');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','MMK');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
 							$finalfee2 = $fee2/$exrate ;
 						}else if($currencyedit == "thb"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','THB');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','THB');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
@@ -672,17 +677,17 @@ class AdminMD extends CI_Model {
 						if ($currencyinter == "usd") {
 							$finalfee3 = $fee3 ;
 						}else if($currencyinter == "mmk"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','MMK');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','MMK');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
 							$finalfee3 = $fee3/$exrate ;
 						}else if($currencyinter == "thb"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','THB');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','THB');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
@@ -704,9 +709,9 @@ class AdminMD extends CI_Model {
 							'room_cost_GIT' => $finalfee2,
 							'room_cost_inter' => $finalfee3
 						);
-					$this->db->trans_start();
-					$this->db->insert('room',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->insert('room',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
 				}
@@ -714,10 +719,10 @@ class AdminMD extends CI_Model {
       }
 
 	  function addHotel($cityid,$namestring,$hotelstar,$guidecost,$currency,$hotelurl,$hoteladdress){
-			$this->db->select('*');
-			$this->db->where('hotel_name',$namestring);
-			$this->db->where('city_id',$cityid);
-			$query = $this->db->get('hotel');
+			self::$db->select('*');
+			self::$db->where('hotel_name',$namestring);
+			self::$db->where('city_id',$cityid);
+			$query = self::$db->get('hotel');
 
 			if($query->num_rows() != 0){
 					$text = "Already Have This hotel" ;
@@ -729,17 +734,17 @@ class AdminMD extends CI_Model {
 						if ($currency == "usd") {
 							$finalfee = $fee ;
 						}else if($currency == "mmk"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','MMK');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','MMK');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
 							$finalfee = $fee/$exrate ;
 						}else if($currency == "thb"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','THB');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','THB');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
@@ -761,9 +766,9 @@ class AdminMD extends CI_Model {
 							'hotel_url'  => $fixurl
 
 						);
-					$this->db->trans_start();
-					$this->db->insert('hotel',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->insert('hotel',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
 				}
@@ -771,10 +776,10 @@ class AdminMD extends CI_Model {
       }
 
 	  function addGuideSta($cityid,$cost,$currency){
-			$this->db->select('*');
-			$this->db->where('city_id',$cityid);
-			$this->db->where('guide_type','STA');
-			$query = $this->db->get('guide');
+			self::$db->select('*');
+			self::$db->where('city_id',$cityid);
+			self::$db->where('guide_type','STA');
+			$query = self::$db->get('guide');
 
 			if($query->num_rows() != 0){
 					$text = "Already Have This Guide Then Update" ;
@@ -783,17 +788,17 @@ class AdminMD extends CI_Model {
 						if ($currency == "usd") {
 							$finalfee = $fee ;
 						}else if($currency == "mmk"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','MMK');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','MMK');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
 							$finalfee = $fee/$exrate ;
 						}else if($currency == "thb"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','THB');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','THB');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
@@ -809,11 +814,11 @@ class AdminMD extends CI_Model {
 							'guide_type' => 'STA',
 							'guide_cost' => $fee
 						);
-					$this->db->trans_start();
-					$this->db->where('city_id', $cityid);
-					$this->db->where('guide_type','STA');
-					$this->db->update('guide',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->where('city_id', $cityid);
+					self::$db->where('guide_type','STA');
+					self::$db->update('guide',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
 				}else{
@@ -823,17 +828,17 @@ class AdminMD extends CI_Model {
 						if ($currency == "usd") {
 							$finalfee = $fee ;
 						}else if($currency == "mmk"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','MMK');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','MMK');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
 							$finalfee = $fee/$exrate ;
 						}else if($currency == "thb"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','THB');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','THB');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
@@ -849,9 +854,9 @@ class AdminMD extends CI_Model {
 							'guide_type' => 'STA',
 							'guide_cost' => $fee
 						);
-					$this->db->trans_start();
-					$this->db->insert('guide',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->insert('guide',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
 				}
@@ -860,10 +865,10 @@ class AdminMD extends CI_Model {
 
 
 	    function addGuideAcc($language,$cost,$currency){
-			$this->db->select('*');
-			$this->db->where('guide_language',$language);
-			$this->db->where('guide_type','ACC');
-			$query = $this->db->get('guide');
+			self::$db->select('*');
+			self::$db->where('guide_language',$language);
+			self::$db->where('guide_type','ACC');
+			$query = self::$db->get('guide');
 
 			if($query->num_rows() != 0){
 					$text = "Already Have This Guide Then Update" ;
@@ -872,17 +877,17 @@ class AdminMD extends CI_Model {
 						if ($currency == "usd") {
 							$finalfee = $fee ;
 						}else if($currency == "mmk"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','MMK');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','MMK');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
 							$finalfee = $fee/$exrate ;
 						}else if($currency == "thb"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','THB');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','THB');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
@@ -897,11 +902,11 @@ class AdminMD extends CI_Model {
 							'guide_type' => 'ACC',
 							'guide_cost' => $fee
 						);
-					$this->db->trans_start();
-					$this->db->where('guide_language',$language);
-					$this->db->where('guide_type','ACC');
-					$this->db->update('guide',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->where('guide_language',$language);
+					self::$db->where('guide_type','ACC');
+					self::$db->update('guide',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
 				}else{
@@ -911,17 +916,17 @@ class AdminMD extends CI_Model {
 						if ($currency == "usd") {
 							$finalfee = $fee ;
 						}else if($currency == "mmk"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','MMK');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','MMK');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
 							$finalfee = $fee/$exrate ;
 						}else if($currency == "thb"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','THB');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','THB');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
@@ -938,9 +943,9 @@ class AdminMD extends CI_Model {
 							'guide_type' => 'ACC',
 							'guide_cost' => $fee
 						);
-					$this->db->trans_start();
-					$this->db->insert('guide',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->insert('guide',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
 				}
@@ -950,10 +955,10 @@ class AdminMD extends CI_Model {
 
 
 	  function addFullFlight($flightcode,$airlinecode,$flightvia,$originid,$destinationid,$departTime,$duration,$cost,$currency,$timediff){
-			$this->db->select('*');
-			$this->db->where('flight_code',$flightcode);
-			$this->db->where('flight_date','0000-00-00');
-			$query = $this->db->get('flight');
+			self::$db->select('*');
+			self::$db->where('flight_code',$flightcode);
+			self::$db->where('flight_date','0000-00-00');
+			$query = self::$db->get('flight');
 
 			if($query->num_rows() != 0){
 					$text = "Already Have This flight" ;
@@ -964,17 +969,17 @@ class AdminMD extends CI_Model {
 						if ($currency == "usd") {
 							$finalfee = $fee ;
 						}else if($currency == "mmk"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','MMK');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','MMK');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
 							$finalfee = $fee/$exrate ;
 						}else if($currency == "thb"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','THB');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','THB');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
@@ -999,9 +1004,9 @@ class AdminMD extends CI_Model {
 							'flight_date' => '0000-00-00',
 							'flight_time_diff' => $timediff
 						);
-					$this->db->trans_start();
-					$this->db->insert('flight',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->insert('flight',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
 				}
@@ -1011,12 +1016,12 @@ class AdminMD extends CI_Model {
 
 
 	  function editFullFlight($originidforedit,$destinationidforedit,$flightcodeedit,$costedit,$currencyedit,$flightviaedit,$durationedit,$departTimeedit){
-			$this->db->select('*');
-			$this->db->where('flight_code',$flightcodeedit);
-			$this->db->where('flight_date','0000-00-00');
-			$this->db->where('flight_origin_id',$originidforedit);
-			$this->db->where('flight_destination_id',$destinationidforedit);
-			$query = $this->db->get('flight');
+			self::$db->select('*');
+			self::$db->where('flight_code',$flightcodeedit);
+			self::$db->where('flight_date','0000-00-00');
+			self::$db->where('flight_origin_id',$originidforedit);
+			self::$db->where('flight_destination_id',$destinationidforedit);
+			$query = self::$db->get('flight');
 
 			if($query->num_rows() == 0){
 					$text = "Some Thing went Wrong it should have this flight" ;
@@ -1027,17 +1032,17 @@ class AdminMD extends CI_Model {
 						if ($currencyedit == "usd") {
 							$finalfee = $fee ;
 						}else if($currencyedit == "mmk"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','MMK');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','MMK');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
 							$finalfee = $fee/$exrate ;
 						}else if($currencyedit == "thb"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','THB');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','THB');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
@@ -1057,13 +1062,13 @@ class AdminMD extends CI_Model {
 						);
 
 
-					$this->db->trans_start();
-					$this->db->where('flight_code',$flightcodeedit);
-					$this->db->where('flight_date','0000-00-00');
-					$this->db->where('flight_origin_id',$originidforedit);
-					$this->db->where('flight_destination_id',$destinationidforedit);
-					$this->db->update('flight',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->where('flight_code',$flightcodeedit);
+					self::$db->where('flight_date','0000-00-00');
+					self::$db->where('flight_origin_id',$originidforedit);
+					self::$db->where('flight_destination_id',$destinationidforedit);
+					self::$db->update('flight',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
 				}
@@ -1072,12 +1077,12 @@ class AdminMD extends CI_Model {
 
 
 	   function editFlightDate($dateforedit,$airlinecodeforedit,$originidforedit,$destinationidforedit,$flightcodeedit,$costedit,$currencyedit,$flightviaedit,$durationedit,$departTimeedit){
-			$this->db->select('*');
-			$this->db->where('flight_code',$flightcodeedit);
-			$this->db->where('flight_date',$dateforedit);
-			$this->db->where('flight_origin_id',$originidforedit);
-			$this->db->where('flight_destination_id',$destinationidforedit);
-			$query = $this->db->get('flight');
+			self::$db->select('*');
+			self::$db->where('flight_code',$flightcodeedit);
+			self::$db->where('flight_date',$dateforedit);
+			self::$db->where('flight_origin_id',$originidforedit);
+			self::$db->where('flight_destination_id',$destinationidforedit);
+			$query = self::$db->get('flight');
 
 			if($query->num_rows() == 0){
 				// NOT FOUND
@@ -1087,17 +1092,17 @@ class AdminMD extends CI_Model {
 						if ($currencyedit == "usd") {
 							$finalfee = $fee ;
 						}else if($currencyedit == "mmk"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','MMK');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','MMK');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
 							$finalfee = $fee/$exrate ;
 						}else if($currencyedit == "thb"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','THB');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','THB');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
@@ -1122,9 +1127,9 @@ class AdminMD extends CI_Model {
 						);
 
 
-					$this->db->trans_start();
-					$this->db->insert('flight',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->insert('flight',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
 				}else{
@@ -1136,17 +1141,17 @@ class AdminMD extends CI_Model {
 						if ($currencyedit == "usd") {
 							$finalfee = $fee ;
 						}else if($currencyedit == "mmk"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','MMK');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','MMK');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
 							$finalfee = $fee/$exrate ;
 						}else if($currencyedit == "thb"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','THB');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','THB');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
@@ -1166,13 +1171,13 @@ class AdminMD extends CI_Model {
 						);
 
 
-					$this->db->trans_start();
-					$this->db->where('flight_code',$flightcodeedit);
-					$this->db->where('flight_date',$dateforedit);
-					$this->db->where('flight_origin_id',$originidforedit);
-					$this->db->where('flight_destination_id',$destinationidforedit);
-					$this->db->update('flight',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->where('flight_code',$flightcodeedit);
+					self::$db->where('flight_date',$dateforedit);
+					self::$db->where('flight_origin_id',$originidforedit);
+					self::$db->where('flight_destination_id',$destinationidforedit);
+					self::$db->update('flight',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
 				}
@@ -1181,9 +1186,9 @@ class AdminMD extends CI_Model {
 
 
 	  function addAirline($namestring,$picname){
-			$this->db->select('*');
-			$this->db->where('airline_name',$namestring);
-			$query = $this->db->get('airline');
+			self::$db->select('*');
+			self::$db->where('airline_name',$namestring);
+			$query = self::$db->get('airline');
 
 			if($query->num_rows() != 0){
 					$text = "Already Have This City" ;
@@ -1194,9 +1199,9 @@ class AdminMD extends CI_Model {
 							'airline_name' => $namestring,
 							'airline_pic_src' => $picname
 						);
-					$this->db->trans_start();
-					$this->db->insert('airline',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->insert('airline',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
 				}
@@ -1215,9 +1220,9 @@ class AdminMD extends CI_Model {
 							'rc_from' => $rc_from,
 							'rc_to' => $rc_to
 						);
-					$this->db->trans_start();
-					$this->db->insert('route_cost',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->insert('route_cost',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
 
@@ -1230,9 +1235,9 @@ class AdminMD extends CI_Model {
 	    function addVehiSize($VehiName,$minPax,$maxPax){
 
 			if($minPax <= $maxPax){
-				$this->db->select('*');
-				$this->db->where('car_name',$VehiName);
-				$query = $this->db->get('car');
+				self::$db->select('*');
+				self::$db->where('car_name',$VehiName);
+				$query = self::$db->get('car');
 					if($query->num_rows() != 0){
 							$text = "Already Have This Car Type" ;
 							return $text ;
@@ -1243,9 +1248,9 @@ class AdminMD extends CI_Model {
 									'car_cap_min' => $minPax,
 									'car_cap_max' => $maxPax
 								);
-							$this->db->trans_start();
-							$this->db->insert('car',$data);
-							$this->db->trans_complete();
+							self::$db->trans_start();
+							self::$db->insert('car',$data);
+							self::$db->trans_complete();
 							$text = "Finish" ;
 							return $text ;
 						}
@@ -1265,10 +1270,10 @@ class AdminMD extends CI_Model {
 							'airline_name' => $namestring,
 							'airline_pic_src' => $picname
 						);
-					$this->db->trans_start();
-					$this->db->where('airline_id', $id);
-					$this->db->update('airline',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->where('airline_id', $id);
+					self::$db->update('airline',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
 
@@ -1283,17 +1288,17 @@ class AdminMD extends CI_Model {
 						if ($currencyedit == "usd") {
 							$finalfee = $fee ;
 						}else if($currencyedit == "mmk"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','MMK');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','MMK');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
 							$finalfee = $fee/$exrate ;
 						}else if($currencyedit == "thb"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','THB');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','THB');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
@@ -1307,10 +1312,10 @@ class AdminMD extends CI_Model {
 							'other_type' => $namestring,
 							'other_cost' => $finalfee
 						);
-					$this->db->trans_start();
-					$this->db->where('other_id', $otheridedit2);
-					$this->db->update('other',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->where('other_id', $otheridedit2);
+					self::$db->update('other',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
 
@@ -1320,9 +1325,9 @@ class AdminMD extends CI_Model {
 
 	  function updatePlace($entidedit,$namestring,$costedit,$currencyedit){
 
-				$this->db->select('*');
-				$this->db->where('ent_id',$entidedit);
-				$query = $this->db->get('entrance');
+				self::$db->select('*');
+				self::$db->where('ent_id',$entidedit);
+				$query = self::$db->get('entrance');
 					if($query->num_rows() != 0){
 					// Have & OK FOR EDIT
 						// CALCULATE TO USD
@@ -1330,17 +1335,17 @@ class AdminMD extends CI_Model {
 						if ($currencyedit == "usd") {
 							$finalfee = $fee ;
 						}else if($currencyedit == "mmk"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','MMK');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','MMK');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
 							$finalfee = $fee/$exrate ;
 						}else if($currencyedit == "thb"){
-							$this->db->select('ex_rate');
-							$this->db->where('ex_shortcurrency','THB');
-							$query2 = $this->db->get('exchangerate');
+							self::$db->select('ex_rate');
+							self::$db->where('ex_shortcurrency','THB');
+							$query2 = self::$db->get('exchangerate');
 								foreach ($query2->result() as $rs2) {
 									$exrate = $rs2->ex_rate;
 								}
@@ -1354,10 +1359,10 @@ class AdminMD extends CI_Model {
 							'ent_name' => $namestring,
 							'ent_cost' => $finalfee
 						);
-					$this->db->trans_start();
-					$this->db->where('ent_id', $entidedit);
-					$this->db->update('entrance',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->where('ent_id', $entidedit);
+					self::$db->update('entrance',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
 
@@ -1377,19 +1382,19 @@ class AdminMD extends CI_Model {
 
 	   function updateExRate($exIdedit,$exrate){
 
-				$this->db->select('*');
-				$this->db->where('ex_id',$exIdedit);
-				$query = $this->db->get('exchangerate');
+				self::$db->select('*');
+				self::$db->where('ex_id',$exIdedit);
+				$query = self::$db->get('exchangerate');
 					if($query->num_rows() != 0){
 
 					$data = array
 						(
 							'ex_rate' => $exrate
 						);
-					$this->db->trans_start();
-					$this->db->where('ex_id', $exIdedit);
-					$this->db->update('exchangerate',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->where('ex_id', $exIdedit);
+					self::$db->update('exchangerate',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
 
@@ -1413,10 +1418,10 @@ class AdminMD extends CI_Model {
 						(
 							'airline_name' => $namestring
 						);
-					$this->db->trans_start();
-					$this->db->where('airline_id', $id);
-					$this->db->update('airline',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->where('airline_id', $id);
+					self::$db->update('airline',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
 
@@ -1436,10 +1441,10 @@ class AdminMD extends CI_Model {
 						(
 							'hotel_Is_sugguest' => $issug
 						);
-					$this->db->trans_start();
-					$this->db->where('hotel_id', $hotelid);
-					$this->db->update('hotel',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->where('hotel_id', $hotelid);
+					self::$db->update('hotel',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
 
@@ -1448,14 +1453,14 @@ class AdminMD extends CI_Model {
 
 
 	   function delCity($cityid){
-			$this->db->select('*');
-			$this->db->where('city_id',$cityid);
-			$query = $this->db->get('city');
+			self::$db->select('*');
+			self::$db->where('city_id',$cityid);
+			$query = self::$db->get('city');
 
 			if($query->num_rows() != 0){
-					$this->db->select('*');
-					$this->db->where('city_id',$cityid);
-					$this->db->delete('city');
+					self::$db->select('*');
+					self::$db->where('city_id',$cityid);
+					self::$db->delete('city');
 					$text = "Del Finish" ;
 					return $text ;
 				}else{
@@ -1465,14 +1470,14 @@ class AdminMD extends CI_Model {
       }
 
 	  function delFreeCon($freeid){
-			$this->db->select('*');
-			$this->db->where('free_id',$freeid);
-			$query = $this->db->get('free_condition');
+			self::$db->select('*');
+			self::$db->where('free_id',$freeid);
+			$query = self::$db->get('free_condition');
 
 			if($query->num_rows() != 0){
-					$this->db->select('*');
-					$this->db->where('free_id',$freeid);
-					$this->db->delete('free_condition');
+					self::$db->select('*');
+					self::$db->where('free_id',$freeid);
+					self::$db->delete('free_condition');
 					$text = "Del Finish" ;
 					return $text ;
 				}else{
@@ -1483,18 +1488,18 @@ class AdminMD extends CI_Model {
 
 
 	   function delHotelandRoom($hotelid){
-			$this->db->select('*');
-			$this->db->where('hotel_id',$hotelid);
-			$query = $this->db->get('hotel');
+			self::$db->select('*');
+			self::$db->where('hotel_id',$hotelid);
+			$query = self::$db->get('hotel');
 
 			if($query->num_rows() != 0){
-					$this->db->select('*');
-					$this->db->where('hotel_id',$hotelid);
-					$this->db->delete('hotel');
+					self::$db->select('*');
+					self::$db->where('hotel_id',$hotelid);
+					self::$db->delete('hotel');
 
-					$this->db->select('*');
-					$this->db->where('hotel_id',$hotelid);
-					$this->db->delete('room');
+					self::$db->select('*');
+					self::$db->where('hotel_id',$hotelid);
+					self::$db->delete('room');
 					$text = "Del Finish" ;
 					return $text ;
 				}else{
@@ -1504,14 +1509,14 @@ class AdminMD extends CI_Model {
       }
 
 	   function delGuide($gid){
-			$this->db->select('*');
-			$this->db->where('guide_id',$gid);
-			$query = $this->db->get('guide');
+			self::$db->select('*');
+			self::$db->where('guide_id',$gid);
+			$query = self::$db->get('guide');
 
 			if($query->num_rows() != 0){
-					$this->db->select('*');
-					$this->db->where('guide_id',$gid);
-					$this->db->delete('guide');
+					self::$db->select('*');
+					self::$db->where('guide_id',$gid);
+					self::$db->delete('guide');
 					$text = "Del Finish" ;
 					return $text ;
 				}else{
@@ -1521,19 +1526,19 @@ class AdminMD extends CI_Model {
       }
 
 	  function delPlace($cityid){
-			$this->db->select('*');
-			$this->db->where('ent_id',$cityid);
-			$query = $this->db->get('entrance');
+			self::$db->select('*');
+			self::$db->where('ent_id',$cityid);
+			$query = self::$db->get('entrance');
 
 			if($query->num_rows() != 0){
-					$this->db->select('*');
-					$this->db->where('ent_id',$cityid);
-					$this->db->delete('entrance');
+					self::$db->select('*');
+					self::$db->where('ent_id',$cityid);
+					self::$db->delete('entrance');
 
-					$this->db->select('*');
-					$this->db->where('item_FK_id',$cityid);
-					$this->db->where('item_category','entrance');
-					$this->db->delete('item');
+					self::$db->select('*');
+					self::$db->where('item_FK_id',$cityid);
+					self::$db->where('item_category','entrance');
+					self::$db->delete('item');
 
 					$text = "Del Finish ENT&Item" ;
 					return $text ;
@@ -1545,14 +1550,14 @@ class AdminMD extends CI_Model {
 
 
 	    function delRoom($roomid){
-			$this->db->select('*');
-			$this->db->where('room_id',$roomid);
-			$query = $this->db->get('room');
+			self::$db->select('*');
+			self::$db->where('room_id',$roomid);
+			$query = self::$db->get('room');
 
 			if($query->num_rows() != 0){
-					$this->db->select('*');
-					$this->db->where('room_id',$roomid);
-					$this->db->delete('room');
+					self::$db->select('*');
+					self::$db->where('room_id',$roomid);
+					self::$db->delete('room');
 
 					$text = "Del Finish Room" ;
 					return $text ;
@@ -1563,14 +1568,14 @@ class AdminMD extends CI_Model {
       }
 
 	    function delOther($otherid){
-			$this->db->select('*');
-			$this->db->where('other_id',$otherid);
-			$query = $this->db->get('other');
+			self::$db->select('*');
+			self::$db->where('other_id',$otherid);
+			$query = self::$db->get('other');
 
 			if($query->num_rows() != 0){
-					$this->db->select('*');
-					$this->db->where('other_id',$otherid);
-					$this->db->delete('other');
+					self::$db->select('*');
+					self::$db->where('other_id',$otherid);
+					self::$db->delete('other');
 
 					$text = "Del Finish Other" ;
 					return $text ;
@@ -1581,16 +1586,16 @@ class AdminMD extends CI_Model {
       }
 
 	  function DeleteCityHotel($cityid){
-			$this->db->select('*');
-			$this->db->join('city','city.city_id = hotel.city_id','left');
-			$this->db->where('hotel_name','CATEGORY');
-			$this->db->where('city.city_id',$cityid);
-			$query = $this->db->get('hotel');
+			self::$db->select('*');
+			self::$db->join('city','city.city_id = hotel.city_id','left');
+			self::$db->where('hotel_name','CATEGORY');
+			self::$db->where('city.city_id',$cityid);
+			$query = self::$db->get('hotel');
 
 			if($query->num_rows() != 0){
-					$this->db->where('hotel_name','CATEGORY');
-					$this->db->where('city_id',$cityid);
-					$this->db->delete('hotel');
+					self::$db->where('hotel_name','CATEGORY');
+					self::$db->where('city_id',$cityid);
+					self::$db->delete('hotel');
 				}else{
 					$text = "No this Hotel's City" ;
 					return $text ;
@@ -1598,13 +1603,13 @@ class AdminMD extends CI_Model {
       }
 
 	   function DeleteFlight($flightid){
-			$this->db->select('*');
-			$this->db->where('flight_id',$flightid);
-			$query = $this->db->get('flight');
+			self::$db->select('*');
+			self::$db->where('flight_id',$flightid);
+			$query = self::$db->get('flight');
 
 			if($query->num_rows() != 0){
-					$this->db->where('flight_id',$flightid);
-					$this->db->delete('flight');
+					self::$db->where('flight_id',$flightid);
+					self::$db->delete('flight');
 				}else{
 					$text = "No Flight no." ;
 					return $text ;
@@ -1614,16 +1619,16 @@ class AdminMD extends CI_Model {
 
 
 	  function DeleteCityVehi($cityid){
-			$this->db->select('*');
-			$this->db->join('city','city.city_id = route.city_id','left');
-			$this->db->where('route_name','CATEGORY');
-			$this->db->where('city.city_id',$cityid);
-			$query = $this->db->get('route');
+			self::$db->select('*');
+			self::$db->join('city','city.city_id = route.city_id','left');
+			self::$db->where('route_name','CATEGORY');
+			self::$db->where('city.city_id',$cityid);
+			$query = self::$db->get('route');
 
 			if($query->num_rows() != 0){
-					$this->db->where('route_name','CATEGORY');
-					$this->db->where('city_id',$cityid);
-					$this->db->delete('route');
+					self::$db->where('route_name','CATEGORY');
+					self::$db->where('city_id',$cityid);
+					self::$db->delete('route');
 				}else{
 					$text = "No this Hotel's City" ;
 					return $text ;
@@ -1631,16 +1636,16 @@ class AdminMD extends CI_Model {
       }
 
 	   function DeleteCityOther($cityid){
-			$this->db->select('*');
-			$this->db->join('city','city.city_id = other.city_id','left');
-			$this->db->where('other_type','CATEGORY');
-			$this->db->where('city.city_id',$cityid);
-			$query = $this->db->get('other');
+			self::$db->select('*');
+			self::$db->join('city','city.city_id = other.city_id','left');
+			self::$db->where('other_type','CATEGORY');
+			self::$db->where('city.city_id',$cityid);
+			$query = self::$db->get('other');
 
 			if($query->num_rows() != 0){
-					$this->db->where('other_type','CATEGORY');
-					$this->db->where('city_id',$cityid);
-					$this->db->delete('other');
+					self::$db->where('other_type','CATEGORY');
+					self::$db->where('city_id',$cityid);
+					self::$db->delete('other');
 				}else{
 					$text = "No this Other's Item" ;
 					return $text ;
@@ -1649,16 +1654,16 @@ class AdminMD extends CI_Model {
 
 
 	    function DeleteCityMeal($cityid){
-			$this->db->select('*');
-			$this->db->join('city','city.city_id = restaurant.city_id','left');
-			$this->db->where('restaurant_name','CATEGORY');
-			$this->db->where('city.city_id',$cityid);
-			$query = $this->db->get('restaurant');
+			self::$db->select('*');
+			self::$db->join('city','city.city_id = restaurant.city_id','left');
+			self::$db->where('restaurant_name','CATEGORY');
+			self::$db->where('city.city_id',$cityid);
+			$query = self::$db->get('restaurant');
 
 			if($query->num_rows() != 0){
-					$this->db->where('restaurant_name','CATEGORY');
-					$this->db->where('city_id',$cityid);
-					$this->db->delete('restaurant');
+					self::$db->where('restaurant_name','CATEGORY');
+					self::$db->where('city_id',$cityid);
+					self::$db->delete('restaurant');
 				}else{
 					$text = "No this Hotel's City" ;
 					return $text ;
@@ -1666,16 +1671,16 @@ class AdminMD extends CI_Model {
       }
 
 	   function DeleteCityTicket($cityid){
-			$this->db->select('*');
-			$this->db->join('city','city.city_id = flight.flight_origin_id','left');
-			$this->db->where('flight_code','CATEGORY');
-			$this->db->where('city.city_id',$cityid);
-			$query = $this->db->get('flight');
+			self::$db->select('*');
+			self::$db->join('city','city.city_id = flight.flight_origin_id','left');
+			self::$db->where('flight_code','CATEGORY');
+			self::$db->where('city.city_id',$cityid);
+			$query = self::$db->get('flight');
 
 			if($query->num_rows() != 0){
-					$this->db->where('flight_code','CATEGORY');
-					$this->db->where('flight_origin_id',$cityid);
-					$this->db->delete('flight');
+					self::$db->where('flight_code','CATEGORY');
+					self::$db->where('flight_origin_id',$cityid);
+					self::$db->delete('flight');
 				}else{
 					$text = "No this Hotel's City" ;
 					return $text ;
@@ -1683,16 +1688,16 @@ class AdminMD extends CI_Model {
       }
 
 	 function getHotelByCity($cityid,$star){
-		$this->db->select('*');
-		$this->db->join('city c','c.city_id = hotel.city_id','left');
-		$this->db->where('c.city_id',$cityid);
+		self::$db->select('*');
+		self::$db->join('city c','c.city_id = hotel.city_id','left');
+		self::$db->where('c.city_id',$cityid);
 
 		if($star != ''){
-			$this->db->where('hotel.hotel_star',$star);
+			self::$db->where('hotel.hotel_star',$star);
 		}
-		$this->db->where("hotel_name NOT LIKE 'CATEGORY'");
+		self::$db->where("hotel_name NOT LIKE 'CATEGORY'");
 
-		$query = $this->db->get('hotel');
+		$query = self::$db->get('hotel');
 
 
 				if($query->num_rows() != 0){
@@ -1706,10 +1711,10 @@ class AdminMD extends CI_Model {
       }
 
 	  function getHotelRoom($hotelid){
-		$this->db->select('*');
-		$this->db->where('hotel_id',$hotelid);
-		$this->db->order_by('room_type','DESC');
-		$query = $this->db->get('room');
+		self::$db->select('*');
+		self::$db->where('hotel_id',$hotelid);
+		self::$db->order_by('room_type','DESC');
+		$query = self::$db->get('room');
 
 				if($query->num_rows() != 0){
 					$array = $query->result();
@@ -1723,11 +1728,11 @@ class AdminMD extends CI_Model {
 
 
 	   function getFreeCondition($fk_id,$fk_type){
-		$this->db->select('*');
-		$this->db->where('free_fk_id',$fk_id);
-		$this->db->where('free_category',$fk_type);
-		$this->db->order_by('free_upto','ASC');
-		$query = $this->db->get('free_condition');
+		self::$db->select('*');
+		self::$db->where('free_fk_id',$fk_id);
+		self::$db->where('free_category',$fk_type);
+		self::$db->order_by('free_upto','ASC');
+		$query = self::$db->get('free_condition');
 
 				if($query->num_rows() != 0){
 					$array = $query->result();
@@ -1747,9 +1752,9 @@ class AdminMD extends CI_Model {
 							'free_upto' => $upto,
 							'free_am' => $freepax
 						);
-					$this->db->trans_start();
-					$this->db->insert('free_condition',$data);
-					$this->db->trans_complete();
+					self::$db->trans_start();
+					self::$db->insert('free_condition',$data);
+					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
 
@@ -1760,10 +1765,10 @@ class AdminMD extends CI_Model {
 
 
 	  function getHotelCat(){
-			$this->db->select('*');
-			$this->db->join('city c','c.city_id = hotel.city_id','right');
-			$this->db->where('hotel_name','CATEGORY');
-			$query = $this->db->get('hotel');
+			self::$db->select('*');
+			self::$db->join('city c','c.city_id = hotel.city_id','right');
+			self::$db->where('hotel_name','CATEGORY');
+			$query = self::$db->get('hotel');
 
 
 				if($query->num_rows() != 0){
@@ -1777,10 +1782,10 @@ class AdminMD extends CI_Model {
 
 
 	 function getVehiCat(){
-			$this->db->select('*');
-			$this->db->join('city c','c.city_id = route.city_id','right');
-			$this->db->where('route_name','CATEGORY');
-			$query = $this->db->get('route');
+			self::$db->select('*');
+			self::$db->join('city c','c.city_id = route.city_id','right');
+			self::$db->where('route_name','CATEGORY');
+			$query = self::$db->get('route');
 
 
 				if($query->num_rows() != 0){
@@ -1793,10 +1798,10 @@ class AdminMD extends CI_Model {
       }
 
 	  function getOtherCat(){
-			$this->db->select('*');
-			$this->db->join('city c','c.city_id = other.city_id','right');
-			$this->db->where('other_type','CATEGORY');
-			$query = $this->db->get('other');
+			self::$db->select('*');
+			self::$db->join('city c','c.city_id = other.city_id','right');
+			self::$db->where('other_type','CATEGORY');
+			$query = self::$db->get('other');
 
 
 				if($query->num_rows() != 0){
@@ -1811,10 +1816,10 @@ class AdminMD extends CI_Model {
 
 
 	   function getGuideSta(){
-			$this->db->select('*');
-			$this->db->join('city c','c.city_id = guide.city_id','right');
-			$this->db->where('guide_type','STA');
-			$query = $this->db->get('guide');
+			self::$db->select('*');
+			self::$db->join('city c','c.city_id = guide.city_id','right');
+			self::$db->where('guide_type','STA');
+			$query = self::$db->get('guide');
 
 
 				if($query->num_rows() != 0){
@@ -1827,9 +1832,9 @@ class AdminMD extends CI_Model {
       }
 
 	  function getGuideAcc(){
-			$this->db->select('*');
-			$this->db->where('guide_type','ACC');
-			$query = $this->db->get('guide');
+			self::$db->select('*');
+			self::$db->where('guide_type','ACC');
+			$query = self::$db->get('guide');
 
 
 				if($query->num_rows() != 0){
@@ -1843,10 +1848,10 @@ class AdminMD extends CI_Model {
 
 
 	  	 function getMealCat(){
-			$this->db->select('*');
-			$this->db->join('city c','c.city_id = restaurant.city_id','right');
-			$this->db->where('restaurant_name','CATEGORY');
-			$query = $this->db->get('restaurant');
+			self::$db->select('*');
+			self::$db->join('city c','c.city_id = restaurant.city_id','right');
+			self::$db->where('restaurant_name','CATEGORY');
+			$query = self::$db->get('restaurant');
 
 
 				if($query->num_rows() != 0){
@@ -1861,10 +1866,10 @@ class AdminMD extends CI_Model {
 
 
 	  	 function getTicketCat(){
-			$this->db->select('*');
-			$this->db->join('city c','c.city_id = flight.flight_origin_id','right');
-			$this->db->where('flight_code','CATEGORY');
-			$query = $this->db->get('flight');
+			self::$db->select('*');
+			self::$db->join('city c','c.city_id = flight.flight_origin_id','right');
+			self::$db->where('flight_code','CATEGORY');
+			$query = self::$db->get('flight');
 
 
 				if($query->num_rows() != 0){
@@ -1877,10 +1882,10 @@ class AdminMD extends CI_Model {
       }
 
 	   function getTicketCat2(){
-			$this->db->select('*');
-			$this->db->join('city c','c.city_id = flight.flight_origin_id','right');
-			$this->db->where('flight_code','CATEGORY2');
-			$query = $this->db->get('flight');
+			self::$db->select('*');
+			self::$db->join('city c','c.city_id = flight.flight_origin_id','right');
+			self::$db->where('flight_code','CATEGORY2');
+			$query = self::$db->get('flight');
 
 
 				if($query->num_rows() != 0){
@@ -1893,11 +1898,11 @@ class AdminMD extends CI_Model {
       }
 
 	 	   function getTicketCat3($viewcity){
-			$this->db->select('*');
-			$this->db->join('city c','c.city_id = flight.flight_origin_id','right');
-			$this->db->where('flight_code','CATEGORY2');
-			$this->db->where('flight_origin_id',$viewcity);
-			$query = $this->db->get('flight');
+			self::$db->select('*');
+			self::$db->join('city c','c.city_id = flight.flight_origin_id','right');
+			self::$db->where('flight_code','CATEGORY2');
+			self::$db->where('flight_origin_id',$viewcity);
+			$query = self::$db->get('flight');
 
 
 				if($query->num_rows() != 0){
@@ -1912,8 +1917,8 @@ class AdminMD extends CI_Model {
 
 
 	 	   function getAirline2(){
-			$this->db->select('*');
-			$query = $this->db->get('airline');
+			self::$db->select('*');
+			$query = self::$db->get('airline');
 
 
 				if($query->num_rows() != 0){
@@ -1928,9 +1933,9 @@ class AdminMD extends CI_Model {
 
 
 	  function countHotel($cityid){
-			$this->db->select('*');
-			$this->db->where('city_id',$cityid);
-			$query = $this->db->get('hotel');
+			self::$db->select('*');
+			self::$db->where('city_id',$cityid);
+			$query = self::$db->get('hotel');
 
 
 				if($query->num_rows() != 0){
@@ -1945,9 +1950,9 @@ class AdminMD extends CI_Model {
 
 
 	  function countSameFlight($flightcode){
-			$this->db->select('*');
-			$this->db->where('flight_code',$flightcode);
-			$query = $this->db->get('flight');
+			self::$db->select('*');
+			self::$db->where('flight_code',$flightcode);
+			$query = self::$db->get('flight');
 
 
 				if($query->num_rows() != 0){
@@ -1962,9 +1967,9 @@ class AdminMD extends CI_Model {
 
 
 	    function countRoute($cityid){
-			$this->db->select('*');
-			$this->db->where('city_id',$cityid);
-			$query = $this->db->get('route');
+			self::$db->select('*');
+			self::$db->where('city_id',$cityid);
+			$query = self::$db->get('route');
 
 
 				if($query->num_rows() != 0){
@@ -1979,9 +1984,9 @@ class AdminMD extends CI_Model {
 
 
 	    function countOther($cityid){
-			$this->db->select('*');
-			$this->db->where('city_id',$cityid);
-			$query = $this->db->get('other');
+			self::$db->select('*');
+			self::$db->where('city_id',$cityid);
+			$query = self::$db->get('other');
 
 
 				if($query->num_rows() != 0){
@@ -1996,9 +2001,9 @@ class AdminMD extends CI_Model {
 
 
 	  function countResturant($cityid){
-			$this->db->select('*');
-			$this->db->where('city_id',$cityid);
-			$query = $this->db->get('restaurant');
+			self::$db->select('*');
+			self::$db->where('city_id',$cityid);
+			$query = self::$db->get('restaurant');
 
 
 				if($query->num_rows() != 0){
@@ -2012,10 +2017,10 @@ class AdminMD extends CI_Model {
       }
 
 	   function countFlight($cityid){
-			$this->db->select('*');
-			$this->db->group_by('flight_code');
-			$this->db->where('flight_origin_id',$cityid);
-			$query = $this->db->get('flight');
+			self::$db->select('*');
+			self::$db->group_by('flight_code');
+			self::$db->where('flight_origin_id',$cityid);
+			$query = self::$db->get('flight');
 
 
 				if($query->num_rows() != 0){
@@ -2029,9 +2034,9 @@ class AdminMD extends CI_Model {
       }
 
 	    function countPlace($cityid){
-			$this->db->select('*');
-			$this->db->where('city_id',$cityid);
-			$query = $this->db->get('entrance');
+			self::$db->select('*');
+			self::$db->where('city_id',$cityid);
+			$query = self::$db->get('entrance');
 
 
 				if($query->num_rows() != 0){
@@ -2043,5 +2048,17 @@ class AdminMD extends CI_Model {
 			return $numrow;
       }
 
+			function getRouteId2($cityid){
+			$this->db->select('*');
+			$this->db->where('city_id',$cityid);
+			$this->db->where("route_name NOT LIKE 'CATEGORY'");
+			$query = $this->db->get('route');
 
+			if($query->num_rows() != 0){
+				return $query->result();
+			}else{
+				return $query->result();
+			}
+
+      }
 }

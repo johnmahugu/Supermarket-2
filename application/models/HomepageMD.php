@@ -46,7 +46,7 @@ class HomepageMD extends CI_Model {
     return $this->db->get();
   }
 
-  function getHiLightPackage() {
+  function getHiLightPackage($tour_nationality) {
     $query = "SELECT
 				tour.tour_id,
 				tour.tour_nameTH,
@@ -69,6 +69,7 @@ class HomepageMD extends CI_Model {
 				image.img_type = 'tour cover' AND
         tour.tour_public = 1 AND
 				tour.tour_hilight = 1 AND
+        tour_nationality = '".$tour_nationality."' AND
         tour.tour_closeBooking >= (SELECT CURDATE())
 				GROUP BY
 				tour.tour_id

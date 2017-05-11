@@ -20,7 +20,8 @@ class HomepageCL extends CI_Controller {
   }
 
   function hilight(){
-    $query = $this->HomepageMD->getHiLightPackage();
+    $tour_nationality = '';
+    $query = $this->HomepageMD->getHiLightPackage($tour_nationality);
     $data['package'] = $query->result();
     echo json_encode($data);
   }
