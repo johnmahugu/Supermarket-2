@@ -295,8 +295,18 @@
                   </label>
                 </div>
                 <div class="col-sm-4 col-xs-7">
-                  <input class="room_add" type="hidden" value="<?=$row['tc_price'];?>">
-                  <p class="priceroom"><?=number_format(intval($package['tour_startPrice'])+intval($row['tc_price']));?></p>
+                  <input class="room_add" room-type="<?=$room_condition[$i]['roomtype']?>" type="hidden" value="<?=$row['tc_price'];?>">
+                  <?php
+                  if($room_condition[$i]['roomtype'] != 'Children < 2 yrs'){
+                    ?>
+                    <p class="priceroom"><?=number_format(intval($package['tour_startPrice'])+intval($row['tc_price']));?></p>
+                    <?php
+                  }else{
+                    ?>
+                    <p class="priceroom"><?=number_format(intval($row['tc_price']));?></p>
+                    <?php
+                  }
+                   ?>
                   <p>&nbsp;/ person</p>
                 </div>
                 <div class="col-sm-3 col-xs-5"><input class="tourist-num" type="number" value="0" min="0" max="1"><span class="unit">person(s)</span></div>
@@ -396,7 +406,7 @@
         $('#tourist-total-num').val($('#minimum').val());
         $('#tourist-total-num').prop('min',$('#minimum').val());
       }
-      set_room(2);
+      set_room(1);
       set_max($('#tourist-total-num').val());
       sum_amount();
     });
@@ -409,9 +419,11 @@
     	$('.priceroom').eq($index).text(numeral($price_starting).format('0,0'));
     	$count_input = $('.room_add').length;
     	for($i=1;$i<=$count_input;$i++){
-    		$result = parseInt($price_starting);
-    		$result += parseInt($('.room_add').eq($index).val());
-    		$('.priceroom').eq($i).text(numeral($result).format('0,0'));
+        if($('.room_add').eq($index).attr('room-type') != 'Children < 2 yrs'){
+          $result = parseInt($price_starting);
+      		$result += parseInt($('.room_add').eq($index).val());
+      		$('.priceroom').eq($i).text(numeral($result).format('0,0'));
+        }
         $index++;
     	}
     	set_room(3);
@@ -426,6 +438,7 @@
     		case ($total == 0 || $total < 0):
     			$(this).val(1);
     			set_room(1);
+          $('#total-tourist').html(1);
     			$('#alert-warning').html('Invalid number');
     			$('#popup').modal('show');
     		break;

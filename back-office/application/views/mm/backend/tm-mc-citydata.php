@@ -173,7 +173,7 @@
 	        		</div>
 					<div class="col-sm-12">
 	        			<label class="filter">ชื่อสถานที่</label><br>
-	        			<input type="text" name="thnameshow" disabled >
+	        			<input type="text" name="thnameshow" >
 	        			<input type="hidden" name="thnameedit">
 	        		</div>
 

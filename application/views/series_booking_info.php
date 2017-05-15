@@ -272,38 +272,6 @@
             <?php
               }
               ?>
-            <?php
-              for($i=1;$i<$totaltourist;$i++){
-              ?>
-            <div id="tourist<?=$i+1?>" class="form-group tourist">
-              <h3>Travel companion <?=$i?></h3>
-              <div class="col-md-6">
-                <label for="">Name - Surname *</label><br>
-                <input type="text"><br>
-              </div>
-              <div class="col-md-6">
-                <label for="">Telephone Number *</label><br>
-                <input type="text"><br>
-              </div>
-              <div class="col-md-6 hide">
-                <label for="">Passport Image *</label><br>
-                <div class="upload">
-                  <img src="<?=base_url()?>assets/images/ico-passport.png" alt="passport image">
-                  <input pointer="img[<?=$i+1?>]" name="passportImg[]" class="img" type="file"><br>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <label for="">Passport No. *</label><br>
-                <input type="text"><br>
-              </div>
-              <div class="col-md-6">
-                <label for="">Date of Birth *</label><br>
-                <input type="text" class="dob-picker"><br>
-              </div>
-            </div>
-            <?php
-              }
-              ?>
         </div>
       </div>
       <div class="clear"></div>

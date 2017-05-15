@@ -164,7 +164,7 @@
   	</div>
 
 </body>
-<script src="<?=base_url()?>assets2/js/script.js"></script>
+<script src="assets/js/script.js"></script>
 <script>
 	$('.btn.no-border.label-level').click(function(){
 		$('.list-card .btn.gray').toggleClass('hide');

@@ -304,37 +304,37 @@ if(isset($price_range)){
 		</main>
 	</div>
 
-	<!-- modal -->
+  <!-- modal -->
   <div class="modal fade" id="addFile" role="dialog">
     <form id="update-itinerary" style="margin-top:-35%;">
-	    <div class="modal-dialog modal-md">
-	      <div class="modal-content">
-	        <div class="modal-header">
-	          <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i></button>
-	          <h4 class="modal-title">Upload <b></b> File</h4>
-	          <hr>
-	        </div>
-	        <div class="modal-body">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i></button>
+            <h4 class="modal-title">Upload <b></b> File</h4>
+            <hr>
+          </div>
+          <div class="modal-body">
             <label class="filter">Select File
             <?php
             if($package['tour_pdf'] != ''){
               echo '(PDF Uploaded) ';
             }
             if($package['tour_word'] != ''){
-              echo '(DOC Uploaded)';
+              echo '(Word Uploaded)';
             }
              ?>
              </label>
              <br>
-				<input name="file" type="file">
-	        </div>
-	        <div class="modal-footer">
+        <input name="file" type="file">
+          </div>
+          <div class="modal-footer">
             <input name="nameSlug" type="hidden" value="<?=$package['tour_nameSlug']?>">
-	        	<button type="button" class="btn" data-dismiss="modal" >Cancel</button>
-		        <input id="submitfile" type="button" value="Select" class="btn" >
-	        </div>
-	      </div>
-	    </div>
+            <button type="button" class="btn" data-dismiss="modal" >Cancel</button>
+            <input id="submitfile" type="button" value="Select" class="btn" >
+          </div>
+        </div>
+      </div>
     </form>
   </div>
 
@@ -382,11 +382,12 @@ $(document).ready(function(){
 });
 
 $('#submitfile').click(function(){
-  var formData = new FormData($("#update-pdf")[0]);
+  var formData = new FormData($("#update-itinerary")[0]);
   $.ajax({
     type: 'POST',
-    url:'/update-pdf',
+    url:'/update-itinerary',
     data: formData,
+    async: true,
     mimeType: "multipart/form-data",
     contentType: false,
     cache: false,

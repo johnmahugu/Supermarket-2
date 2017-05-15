@@ -300,7 +300,7 @@ if(isset($price_range)){
 		</main>
 	</div>
 
-	<!-- modal -->
+  <!-- modal -->
   <div class="modal fade" id="addFile" role="dialog">
     <form id="update-itinerary" style="margin-top:-35%;">
       <div class="modal-dialog modal-md">
@@ -311,13 +311,16 @@ if(isset($price_range)){
             <hr>
           </div>
           <div class="modal-body">
+            <label class="filter">Select File
             <?php
             if($package['tour_pdf'] != ''){
-              echo '<label class="filter">Select File (Uploaded)</label>';
-            }else{
-              echo '<label class="filter">Select File</label>';
+              echo '(PDF Uploaded) ';
+            }
+            if($package['tour_word'] != ''){
+              echo '(Word Uploaded)';
             }
              ?>
+             </label>
              <br>
         <input name="file" type="file">
           </div>
@@ -380,6 +383,7 @@ $('#submitfile').click(function(){
     type: 'POST',
     url:'/update-itinerary',
     data: formData,
+    async: true,
     mimeType: "multipart/form-data",
     contentType: false,
     cache: false,

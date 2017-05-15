@@ -62,6 +62,7 @@ class AdminMD extends CI_Model {
 	 function getCity(){
 
 			self::$db->select('*');
+			self::$db->order_by('city_name'); 
 			$query = self::$db->get('city');
 
 
@@ -71,6 +72,27 @@ class AdminMD extends CI_Model {
 					$array = "" ;
 				}
 			return $array;
+
+      }
+	  
+	   function getCityName($cityid){
+
+			self::$db->select('city_name');
+			self::$db->where('city_id',$cityid);
+			$query = self::$db->get('city');
+
+
+				if($query->num_rows() != 0){
+					$array = $query->result();
+					foreach($array as $rr){
+						$namestring = $rr->city_name;
+						$textreturn = $this->AdminMD->cutEng($namestring);
+					}
+					
+				}else{
+					$textreturn = "" ;
+				}
+			return $textreturn;
 
       }
 
@@ -123,6 +145,7 @@ class AdminMD extends CI_Model {
 	  function getAirline(){
 
 			self::$db->select('*');
+			self::$db->order_by('airline_name');
 			$query = self::$db->get('airline');
 
 
@@ -270,7 +293,6 @@ class AdminMD extends CI_Model {
 							'hotel_name' => "CATEGORY",
 							'hotel_star' => "999",
 							'city_id' => $cityid,
-							'hotel_IsGIT' => '0'
 						);
 					self::$db->trans_start();
 					self::$db->insert('hotel',$data);
@@ -295,7 +317,7 @@ class AdminMD extends CI_Model {
 					$data = array
 						(
 							'route_name' => "CATEGORY",
-							'car_id' => "0",
+							//'car_id' => "0",
 							'city_id' => $cityid
 						);
 					self::$db->trans_start();
@@ -606,7 +628,7 @@ class AdminMD extends CI_Model {
 
       }
 
-	  function addRoom($hotelid,$roomType,$roomname,$gitmin,$gitcost,$currencyedit,$cost,$roomsize,$intercost,$currencyinter){
+	  function addRoom($hotelid,$roomType,$roomname,$gitmin,$finalgit,$finalfit,$finalfitinter,$finalfitthai,$finalfitasia,$fitbed){
 			self::$db->select('*');
 			self::$db->where('hotel_id',$hotelid);
 			self::$db->where('room_type',$roomType);
@@ -619,83 +641,10 @@ class AdminMD extends CI_Model {
 				}else{
 
 					if($roomType == "STD"){
-						$roomsize = 1;
-						$gitmin = 0;
-						$gitcost = 0;
+						//$roomsize = 1;
+						//$gitmin = 0;
+						//$gitcost = 0;
 					}
-
-
-					// CALCULATE TO USD
-						$fee = $cost;
-						if ($currencyedit == "usd") {
-							$finalfee = $fee ;
-						}else if($currencyedit == "mmk"){
-							self::$db->select('ex_rate');
-							self::$db->where('ex_shortcurrency','MMK');
-							$query2 = self::$db->get('exchangerate');
-								foreach ($query2->result() as $rs2) {
-									$exrate = $rs2->ex_rate;
-								}
-							$finalfee = $fee/$exrate ;
-						}else if($currencyedit == "thb"){
-							self::$db->select('ex_rate');
-							self::$db->where('ex_shortcurrency','THB');
-							$query2 = self::$db->get('exchangerate');
-								foreach ($query2->result() as $rs2) {
-									$exrate = $rs2->ex_rate;
-								}
-							$finalfee = $fee/$exrate ;
-						}else{
-							$finalfee = $fee ;
-						}
-					// CALCULATE TO USD
-						$fee2 = $gitcost;
-						if ($currencyedit == "usd") {
-							$finalfee2 = $fee2 ;
-						}else if($currencyedit == "mmk"){
-							self::$db->select('ex_rate');
-							self::$db->where('ex_shortcurrency','MMK');
-							$query2 = self::$db->get('exchangerate');
-								foreach ($query2->result() as $rs2) {
-									$exrate = $rs2->ex_rate;
-								}
-							$finalfee2 = $fee2/$exrate ;
-						}else if($currencyedit == "thb"){
-							self::$db->select('ex_rate');
-							self::$db->where('ex_shortcurrency','THB');
-							$query2 = self::$db->get('exchangerate');
-								foreach ($query2->result() as $rs2) {
-									$exrate = $rs2->ex_rate;
-								}
-							$finalfee2 = $fee2/$exrate ;
-						}else{
-							$finalfee2 = $fee2 ;
-						}
-
-					// CALCULATE TO USD
-						$fee3 = $intercost;
-						if ($currencyinter == "usd") {
-							$finalfee3 = $fee3 ;
-						}else if($currencyinter == "mmk"){
-							self::$db->select('ex_rate');
-							self::$db->where('ex_shortcurrency','MMK');
-							$query2 = self::$db->get('exchangerate');
-								foreach ($query2->result() as $rs2) {
-									$exrate = $rs2->ex_rate;
-								}
-							$finalfee3 = $fee3/$exrate ;
-						}else if($currencyinter == "thb"){
-							self::$db->select('ex_rate');
-							self::$db->where('ex_shortcurrency','THB');
-							$query2 = self::$db->get('exchangerate');
-								foreach ($query2->result() as $rs2) {
-									$exrate = $rs2->ex_rate;
-								}
-							$finalfee3 = $fee3/$exrate ;
-						}else{
-							$finalfee3 = $fee3 ;
-						}
-
 
 					$data = array
 						(
@@ -703,11 +652,13 @@ class AdminMD extends CI_Model {
 							'room_type' => $roomType,
 							'room_name' => $roomname,
 							'room_detail' => '',
-							'room_size' => $roomsize,
 							'room_GIT_min' => $gitmin,
-							'room_cost' => $finalfee,
-							'room_cost_GIT' => $finalfee2,
-							'room_cost_inter' => $finalfee3
+							'room_cost' => $finalfit,
+							'room_cost_GIT' => $finalgit,
+							'room_cost_inter' => $finalfitinter,
+							'room_cost_asia' => $finalfitasia,
+							'room_cost_thai' => $finalfitthai,
+							'room_cost_extbed' => $fitbed
 						);
 					self::$db->trans_start();
 					self::$db->insert('room',$data);
@@ -960,36 +911,8 @@ class AdminMD extends CI_Model {
 			self::$db->where('flight_date','0000-00-00');
 			$query = self::$db->get('flight');
 
-			if($query->num_rows() != 0){
-					$text = "Already Have This flight" ;
-					return $text ;
-				}else{
-					// CALCULATE TO USD
-						$fee = $cost;
-						if ($currency == "usd") {
-							$finalfee = $fee ;
-						}else if($currency == "mmk"){
-							self::$db->select('ex_rate');
-							self::$db->where('ex_shortcurrency','MMK');
-							$query2 = self::$db->get('exchangerate');
-								foreach ($query2->result() as $rs2) {
-									$exrate = $rs2->ex_rate;
-								}
-							$finalfee = $fee/$exrate ;
-						}else if($currency == "thb"){
-							self::$db->select('ex_rate');
-							self::$db->where('ex_shortcurrency','THB');
-							$query2 = self::$db->get('exchangerate');
-								foreach ($query2->result() as $rs2) {
-									$exrate = $rs2->ex_rate;
-								}
-							$finalfee = $fee/$exrate ;
-						}else{
-							$finalfee = $fee ;
-						}
-
-
-
+			
+					$finalfee = $this->AdminMD->CCexChange($cost,$currency);
 
 					$data = array
 						(
@@ -1009,7 +932,7 @@ class AdminMD extends CI_Model {
 					self::$db->trans_complete();
 					$text = "Finish" ;
 					return $text ;
-				}
+				
 
       }
 
@@ -1209,7 +1132,7 @@ class AdminMD extends CI_Model {
       }
 
 
-	   function addRouteCost($cityid,$routeID,$namestring,$carTypeID,$RFinalCost,$type,$rc_from,$rc_to){
+	   function addRouteCost($routeID,$carTypeID,$RFinalCost,$type,$rc_from,$rc_to){
 
 					$data = array
 						(
@@ -1228,7 +1151,112 @@ class AdminMD extends CI_Model {
 
 
       }
+	  
+	   function getPriceCondition($fk_id,$fk_type){
+		$this->db->select('*');
+		$this->db->where('route_id',$fk_id);
+		$this->db->where('rc_type',$fk_type);
+		$this->db->order_by('rc_from','ASC');
+		$query = $this->db->get('route_cost');
+		
+				if($query->num_rows() != 0){
+					$array = $query->result();
+				}else{
+					$array = "" ; 
+				}
+				
+		return $array;
+		
+      }
 
+	  
+	   function updateProfit($profitid,$finalb2c,$b2cCC,$finalb2b,$b2bCC){
+			
+				$this->db->select('*');
+				$this->db->where('pro_id',$profitid);
+				$query = $this->db->get('profit');
+					if($query->num_rows() != 0){
+
+					$data = array
+						(
+							'pro_b2b' => $finalb2b,
+							'pro_b2b_IsPercent' => $b2bCC,
+							'pro_b2c' => $finalb2c,
+							'pro_b2c_isPercent' => $b2cCC
+							
+						);
+					$this->db->trans_start();
+					$this->db->where('pro_id', $profitid);
+					$this->db->update('profit',$data);
+					$this->db->trans_complete();
+					$text = "Finish" ; 
+					return $text ;
+						
+					
+					}else{
+					// NO ENT ID / NO EDIT	
+						$text = "No Row for edit" ; 
+						return $text ;
+					}
+			
+					
+
+				
+				
+	   
+      }
+	  
+	  
+	   function getGroupFlightProfit($season){
+
+	    $this->db->select('fpro_type, COUNT(fpro_type) as total');
+		$this->db->group_by('fpro_type'); 
+		$this->db->order_by('fpro_id'); 
+		$this->db->where('fpro_season',$season);
+		$query = $this->db->get('flight_profit');							
+
+				if($query->num_rows() != 0){
+					$array = $query->result();
+				}else{
+					$array = "" ; 
+				}
+			return $array;
+	   
+      }
+	  
+	  
+	    function getCostByLine($typeName,$season){
+
+	    $this->db->select('*');
+		$this->db->where('fpro_type',$typeName);
+		$this->db->where('fpro_season',$season);
+		$query = $this->db->get('flight_profit');							
+
+				if($query->num_rows() != 0){
+					$array = $query->result();
+				}else{
+					$array = "" ; 
+				}
+			return $array;
+	   
+      }
+	  
+	  
+	   function getProfit($season){
+
+			$this->db->select('*');
+			$this->db->where('pro_season',$season);
+			$query = $this->db->get('profit');
+	
+		
+				if($query->num_rows() != 0){
+					$array = $query->result();
+				}else{
+					$array = "" ; 
+				}
+			return $array;
+	   
+      }
 
 
 
@@ -1263,6 +1291,59 @@ class AdminMD extends CI_Model {
 
       }
 
+	  
+	  
+	  function editVehiSize($carId,$carName,$minPax,$maxPax){
+
+			if($minPax <= $maxPax){
+				self::$db->select('*');
+				self::$db->where('car_id',$carId);
+				$query = self::$db->get('car');
+					if($query->num_rows() == 0){
+							$text = "No-ID" ;
+							return $text ;
+						}else{
+							$data = array
+								(
+									'car_name' => $carName,
+									'car_cap_min' => $minPax,
+									'car_cap_max' => $maxPax
+								);
+							self::$db->trans_start();
+							self::$db->where('car_id',$carId);
+							self::$db->update('car',$data);
+							self::$db->trans_complete();
+							$text = "Finish" ;
+							return $text ;
+						}
+			}else{
+				$text = "min Should less than Max" ;
+				return $text ;
+
+			}
+
+
+      }
+
+	  
+	  function getRouteCost($routeid,$type){
+			$this->db->select('*');
+			$this->db->where('route_id',$routeid);
+			$this->db->where('rc_type',$type);
+			$this->db->join('car','route_cost.car_id = car.car_id','left');
+			$query = $this->db->get('route_cost');
+			
+			if($query->num_rows() != 0){
+				return $query->result();
+			}else{
+				return '';
+			}
+	   
+      }
+	  
+	  
+	  
+	  
 	  function UpdateAirline($id,$namestring,$picname){
 
 					$data = array
@@ -1380,6 +1461,38 @@ class AdminMD extends CI_Model {
 
       }
 
+	  
+	  
+	   function updateCity($cityid,$namestring){
+
+				self::$db->select('*');
+				self::$db->where('city_id',$cityid);
+				$query = self::$db->get('city');
+					if($query->num_rows() != 0){
+					// Have & OK FOR EDIT
+				
+					$data = array
+						(
+							'city_name' => $namestring
+						);
+					self::$db->trans_start();
+					self::$db->where('city_id',$cityid);
+					self::$db->update('city',$data);
+					self::$db->trans_complete();
+					$text = "Finish" ;
+					return $text ;
+
+
+					}else{
+					// NO ENT ID / NO EDIT
+					
+						$text = "No Row for edit" ;
+						return $text ;
+					}
+
+      }
+	  
+	  
 	   function updateExRate($exIdedit,$exrate){
 
 				self::$db->select('*');
@@ -1478,6 +1591,24 @@ class AdminMD extends CI_Model {
 					self::$db->select('*');
 					self::$db->where('free_id',$freeid);
 					self::$db->delete('free_condition');
+					$text = "Del Finish" ;
+					return $text ;
+				}else{
+					$text = "No this Hotel's City" ;
+					return $text ;
+				}
+      }
+	  
+	  
+	   function delPriceCon($freeid){
+			self::$db->select('*');
+			self::$db->where('rc_id',$freeid);
+			$query = self::$db->get('route_cost');
+
+			if($query->num_rows() != 0){
+					self::$db->select('*');
+					self::$db->where('rc_id',$freeid);
+					self::$db->delete('route_cost');
 					$text = "Del Finish" ;
 					return $text ;
 				}else{
@@ -1918,6 +2049,7 @@ class AdminMD extends CI_Model {
 
 	 	   function getAirline2(){
 			self::$db->select('*');
+			self::$db->order_by('airline_name');
 			$query = self::$db->get('airline');
 
 
@@ -2018,14 +2150,14 @@ class AdminMD extends CI_Model {
 
 	   function countFlight($cityid){
 			self::$db->select('*');
-			self::$db->group_by('flight_code');
 			self::$db->where('flight_origin_id',$cityid);
+			self::$db->where("flight_code NOT LIKE 'CATEGORY'");
+			self::$db->where("flight_code NOT LIKE 'CATEGORY2'");
 			$query = self::$db->get('flight');
 
 
 				if($query->num_rows() != 0){
 					$numrow = $query->num_rows() ;
-					$numrow = $numrow-2;
 				}else{
 					$numrow = "" ;
 				}

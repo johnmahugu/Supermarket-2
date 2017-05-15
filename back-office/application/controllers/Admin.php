@@ -104,6 +104,8 @@ class Admin extends CI_Controller {
 			}
 
 	}
+	
+
 
 
 	public function OtherAll()
@@ -298,16 +300,29 @@ class Admin extends CI_Controller {
 							$type = "BYC" ;
 
 							if($cost != 0){
-								$resultLine = $this->AdminMD->addRouteCost($cityid,$routeID,$namestring,$carTypeID,$RFinalCost,$type,$rc_from,$rc_to);
+								$resultLine = $this->AdminMD->addRouteCost($routeID,$carTypeID,$RFinalCost,$type,$rc_from,$rc_to);
 							}
 							$loopCarType-- ;
 						}
 
 				}else{
 					// Price Scale
+					$conper = $this->input->post('conper'); //CONDITION PER
+					$rc_from = $this->input->post('frompaxs'); //CONDITION PER
+					$rc_to = $this->input->post('topaxs'); //CONDITION PER
+					$carTypeID = "0";
+					$type = $conper;
+					$cost = $this->input->post('costs');
+					$currency = $this->input->post('currencys');
+					$RFinalCost = $this->AdminMD->CCexChange($cost,$currency);
+					
+					if($cost != 0){
+								$resultLine = $this->AdminMD->addRouteCost($routeID,$carTypeID,$RFinalCost,$type,$rc_from,$rc_to);
+					}
+					
 				}
 
-				//redirect('st-vehicle?city='.$cityid.'','refresh');
+				redirect('st-vehicle?city='.$cityid.'','refresh');
 
 			}else{
 				// NO PERMISSION
@@ -316,6 +331,36 @@ class Admin extends CI_Controller {
 
 	}
 
+	
+	
+	
+	public function addPriceConIn()
+	{
+				$this->checkuser();
+		////// CHECK PERMISSION //////
+			$id = $this->session->userdata('admin_id');
+
+			$checkAuth = "".$this->AdminMD->getStaffAuth($id,106);
+
+			if($checkAuth == "T") {
+					$viewcity = $this->input->post('viewcity');
+					$routeIdCon = $this->input->post('routeIdCon');
+					$frompax = $this->input->post('frompax');
+					$topax = $this->input->post('topax');
+					$currency = $this->input->post('ccedit');
+					$cost = $this->input->post('addcost');
+					$RFinalCost = $this->AdminMD->CCexChange($cost,$currency);
+					
+					if($cost != 0){
+						$resultLine = $this->AdminMD->addRouteCost($routeIdCon,'0',$RFinalCost,'AID',$frompax,$topax);
+					}
+					redirect('st-vehicleall?city='.$viewcity.'','refresh');
+			}else{
+				// NO PERMISSION
+				$this->load->view('landing.php');
+			}
+	}
+	
 	public function addRoom()
 	{
 		$this->checkuser();
@@ -336,11 +381,25 @@ class Admin extends CI_Controller {
 				$currencyedit = $this->input->post('currencyedit');
 				$roomsize = $this->input->post('person');
 				$cost = $this->input->post('cost');
-				$intercost = $this->input->post('intercost');
+				$currency = $this->input->post('currency');
+				$intercost = $this->input->post('fitinter');
 				$currencyinter = $this->input->post('currencyinter');
+				$thcost = $this->input->post('fitthai');
+				$currencyth = $this->input->post('currencythai');
+				$asiacost = $this->input->post('fitasia');
+				$currencyasia = $this->input->post('currencyinterasia');
+				$fitbed = $this->input->post('fitbed');
+				$currencybed = $this->input->post('currencybed');
+				
+				$finalgit = $this->AdminMD->CCexChange($gitcost,$currencyedit);
+				$finalfit = $this->AdminMD->CCexChange($cost,$currency);
+				$finalfitinter = $this->AdminMD->CCexChange($intercost,$currencyinter);
+				$finalfitthai = $this->AdminMD->CCexChange($thcost,$currencyth);
+				$finalfitasia = $this->AdminMD->CCexChange($asiacost,$currencyasia);
+				$finalbed = $this->AdminMD->CCexChange($fitbed,$currencybed);
+				
 
-
-				$resultAdd = $this->AdminMD->addRoom($hotelid,$roomType,$roomname,$gitmin,$gitcost,$currencyedit,$cost,$roomsize,$intercost,$currencyinter);
+				$resultAdd = $this->AdminMD->addRoom($hotelid,$roomType,$roomname,$gitmin,$finalgit,$finalfit,$finalfitinter,$finalfitthai,$finalfitasia,$finalbed);
 
 				redirect('st-hotelAll?star='.$star.'&city='.$cityid.'','refresh');
 			}else{
@@ -365,7 +424,7 @@ class Admin extends CI_Controller {
 				$maxPax = $this->input->post('maxPax');
 				$resultadd = $this->AdminMD->addVehiSize($VehiName,$minPax,$maxPax) ;
 
-				redirect('admin/VehiAll?city='.$cityid.'','refresh');
+				redirect('st-vehicle?city='.$cityid.'','refresh');
 			}else{
 				// NO PERMISSION
 				$this->load->view('landing.php');
@@ -373,6 +432,31 @@ class Admin extends CI_Controller {
 
 	}
 
+	public function editVehi()
+	{
+		$this->checkuser();
+		////// CHECK PERMISSION //////
+			$id = $this->session->userdata('admin_id');
+
+			$checkAuth = "".$this->AdminMD->getStaffAuth($id,107);
+
+			if($checkAuth == "T") {
+				$cityid = $this->input->post('viewcity');
+				$VehiName = $this->input->post('nnsize');
+				$minPax = $this->input->post('nnfrom');
+				$maxPax = $this->input->post('nnto');
+				$carId = $this->input->post('nncarid');
+				$resultadd = $this->AdminMD->editVehiSize($carId,$VehiName,$minPax,$maxPax) ;
+
+				redirect('st-vehicleall?city='.$cityid.'','refresh');
+			}else{
+				// NO PERMISSION
+				$this->load->view('landing.php');
+			}
+
+	}
+	
+	
 
 	public function addFreeCon()
 	{
@@ -391,7 +475,7 @@ class Admin extends CI_Controller {
 
 				$resultadd = $this->AdminMD->addFreeCondition($hotelid,'hotel',$uptopax,$free) ;
 
-				redirect('admin/HotelAll?star='.$viewstar.'&city='.$viewcity.'','refresh');
+				redirect('st-hotelAll?star='.$viewstar.'&city='.$viewcity.'','refresh');
 			}else{
 				// NO PERMISSION
 				$this->load->view('landing.php');
@@ -399,6 +483,33 @@ class Admin extends CI_Controller {
 
 	}
 
+	public function addFreeConVehi()
+	{
+		$this->checkuser();
+		////// CHECK PERMISSION //////
+			$id = $this->session->userdata('admin_id');
+
+			$checkAuth = "".$this->AdminMD->getStaffAuth($id,106);
+
+			if($checkAuth == "T") {
+				$viewcity = $this->input->post('viewcity');
+				$uptopax = $this->input->post('uptopax');
+				$free = $this->input->post('free');
+				$hotelid = $this->input->post('routeedit2');
+
+				$resultadd = $this->AdminMD->addFreeCondition($hotelid,'route',$uptopax,$free) ;
+
+				redirect('st-vehicleall?city='.$viewcity.'','refresh');
+			}else{
+				// NO PERMISSION
+				$this->load->view('landing.php');
+			}
+
+	}
+
+	
+	
+	
 	public function DelFreepax()
 	{
 		$this->checkuser();
@@ -409,19 +520,49 @@ class Admin extends CI_Controller {
 
 			if($checkAuth == "T") {
 				$viewcity = $this->input->get('city');
+				$page = $this->input->get('page');
 				$viewstar = $this->input->get('star');
 				$freeid = $this->input->get('freeid');
 
 
 				$resultadd = $this->AdminMD->delFreeCon($freeid) ;
 
-				redirect('admin/HotelAll?star='.$viewstar.'&city='.$viewcity.'','refresh');
+				if($page =='vehi'){
+					redirect('st-vehicleall?city='.$viewcity.'','refresh');
+				}else{					
+					redirect('st-hotelAll?star='.$viewstar.'&city='.$viewcity.'','refresh');
+				}
 			}else{
 				// NO PERMISSION
 				$this->load->view('landing.php');
 			}
-
 	}
+	
+	public function DelPriceCon()
+	{
+		$this->checkuser();
+		////// CHECK PERMISSION //////
+			$id = $this->session->userdata('admin_id');
+
+			$checkAuth = "".$this->AdminMD->getStaffAuth($id,106);
+
+			if($checkAuth == "T") {
+				$viewcity = $this->input->get('city');
+				$freeid = $this->input->get('pid');
+
+
+				$resultadd = $this->AdminMD->delPriceCon($freeid) ;
+
+				redirect('st-vehicleall?city='.$viewcity.'','refresh');
+			}else{
+				// NO PERMISSION
+				$this->load->view('landing.php');
+			}
+	}
+	
+	
+	
+	
 
 	public function addFlight()
 	{
@@ -548,7 +689,7 @@ class Admin extends CI_Controller {
 
 
 					$resultadd = $this->AdminMD->editSugHotel($hotelid,$issug);
-					redirect('admin/HotelAll?star='.$star.'&city='.$city.'','refresh');
+					redirect('st-hotelAll?star='.$star.'&city='.$city.'','refresh');
 
 			}else{
 				// NO PERMISSION
@@ -592,7 +733,7 @@ class Admin extends CI_Controller {
 			if($checkAuth == "T") {
 				$cityid = $this->input->post('cityid');
 				$ennameedit = $this->input->post('ennameedit');
-				$thnameedit = $this->input->post('thnameedit');
+				$thnameedit = $this->input->post('thnameshow');
 				$namestring = $thnameedit."|".$ennameedit ;
 
 				$costedit = $this->input->post('costedit');
@@ -606,6 +747,33 @@ class Admin extends CI_Controller {
 
 			}else{
 				// NO PERMISSION
+				$this->load->view('landing.php');
+			}
+
+	}
+	
+	public function editCity()
+	{
+		$this->checkuser();
+		////// CHECK PERMISSION //////
+			$id = $this->session->userdata('admin_id');
+
+			$checkAuth = "".$this->AdminMD->getStaffAuth($id,104);
+
+			if($checkAuth == "T") {
+				$cityid = $this->input->post('editcityID');
+				$ennameedit = $this->input->post('ennameshow');
+				$thnameedit = $this->input->post('thnameshow');
+				$namestring = $thnameedit."|".$ennameedit ;
+
+				//echo $namestring;
+					
+				$resultadd = $this->AdminMD->updateCity($cityid,$namestring);
+				redirect('mm-locationdata','refresh');
+
+			}else{
+				// NO PERMISSION
+	
 				$this->load->view('landing.php');
 			}
 
@@ -773,6 +941,50 @@ class Admin extends CI_Controller {
 		}
 
 	}
+	
+	
+	
+	public function setProfit()
+	{
+		$this->checkuser();
+		////// CHECK PERMISSION //////
+			$id = $this->session->userdata('admin_id');
+			$checkAuth = "".$this->AdminMD->getStaffAuth($id,301);
+			
+			if($checkAuth == "T") {
+				$profitid = $this->input->post('profitid');
+				$b2c = $this->input->post('b2c');
+				$b2cP = $this->input->post('b2cunit');
+				$b2b = $this->input->post('b2b');
+				$b2bP = $this->input->post('b2bunit');
+				//echo $b2cP;
+				
+				if($b2cP == '%'){
+					$b2cCC = 'Y';
+					$finalb2c = $b2c ; 
+				}else{
+					$b2cCC = 'N';
+					$finalb2c = $this->AdminMD->CCexChange($b2c,$b2cP);
+					
+				}
+				
+				if($b2bP == '%'){
+					$b2bCC = 'Y';
+					$finalb2b = $b2b ; 
+				}else{
+					$b2bCC = 'N';
+					$finalb2b = $this->AdminMD->CCexChange($b2b,$b2bP);
+				}
+
+				$result = "".$this->AdminMD->updateProfit($profitid,$finalb2c,$b2cCC,$finalb2b,$b2bCC);
+				redirect('PriceAll','refresh');
+			}else{
+				// NO PERMISSION 
+				$this->load->view('landing.php');
+			}
+		
+	}
+	
 
 
 
@@ -895,7 +1107,7 @@ class Admin extends CI_Controller {
 				$cost = $this->input->post('cost');
 				$currency = $this->input->post('currency');
 				$result = "".$this->AdminMD->addGuideAcc($language,$cost,$currency);
-				redirect('admin/Guide','refresh');
+				redirect('st-guide','refresh');
 			}else{
 				// NO PERMISSION
 				$this->load->view('landing.php');
@@ -917,7 +1129,7 @@ class Admin extends CI_Controller {
 				$currency = $this->input->post('costedit2');
 
 				$result = "".$this->AdminMD->addGuideAcc($lang,$cost,$currency);
-				redirect('admin/Guide','refresh');
+				redirect('st-guide','refresh');
 			}else{
 				// NO PERMISSION
 				$this->load->view('landing.php');
@@ -938,7 +1150,7 @@ class Admin extends CI_Controller {
 
 
 				$result = "".$this->AdminMD->updateExRate($exIdedit,$exrate);
-				redirect('admin/PriceAll','refresh');
+				redirect('PriceAll','refresh');
 			}else{
 				// NO PERMISSION
 				$this->load->view('landing.php');
@@ -1212,7 +1424,7 @@ class Admin extends CI_Controller {
 				$star = $this->input->get('star');
 
 				$result = "".$this->AdminMD->delRoom($roomid);
-				redirect('admin/HotelAll?city='.$cityid.'&star='.$star.'','refresh');
+				redirect('st-hotelAll?city='.$cityid.'&star='.$star.'','refresh');
 			}else{
 				// NO PERMISSION
 				$this->load->view('landing.php');
@@ -1280,7 +1492,7 @@ class Admin extends CI_Controller {
 
 			if($checkAuth == "T") {
 				$result = "".$this->AdminMD->AddCityVehi($cityid);
-				redirect('admin/Vehicle','refresh');
+				redirect('st-vehicle','refresh');
 			}else{
 				// NO PERMISSION
 				$this->load->view('landing.php');

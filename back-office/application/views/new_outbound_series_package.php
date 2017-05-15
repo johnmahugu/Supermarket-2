@@ -127,7 +127,7 @@
   	              <?php
   	                if(isset($agency)){
   	                	foreach($agency->result_array() as $row){
-                        echo "<option value=".$row['agent_id']." selected>".$row['agent_code']." ".$row['agent_compName']."</option>";
+                        echo "<option value=".$row['agent_id'].">".$row['agent_code']." ".$row['agent_compName']."</option>";
   	                	}
   	                }
   	                ?>
@@ -164,7 +164,7 @@
 									<div class="clear"></div><br>
 
 									<label>Advance booking days</label><br>
-									<input id="advanceBooking" type="number">
+									<input id="advanceBooking" type="number" value="0">
 									<span class="unit">Day</span>
 								</div>
 							</div>
@@ -357,6 +357,23 @@ $('#nameEN').blur(function(){
 		});
 	}
 });
+
+$('#nameEN').blur(function(){
+	if(validateLatin($(this).val())){
+		alert('Invalid tour name');
+		$('#nameEN').val('');
+		$('#nameEN').focus();
+	}
+});
+
+function validateLatin($string) {
+  $result = false;
+	regEx=/[^a-zA-Z0-9_ -]/;
+  if (regEx.test($string)) {
+      $result = true;
+  }
+  return $result;
+}
 
 function submitform(){
   for ( instance in CKEDITOR.instances ) {

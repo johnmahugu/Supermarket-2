@@ -164,7 +164,7 @@
 									<div class="clear"></div><br>
 
 									<label>Advance booking days</label><br>
-									<input id="advanceBooking" type="number">
+									<input id="advanceBooking" type="number" value="0">
 									<span class="unit">Day</span>
 								</div>
 							</div>
@@ -350,25 +350,6 @@ $('#nameEN').blur(function(){
 			success:function(data){
 				if(data == '0'){
 					alert('Name is duplicate. Please change tour name.');
-				}
-				$('#nameEN').val('');
-				$('#nameEN').focus();
-			}
-		});
-	}
-});
-
-$('#nameEN').blur(function(){
-	if($(this).val() != ''){
-		$.ajax({
-			type: 'POST',
-			url:'/check-nameEN',
-			data:{
-				'nameEN': $(this).val()
-			},
-			success:function(data){
-				if(data == '0'){
-					alert('Name is duplicate. Please change tour name.');
 					$('#nameEN').val('');
 					$('#nameEN').focus();
 				}
@@ -376,6 +357,23 @@ $('#nameEN').blur(function(){
 		});
 	}
 });
+
+$('#nameEN').blur(function(){
+	if(validateLatin($(this).val())){
+		alert('Invalid tour name');
+		$('#nameEN').val('');
+		$('#nameEN').focus();
+	}
+});
+
+function validateLatin($string) {
+  $result = false;
+	regEx=/[^a-zA-Z0-9_ -]/;
+  if (regEx.test($string)) {
+      $result = true;
+  }
+  return $result;
+}
 
 function submitform(){
   for ( instance in CKEDITOR.instances ) {

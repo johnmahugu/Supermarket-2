@@ -61,18 +61,28 @@
 								$position = strpos($ctname,"|");
 								$eng = substr($ctname,$position+1) ;
 								$tha  = substr($ctname,0,$position) ;
+								$ctid = $value->city_id;
 								 ;?>
 					<div class="list-card">
 						<div class="col-sm-3 col-xs-6">
 							<h4>City</h4>
 							<h2><?php echo $eng; echo "(".$tha.")";?></h2>
+							
+							<?php ////////// SET HIDDEN VALUE FOR EDIT /////////////?>
+								<input type="hidden" value="<?php echo $eng; ?>" id="ennameforedit<?php echo $ctid ; ?>">
+								<input type="hidden" value="<?php echo $tha; ?>" id="thnameforedit<?php echo $ctid ; ?>">
+
+							<?php ////////// SET HIDDEN VALUE FOR EDIT /////////////?>
+							
+							
 						</div>
 						<div class="input-inline">
 							<div class="digi-box">
-								<p><?php $ctid = $value->city_id; echo $this->AdminMD->countPlace($ctid);?>&nbsp;Locations</p>
+								<p><?php echo $this->AdminMD->countPlace($ctid);?>&nbsp;Locations</p>
 							</div>
 							<div class="input-box btn-inline">
 								<a href="mm-delCity?cityid=<?php echo $value->city_id ;?>" class="btn gray hide">Delete</a>
+								<div data-toggle="modal" data-target="#editCity" class="btn light" onclick="editCityCall('<?=$ctid?>')">Edit</div>
 								<a href="mm-place?cityid=<?php echo $value->city_id ;?>" class="btn border">View <i class="fa fa-angle-right" aria-hidden="true"></i></a>
 							</div>
 						</div>
@@ -108,7 +118,40 @@
 	      </div>
 	    </div>
   	</div>
+<div class="modal fade" id="editCity" role="dialog">
+	    <div class="modal-dialog modal-md">
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i></button>
+	          <h4 class="modal-title">Edit Location</h4>
+	          <hr>
+	        </div>
+	        <div class="modal-body">
+	        	<div class="row">
+				<form action="mm-editCity" method="post">
+	        		<div class="col-sm-12">
+	        			<label class="filter"> City Name </label><br>
+	        			<input type="text" name="ennameshow" >
+	        			<input type="hidden" name="editcityID" >
+	        		</div>
+					<div class="col-sm-12">
+	        			<label class="filter"> ชื่อเมือง </label><br>
+	        			<input type="text" name="thnameshow" >
+	        		</div>
 
+	        		
+
+	        	</div>
+
+	        </div>
+	        <div class="modal-footer">
+	        	<button type="button" class="btn" data-dismiss="modal" >Cancel</button>
+		        <input type="submit" value="Edit" class="btn" >
+				</form>
+	        </div>
+	      </div>
+	    </div>
+  	</div>
 </body>
 <script src="assets/js/script.js"></script>
 <script>
@@ -120,5 +163,18 @@
 			$(this).find('span').text('Delete Ports');
 		}
 	});
+	
+	function editCityCall(dataId) {
+	//window.alert(dataId); 
+	var enName = document.getElementById('ennameforedit'+dataId).value;
+	var thName = document.getElementById('thnameforedit'+dataId).value;
+
+	$('input[name="editcityID"]').val(dataId);
+	$('input[name="ennameshow"]').val(enName);
+	$('input[name="thnameshow"]').val(thName);
+
+
+
+}
 </script>
 </html>

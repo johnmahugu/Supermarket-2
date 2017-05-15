@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+	<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
@@ -34,31 +34,43 @@
 			<div class="title-bar-wrapper">
 				<div class="main-wrapper">
 					<div class="row">
+					<?php  $cityview = $this->input->get('city');  ?>
 						<div class="col-sm-8 col-xs-12">
 							<h1>Shop Travel</h1>
-							<p>Vehicle in Yangon</p>
+							<p>Vehicle in <?php echo $this->AdminMD->getCityName($cityview) ?></p>
 						</div>
 						<div class="col-sm-4 col-xs-12">
-							<a href="st-newVehi?city=<?php echo $this->input->get('city')?>" class="btn">New Route</a>
+							<a href="st-newVehi?city=<?php echo $cityview;?>" class="btn">New Route</a>
 						</div>
 					</div>
 					<div class="row top-mg">
 						<div class="col-md-10 col-sm-9">
 							<div class="input-inline">
 								<div class="digi-box">
-									<p>17&nbsp;Routes</p>
+									<p><?php echo $this->AdminMD->countRoute($cityview) ?>&nbsp;Routes</p>
 								</div>
 								<div class="input-box">
 									<label class="filter">Edit Vehicle Size</label>
 									<div class="clear"></div>
 
-									<?php if($carType != ''){
+									<?php
+									$viewcity = $this->input->get('city');
+
+									if($carType != ''){
 											foreach ($carType as $value){
+											$carID = $value->car_id;
 											$carName = $value->car_name;
 											$minPax = $value->car_cap_min;
 											$maxPax = $value->car_cap_max;
 									?>
-										<div data-toggle="modal" data-target="#editSize" alt="<?=$minPax?>,<?=$maxPax?>" class="tag"><?=$carName?></div>
+									<?php ////////// SET HIDDEN VALUE FOR EDIT /////////////?>
+										<input type="hidden" value="<?php echo $carName; ?>" id="ncar<?php echo $carID ; ?>">
+										<input type="hidden" value="<?php echo $minPax; ?>" id="nmin<?php echo $carID ; ?>">
+										<input type="hidden" value="<?php echo $maxPax; ?>" id="nmax<?php echo $carID ; ?>">
+
+										<?php ////////// SET HIDDEN VALUE FOR EDIT /////////////?>
+									
+										<div data-toggle="modal" data-target="#editSize" onclick="editCall('<?php echo $carID ; ?>')" alt="<?=$minPax?>,<?=$maxPax?>" class="tag"><?=$carName?></div>
 									<?php 	}
 										}else{
 											echo "No Car Type yet" ;
@@ -123,8 +135,8 @@
 												$freeid = $valuep->free_id;
 												$upto = $valuep->free_upto;
 												$freeam = $valuep->free_am;
-												$viewcity = $this->input->get('city');
-												echo "<p>[<a href='DelFreepax?freeid=".$freeid."&city=".$viewcity."'>x</a>] Upto ".$upto." Pax : Free ".$freeam." </p><br>" ;
+												
+												echo "<p>[<a href='DelFreepax?page=vehi&freeid=".$freeid."&city=".$viewcity."'>x</a>] Upto ".$upto." Pax : Free ".$freeam." </p><br>" ;
 											}
 										}
 									?>
@@ -133,7 +145,7 @@
 								<div class="col-sm-6 col-xs-12">
 									<?php
 										/// SUB LOOP //
-										$result2 = $this->AdminMD->getRouteCost($routeid);
+										$result2 = $this->AdminMD->getRouteCost($routeid,'BYC');
 										if($result2 != ''){
 											foreach ($result2 as $valuei){
 												$routetype = $valuei->rc_type;
@@ -150,17 +162,21 @@
 												</span><?=$routecost?> USD</p><br>
 											<?php
 
-												}else{
-													echo "<p><span class='tag'>" ;
-													if($routetype == "AID"){
-														echo "All type(Individual)";
+										} } }
 
-													echo "</span>";
-											?>
-												<i class="fa fa-plus" aria-hidden="true" data-toggle="modal" data-target="#addPriceConIn" onclick="addCall('<?php echo $routeid ; ?>')" ></i>
-											<?php
-													echo"</p><br>" ;
-													$getPriceCon = $this->AdminMD->getPriceCondition($routeid,'AID');
+									?>
+									
+									
+									<?php
+										/// SUB LOOP //
+										$result2 = $this->AdminMD->getRouteCost($routeid,'AID');
+										if($result2 != ''){
+									?>
+											<p><span class='tag'>All type(Individual)</span><i class="fa fa-plus" aria-hidden="true" data-toggle="modal" data-target="#addPriceConIn" onclick="addCall2('<?php echo $routeid ; ?>')" ></i> </p><br>
+									<?php		
+									
+											
+											$getPriceCon = $this->AdminMD->getPriceCondition($routeid,'AID');
 													if($getPriceCon != ''){
 														foreach($getPriceCon as $valuel){
 															$routecost = $valuel->rc_cost;
@@ -172,40 +188,20 @@
 															echo $routecost." USD" ;
 															echo "<br>" ;
 														}
-													}
-
-												}else{
-														echo "All type(Group)";
-														echo "</span>";
-
-															?>
-												<i class="fa fa-plus" aria-hidden="true" data-toggle="modal" data-target="#addPriceConIn" onclick="addCall('<?php echo $routeid ; ?>')" ></i>
-											<?php
-													echo"</p><br>" ;
-													$getPriceCon = $this->AdminMD->getPriceCondition($routeid,'AGP');
-													if($getPriceCon != ''){
-														foreach($getPriceCon as $valuel){
-															$routecost = $valuel->rc_cost;
-															$pconid = $valuel->rc_id;
-															$routestart = $valuel->rc_from ;
-															$routeto = $valuel->rc_to;
-															echo "[<a href='DelPriceCon?pid=".$pconid."&city=".$viewcity."'>x</a>] " ;
-															echo "From ".$routestart." To ".$routeto." : ";
-															echo $routecost." USD" ;
-															echo "<br>" ;
-														}
-													}
-												}
-
-											?>
-
-											<?php
-												}
-											?>
+											}
 
 
 
-									<?php } } ?>
+
+
+										}
+
+									?>
+									
+									
+									
+									
+									
 								</div>
 							</div>
 							<div class="input-inline">
@@ -277,20 +273,26 @@
 		        <div class="modal-body">
 		        	<div class="col-xs-12">
 		        		<label>Edit Size</label><br>
-						<input type="text" name="size" placeholder="Vehicle Size Name">
+						
+						<form action="editVehi" method="post">
+						<input type="text" name="nnsize" placeholder="Vehicle Size Name">
 		        	</div>
 		        	<div class="col-sm-6 col-xs-12">
-						<input type="number" name="from" placeholder="Start From">
+						<input type="number" name="nnfrom" placeholder="Start From">
 						<span class="unit">Pax</span>
 		        	</div>
 					<div class="col-sm-6 col-xs-12">
-						<input type="number" name="to" placeholder="To">
+						<input type="number" name="nnto" placeholder="To">
+						<input type="hidden" name="nncarid" >
+						<input type="hidden" name="viewcity" value="<?php echo $this->input->get('city') ?>" >
 						<span class="unit">Pax</span>
 		        	</div>
 		        </div>
 		        <div class="modal-footer">
 		        	<button type="button" class="btn" data-dismiss="modal" >Cancel</button>
 			        <input type="submit" value="Save" class="btn" >
+					</form>
+					
 		        </div>
 		      </div>
 		    </div>
@@ -360,7 +362,7 @@
 	        			<label class="filter">From (Person)</label><br>
 	        			<input type="number" name="frompax" >
 						<input type="hidden" name="viewcity" value="<?php echo $this->input->get('city') ?>" >
-						<input type="hidden" name="routeedit3" >
+						<input type="hidden" name="routeIdCon" >
 	        		</div>
 
 					<div class="col-sm-6">
@@ -369,9 +371,9 @@
 	        		</div>
 					<div class="col-sm-6">
 	        			<label class="filter">Cost </label><br>
-	        			<input type="number">
+	        			<input type="number" name="addcost">
 						<span class="unit selector">
-						<select name="currencyofCarNo">
+						<select name="ccedit">
 							<option value="usd">USD</option>
 							<option value="mmk">MMK</option>
 						</select>
@@ -407,12 +409,37 @@
 	});
 
 
-	function addCall(dataId) {
+function addCall(dataId) {
 
 	var routeId = document.getElementById('routeidforedit'+dataId).value;
 
 	$('input[name="routeedit2"]').val(routeId);
 
 }
+
+
+function addCall2(dataId) {
+	
+	$('input[name="routeIdCon"]').val(dataId);
+
+}
+
+
+
+function editCall(dataId) {
+
+	var ncar = document.getElementById('ncar'+dataId).value;
+	var nmin = document.getElementById('nmin'+dataId).value;
+	var nmax = document.getElementById('nmax'+dataId).value;
+
+
+	$('input[name="nnsize"]').val(ncar);
+	$('input[name="nnfrom"]').val(nmin);
+	$('input[name="nnto"]').val(nmax);
+	$('input[name="nncarid"]').val(dataId);
+
+
+}
+
 </script>
 </html>

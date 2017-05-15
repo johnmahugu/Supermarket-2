@@ -390,9 +390,8 @@ class PackageMD extends CI_Model {
 
   function updateOutboundLocation($newNameSlug,$country,$continent){
     self::$db->trans_begin();
-    $query = "UPDATE tour_address ta
-    JOIN address a ON ta.address_id = a.address_id
-    JOIN tour t ON ta.tour_id = t.tour_id
+    $query = "UPDATE address a
+    JOIN tour t ON t.address_id = a.address_id
     SET a.continent_id = '".$continent."', a.country_id = '".$country."'
     WHERE t.tour_nameSlug = '".$newNameSlug."'";
     self::$db->query($query);
@@ -448,12 +447,6 @@ class PackageMD extends CI_Model {
     );
     self::$db->insert('tour', $data);
     $tourId = self::$db->insert_id();
-
-    $data = array(
-      'tour_id' => $tourId,
-      'address_id' => $addressId
-    );
-    self::$db->insert('tour_address', $data);
 
     $data = array(
       'tour_imgCover' => $tourId

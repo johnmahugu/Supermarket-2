@@ -503,6 +503,7 @@
       			type: 'POST',
       			async : false,
       			url:'/hilight',
+            data : { 'nationality' : 'thailand domestic tour'},
       			dataType: 'json',
       			success:function(data){
       				$result_hilight = listHilight(data);

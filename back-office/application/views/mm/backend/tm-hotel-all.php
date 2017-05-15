@@ -58,6 +58,7 @@
 										<option value=''>Filter by Hotel Stars</option>
 										<option value=''>All Hotel Stars</option>
 										<option value='3'>3 Stars</option>
+										<option value='3.5'>3.5 Stars</option>
 										<option value='4'>4 Stars</option>
 										<option value='5'>5 Stars</option>
 									</select>
@@ -119,7 +120,7 @@
 									</form>
 									<br>
 									<p><span class="tag">Guide Cost</span><?php if ($guidecost!=0) { echo $guidecost; echo "USD"; }else{ echo "-";}?></p><br>
-									<p><span class="tag">Free Pax Condition</span> <i class="fa fa-plus" aria-hidden="true" data-toggle="modal" data-target="#addFreeCon" onclick="addCall('<?php echo $hotelid ; ?>')" ></i></p><br>
+									<p><span class="tag">Free Room Condition</span> <i class="fa fa-plus" aria-hidden="true" data-toggle="modal" data-target="#addFreeCon" onclick="addCall('<?php echo $hotelid ; ?>')" ></i></p><br>
 									<?php
 										$getFreeCon = $this->AdminMD->getFreeCondition($hotelid,'hotel');
 										if($getFreeCon != ''){
@@ -127,7 +128,7 @@
 												$freeid = $valuep->free_id;
 												$upto = $valuep->free_upto;
 												$freeam = $valuep->free_am;
-												echo "<p>[<a href='DelFreepax?freeid=".$freeid."&city=".$viewcity."&star=".$viewstar."'>x</a>] Upto ".$upto." Pax : Free ".$freeam." </p><br>" ;
+												echo "<p>[<a href='DelFreepax?freeid=".$freeid."&city=".$viewcity."&star=".$viewstar."'>x</a>] Upto ".$upto." Rooms : Free ".$freeam." </p><br>" ;
 											}
 										}
 									?>
@@ -159,15 +160,19 @@
 													$roomGITppl = $valuex->room_GIT_min;
 													$roomGITcost = $valuex->room_cost_GIT;
 													$roomintercost = $valuex->room_cost_inter;
+													$roomthaicost = $valuex->room_cost_thai;
+													$roomasiacost = $valuex->room_cost_asia;
+													$roomExtra = $valuex->room_cost_extbed;
 
 										?>
 										<li>
 											<div class="col-sm-7 col-xs-12">
 												<p>[<?=$roomtype?>] <?=$roomname?>
 												<a href="DelRoom?roomid=<?=$roomid?>&city=<?=$viewcity?>&star=<?=$viewstar?>"><button type="button" class="close"><i class="fa fa-times" aria-hidden="true"></i></button></a>
-
+												
 												</p>
-
+												<br>
+												<a href="editroom"><span class="tag">Edit This Room</span></a>
 											</div>
 											<div class="col-sm-5 col-xs-12">
 												<p><span class="tag">Normal Cost</span><?=$roomcost?> USD</p><br>
@@ -176,10 +181,29 @@
 												<?php }else{ ?>
 												<p><span class="tag">International Cost</span><?=$roomintercost?> USD </p>
 												<?php } ?>
-												<?php if($roomGITppl ==0){ ?>
-												<p><span class="tag">No GIT </span></p>
+												
+												<?php if($roomthaicost ==0){ ?>
+												<p><span class="tag">No Thai Cost </span></p>
 												<?php }else{ ?>
-												<p><span class="tag">GIT (Over <?=$roomGITppl?> ppl)</span><?=$roomGITcost?> USD </p>
+												<p><span class="tag">Thai Cost</span><?=$roomthaicost?> USD </p>
+												<?php } ?>
+												
+												<?php if($roomasiacost ==0){ ?>
+												<p><span class="tag">No Asia Cost </span></p>
+												<?php }else{ ?>
+												<p><span class="tag">Asia Cost</span><?=$roomasiacost?> USD </p>
+												<?php } ?>
+												
+												<?php if($roomGITppl ==0){ ?>
+												<br><p><span class="tag">No GIT </span></p>
+												<?php }else{ ?>
+												<br><p><span class="tag">GIT (Over <?=$roomGITppl?> ppl)</span><?=$roomGITcost?> USD </p>
+												<?php } ?>
+												
+												<?php if($roomExtra ==0){ ?>
+												<br><p><span class="tag">No Extra Bed </span></p>
+												<?php }else{ ?>
+												<br><p><span class="tag">Extra Bed</span><?=$roomExtra?> USD </p>
 												<?php } ?>
 											</div>
 										</li>
@@ -195,8 +219,9 @@
 							<div class="input-inline">
 								<div class="input-box">
 									<a href="#" class="btn border light"  data-toggle="modal" data-target="#addRoom" onclick="editCall(<?php echo $hotelid ; ?>)">Add room</a>
+									<a href="#" class="btn light"  data-toggle="modal" data-target="#editHotel" onclick="editCallHotel(<?php echo $hotelid ; ?>)">Edit Hotel</a>
 									<div class="clear"></div>
-									<a href="st-delHotel?hotelid=<?=$hotelid?>&city=<?=$viewcity?>&star=<?=$viewstar?>" class="btn light">Delete Hotel</a>
+									<a href="st-delHotel?hotelid=<?=$hotelid?>&city=<?=$viewcity?>&star=<?=$viewstar?>" class="btn border light">Delete Hotel</a>
 								</div>
 							</div>
 						</div>
@@ -250,26 +275,23 @@
 	        		</div>
 
 					<div class="col-sm-6">
-	        			<label class="filter">GIT minimum (Person)</label><br>
-	        			<input type="number" name="gitmin" id="gitmin" disabled>
+	        			<label class="filter">GIT minimum (Room)</label><br>
+	        			<input type="number" name="gitmin" id="gitmin" >
 	        		</div>
 	        		<div class="col-sm-6">
 	        			<label class="filter">GIT Cost</label><br>
-	        			<input type="number" name="gitcost" id="gitcost" value="" disabled>
+	        			<input type="number" name="gitcost" id="gitcost" value="" >
 						<span class="unit selector">
-							<select name="currencyedit" id="currencyedit" disabled >
+							<select name="currencyedit" id="currencyedit"  >
 								<option value="usd">USD</option>
 								<option value="mmk">MMK</option>
 							</select>
 						</span>
 	        		</div>
 
-					<div class="col-sm-6">
-						<label>Room for (Person)</label>
-						<input type="number" name="person" id="person" value="" disabled >
-					</div>
+					
 	        		<div class="col-sm-6">
-						<label>Real Cost</label>
+						<label>FIT Base Cost</label>
 						<input type="number" name="cost" value="" >
 						<span class="unit selector">
 							<select name="currency">
@@ -279,8 +301,8 @@
 						</span>
 					</div>
 					<div class="col-sm-6">
-						<label>International Cost(Not Require)</label>
-						<input type="number" name="intercost" value="0" >
+						<label>FIT International Cost(No = 0)</label>
+						<input type="number" name="fitinter" value="0" >
 						<span class="unit selector">
 							<select name="currencyinter">
 								<option value="usd">USD</option>
@@ -288,7 +310,45 @@
 							</select>
 						</span>
 					</div>
-
+				
+				<div class="col-sm-6">
+						<label>FIT Thai Cost(No = 0)</label>
+						<input type="number" name="fitthai" value="0" >
+						<span class="unit selector">
+							<select name="currencythai">
+								<option value="usd">USD</option>
+								<option value="mmk">MMK</option>
+							</select>
+						</span>
+					</div>
+					<div class="col-sm-6">
+						<label>FIT ASIA Cost(No = 0)</label>
+						<input type="number" name="fitasia" value="0" >
+						<span class="unit selector">
+							<select name="currencyinterasia">
+								<option value="usd">USD</option>
+								<option value="mmk">MMK</option>
+							</select>
+						</span>
+					</div>
+					
+					<div class="col-sm-6">
+						<label>Extra Bed Cost(No = 0)</label>
+						<input type="number" name="fitbed" value="0" >
+						<span class="unit selector">
+							<select name="currencybed">
+								<option value="usd">USD</option>
+								<option value="mmk">MMK</option>
+							</select>
+						</span>
+					</div>
+					
+				<div class="col-sm-12">
+						<span class="tag">Noted : 1 Room Cost and Size is for 2 Person <br> (If 3 Pax => Cost = 1.5 | Free Condi Count 2 | Tour's Head count 1 )</span>
+						
+					</div>
+				
+				
 	        	</div>
 
 	        </div>
@@ -372,6 +432,7 @@
 							<option value="5"> 5 Star </option>
 							<option value="4"> 4 Star </option>
 							<option value="3"> 3 Star </option>
+							<option value="3.5"> 3.5 Star </option>
 							<option value="2"> 2 Star </option>
 							<option value="1"> 1 Star </option>
 						</select>
@@ -405,6 +466,65 @@
 	      </div>
 	    </div>
   	</div>
+<!----- EDIT HOTEL ----->
+<div class="modal fade" id="editHotel" role="dialog">
+	    <div class="modal-dialog modal-md">
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i></button>
+	          <h4 class="modal-title">Edit Hotel</h4>
+	          <hr>
+	        </div>
+	        <div class="modal-body">
+				<form action="st-addHotel" method="post">
+				<input type="hidden" name="viewcity" value="<?php echo $this->input->get('city') ?>" >
+				<input type="hidden" name="viewstar" value="<?php echo $this->input->get('star') ?>" >
+				<label>Hotel Name</label><br>
+				<input type="text" placeholder="English Name" name="eng"><br>
+				<label>ชื่อโรงแรม</label><br>
+				<input type="text" placeholder="Thai Name" name="tha">
+
+			<div class="col-sm-6">
+						<label>Hotel Stars</label>
+						<select name="hotelstar">
+							<option value="5"> 5 Star </option>
+							<option value="4"> 4 Star </option>
+							<option value="3"> 3 Star </option>
+							<option value="3.5"> 3.5 Star </option>
+							<option value="2"> 2 Star </option>
+							<option value="1"> 1 Star </option>
+						</select>
+			</div>
+			<div class="col-sm-6">
+						<label>Guide Cost</label>
+						<input type="number" name="guidecost" value="" >
+						<span class="unit selector">
+							<select name="currency">
+								<option value="usd">USD</option>
+								<option value="mmk">MMK</option>
+							</select>
+						</span>
+			</div>
+			<div class="col-sm-12">
+						<label>Hotel Website(URL)</label>
+						<input type="text" name="hotelurl" value=""  >
+			</div>
+			<div class="col-sm-12">
+						<label>Hotel Address (eng)</label>
+						<input type="text" name="hoteladdress" value=""  >
+			</div>
+
+			</div>
+
+	        <div class="modal-footer">
+	        	<button type="button" class="btn" data-dismiss="modal" >Cancel</button>
+		        <input type="submit" value="Edit" class="btn" >
+				</form>
+	        </div>
+	      </div>
+	    </div>
+  	</div>
+
 
 
 </body>
@@ -433,15 +553,15 @@ function addCall(dataId) {
 
 function rType() {
 	if($('#selectSource').val() === 'STD') {
-		 document.getElementById("gitmin").disabled = true;
-		 document.getElementById("gitcost").disabled = true;
-		 document.getElementById("currencyedit").disabled = true;
-		 document.getElementById("person").disabled = true;
+		 //document.getElementById("gitmin").disabled = true;
+		 //document.getElementById("gitcost").disabled = true;
+		 //document.getElementById("currencyedit").disabled = true;
+		 //document.getElementById("person").disabled = true;
 	} else {
-		 document.getElementById("gitmin").disabled = false;
-		 document.getElementById("gitcost").disabled = false;
-		 document.getElementById("currencyedit").disabled = false;
-		 document.getElementById("person").disabled = false;
+		 //document.getElementById("gitmin").disabled = false;
+		 //document.getElementById("gitcost").disabled = false;
+		 //document.getElementById("currencyedit").disabled = false;
+		 //document.getElementById("person").disabled = false;
 	}
 }
 </script>

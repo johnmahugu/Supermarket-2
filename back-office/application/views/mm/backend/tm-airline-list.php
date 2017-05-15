@@ -68,7 +68,7 @@
 						<?php $curr = $value2->airline_id;?>
 						<div class="input-inline">
 							<div class="input-box">
-								<div data-toggle="modal" data-target="#newAirline" class="btn light border">Edit</div>
+								<div data-toggle="modal" data-target="#newAirline" class="btn light border" onclick="addCall('<?php echo $curr ; ?>')">Edit</div>
 							</div>
 						</div>
 					</div>
@@ -133,7 +133,6 @@
 		$('.modal-title').text('Edit Airline');
 		$('input[name="airlineName"]').val($(this).closest('.list-card').find('h2').text());
 		$('input[name="action"]').val('edit');
-		$('input[name="editid"]').val('<?php echo $curr;?>');
 		$('.modal-body .icon img').attr('src',$(this).closest('.list-card').find('img').attr('src'));
 		$('.modal-footer input').val('Save');
 	});
@@ -165,6 +164,10 @@
 
 	});
 
+function addCall(dataId) {
+	//window.alert(dataId);
+	$('input[name="editid"]').val(dataId);
 
+}
 </script>
 </html>

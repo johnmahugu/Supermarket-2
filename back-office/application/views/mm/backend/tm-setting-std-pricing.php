@@ -4,15 +4,15 @@
 	<meta charset="UTF-8">
 	<title>PB Agency Office</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="<?=base_url()?>assets2/css/bootstrap-theme.min.css">
-	<link rel="stylesheet" href="<?=base_url()?>assets2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="assets/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-	<script src="<?=base_url()?>assets2/js/bootstrap.min.js"></script>
+	<script src="assets/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-	<link rel="stylesheet" href="<?=base_url()?>assets2/css/font-awesome.min.css">
+	<link rel="stylesheet" href="assets/css/font-awesome.min.css">
 
-	<link rel="stylesheet" href="<?=base_url()?>assets2/css/style.css">
+	<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="">
 	<header>
@@ -23,7 +23,7 @@
 					<span></span>
 					<span></span>
 				</div>
-				<img src="<?=base_url()?>assets2/images/logo.png" alt="">
+				<img src="assets/images/logo.png" alt="">
 			</div>
 				<?php include('pagepart/backtop.php')?>
 		</div>
@@ -53,7 +53,7 @@
 						
 						<?php ////////////// LOOP START ////////////////////////// ?>
 						<?php
-							$loopMain = $this->model->getGroupFlightProfit('High Season');
+							$loopMain = $this->AdminMD->getGroupFlightProfit('High Season');
 							$loopTimeMain = 0;
 							if ($loopMain != '') {
 								foreach($loopMain as $value1){
@@ -97,7 +97,7 @@
 										
 										<?php
 											//////// SUB LOOP //////////
-											$subLoop = $this->model->getCostByLine($typeName,'High Season');
+											$subLoop = $this->AdminMD->getCostByLine($typeName,'High Season');
 											$looptimes = 0;
 											if ($subLoop != '') {
 												foreach($subLoop as $value2){
@@ -158,7 +158,7 @@
 						<hr>
 						<?php ////////////// LOOP START ////////////////////////// ?>
 						<?php
-							$loopMain = $this->model->getGroupFlightProfit('Low Season');
+							$loopMain = $this->AdminMD->getGroupFlightProfit('Low Season');
 							$loopTimeMain = 0;
 							if ($loopMain != '') {
 								foreach($loopMain as $value1){
@@ -202,7 +202,7 @@
 										
 										<?php
 											//////// SUB LOOP //////////
-											$subLoop = $this->model->getCostByLine($typeName,'Low Season');
+											$subLoop = $this->AdminMD->getCostByLine($typeName,'Low Season');
 											$looptimes = 0;
 											if ($subLoop != '') {
 												foreach($subLoop as $value2){
@@ -259,7 +259,7 @@
 						<hr>
 						<?php ////////////// LOOP START ////////////////////////// ?>
 						<?php
-							$loopMain = $this->model->getGroupFlightProfit('Songkarn Festival');
+							$loopMain = $this->AdminMD->getGroupFlightProfit('Songkarn Festival');
 							$loopTimeMain = 0;
 							if ($loopMain != '') {
 								foreach($loopMain as $value1){
@@ -303,7 +303,7 @@
 										
 										<?php
 											//////// SUB LOOP //////////
-											$subLoop = $this->model->getCostByLine($typeName,'Songkarn Festival');
+											$subLoop = $this->AdminMD->getCostByLine($typeName,'Songkarn Festival');
 											$looptimes = 0;
 											if ($subLoop != '') {
 												foreach($subLoop as $value2){
@@ -426,7 +426,7 @@
   	</div>
 
 </body>
-<script src="<?=base_url()?>assets2/js/script.js"></script>
+<script src="assets/js/script.js"></script>
 <script>
 	$('div.btn.border').click(function() {
 		if($(this).text()=='Edit'){

@@ -95,11 +95,11 @@
 						</div>
 						<div class="input-inline">
 							<div class="digi-box">
-								<p><?php echo $this->model->countRoute($ctid) ?>&nbsp;Route</p>
+								<p><?php echo $this->AdminMD->countRoute($ctid) ?>&nbsp;Route</p>
 							</div>
 							<div class="input-box btn-inline">
 								<a href="DelVehiCity?cityid=<?php echo $ctid ; ?>" class="btn gray hide">Delete</a>
-								<a href="VehiAll?city=<?php echo $ctid ; ?>" class="btn border">View <i class="fa fa-angle-right" aria-hidden="true"></i></a></form>
+								<a href="st-vehicleall?city=<?php echo $ctid ; ?>" class="btn border">View <i class="fa fa-angle-right" aria-hidden="true"></i></a></form>
 							</div>
 						</div>
 					</div>

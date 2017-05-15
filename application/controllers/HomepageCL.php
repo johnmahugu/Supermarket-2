@@ -20,7 +20,7 @@ class HomepageCL extends CI_Controller {
   }
 
   function hilight(){
-    $tour_nationality = '';
+    $tour_nationality = $this->input->post('nationality');
     $query = $this->HomepageMD->getHiLightPackage($tour_nationality);
     $data['package'] = $query->result();
     echo json_encode($data);
@@ -34,8 +34,11 @@ class HomepageCL extends CI_Controller {
     $data['province']            = $this->HomepageMD->getProvince();
     $data['region']              = $this->HomepageMD->getRegion();
     /********************Hilight Package*********************/
-    $data['hilight_package']     = $this->HomepageMD->getHiLightPackage();
-    $data['hilight_price_range'] = $data['hilight_package']->row()->tour_priceRange;
+    $query = $this->HomepageMD->getHiLightPackage('thailand domestic tour');
+    if($query->num_rows() > 0){
+      $data['hilight_package'] = $query;
+      $data['hilight_price_range'] = $data['hilight_package']->row()->tour_priceRange;
+    }
     /**************Pagination Configuration******************/
     $config['base_url']          = base_url() . 'index.php/' . $this->uri->segment(1);
     $config['per_page']          = 6;
@@ -66,8 +69,11 @@ class HomepageCL extends CI_Controller {
     $data['continent']           = $this->HomepageMD->getContinent();
     $data['country']             = $this->HomepageMD->getCountry();
     /********************Hilight Package*********************/
-    $data['hilight_package']     = $this->HomepageMD->getHiLightPackage();
-    $data['hilight_price_range'] = $data['hilight_package']->row()->tour_priceRange;
+    $query = $this->HomepageMD->getHiLightPackage('international tour');
+    if($query->num_rows() > 0){
+      $data['hilight_package'] = $query;
+      $data['hilight_price_range'] = $data['hilight_package']->row()->tour_priceRange;
+    }
     /**************Pagination Configuration******************/
     $config['base_url']          = base_url() . 'index.php/' . $this->uri->segment(1);
     $config['per_page']          = 6;

@@ -4,15 +4,15 @@
 	<meta charset="UTF-8">
 	<title>PB Agency Office</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="<?=base_url()?>assets2/css/bootstrap-theme.min.css">
-	<link rel="stylesheet" href="<?=base_url()?>assets2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="assets/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-	<script src="<?=base_url()?>assets2/js/bootstrap.min.js"></script>
+	<script src="assets/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-	<link rel="stylesheet" href="<?=base_url()?>assets2/css/font-awesome.min.css">
+	<link rel="stylesheet" href="assets/css/font-awesome.min.css">
 
-	<link rel="stylesheet" href="<?=base_url()?>assets2/css/style.css">
+	<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="">
 	<header>
@@ -23,7 +23,7 @@
 					<span></span>
 					<span></span>
 				</div>
-				<img src="<?=base_url()?>assets2/images/logo.png" alt="">
+				<img src="assets/images/logo.png" alt="">
 			</div>
 			<?php include('pagepart/backtop.php')?>
 		</div>
@@ -44,7 +44,7 @@
 			<div class="main-wrapper">
 				<div class="row">
 				<?php ///////// Exchange ZONE ////////?>
-				<?php 	$exrate = $this->model->getExRate();
+				<?php 	$exrate = $this->AdminMD->getExRate();
 						foreach($exrate as $value){	
 							$name = $value->ex_currency;
 							$shortCC = $value->ex_shortcurrency;
@@ -77,7 +77,7 @@
 					
 					<?php ///////// Exchange ZONE ////////?>
 					
-					<?php $profithigh = $this->model->getProfit('high'); ?>
+					<?php $profithigh = $this->AdminMD->getProfit('high'); ?>
 					
 					<div class="list-card card-header">
 						<div class="header">
@@ -132,7 +132,7 @@
 						
 					</div>
 					
-					<?php $profithigh = $this->model->getProfit('low'); ?>
+					<?php $profithigh = $this->AdminMD->getProfit('low'); ?>
 					
 					<div class="list-card card-header">
 						<div class="header">
@@ -187,7 +187,7 @@
 						
 					</div>
 					
-					<?php $profithigh = $this->model->getProfit('songkarn'); ?>
+					<?php $profithigh = $this->AdminMD->getProfit('songkarn'); ?>
 					
 					<div class="list-card card-header">
 						<div class="header">
@@ -322,7 +322,7 @@
   	</div>
 
 </body>
-<script src="<?=base_url()?>assets2/js/script.js"></script>
+<script src="assets/js/script.js"></script>
 <script>
 	$('.btn.light').click(function() {
 		var title = $(this).closest('.list-card').find('h4').text();

@@ -303,34 +303,37 @@ if(isset($price_range)){
 		</main>
 	</div>
 
-	<!-- modal -->
+  <!-- modal -->
   <div class="modal fade" id="addFile" role="dialog">
     <form id="update-itinerary" style="margin-top:-35%;">
-	    <div class="modal-dialog modal-md">
-	      <div class="modal-content">
-	        <div class="modal-header">
-	          <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i></button>
-	          <h4 class="modal-title">Upload <b></b> File</h4>
-	          <hr>
-	        </div>
-	        <div class="modal-body">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i></button>
+            <h4 class="modal-title">Upload <b></b> File</h4>
+            <hr>
+          </div>
+          <div class="modal-body">
+            <label class="filter">Select File
             <?php
             if($package['tour_pdf'] != ''){
-              echo '<label class="filter">Select File (Uploaded)</label>';
-            }else{
-              echo '<label class="filter">Select File</label>';
+              echo '(PDF Uploaded) ';
+            }
+            if($package['tour_word'] != ''){
+              echo '(Word Uploaded)';
             }
              ?>
+             </label>
              <br>
-				<input name="file" type="file">
-	        </div>
-	        <div class="modal-footer">
+        <input name="file" type="file">
+          </div>
+          <div class="modal-footer">
             <input name="nameSlug" type="hidden" value="<?=$package['tour_nameSlug']?>">
-	        	<button type="button" class="btn" data-dismiss="modal" >Cancel</button>
-		        <input id="submitfile" type="button" value="Select" class="btn" >
-	        </div>
-	      </div>
-	    </div>
+            <button type="button" class="btn" data-dismiss="modal" >Cancel</button>
+            <input id="submitfile" type="button" value="Select" class="btn" >
+          </div>
+        </div>
+      </div>
     </form>
   </div>
 

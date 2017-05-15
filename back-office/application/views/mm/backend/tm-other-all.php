@@ -135,7 +135,7 @@
 	        		</div>
 	        		<div class="col-md-8">
 						<label>Cost</label>
-						<input type="number" name="fee">
+						<input type="number"  step="0.000001" name="fee">
 						<span class="unit selector">
 							<select name="currency" >
 								<option value="usd">USD</option>

@@ -44,6 +44,7 @@
 									$position = strpos($ctname,"|");
 									$eng = substr($ctname,$position+1) ;
 									echo $eng ;
+									$citynamesss = $eng ; 
 								}
 							}
 
@@ -266,7 +267,7 @@
 						<?php } }else{
 						?>
 						<div class="btn-wrapper text-center">
-							<div class="btn" data-toggle="modal" data-target="#addFlight">Add Flight (From:<?php echo $eng; echo "->" ; echo $this->AdminMD->cutEng($cityname) ; ?>)</div>
+							<div class="btn" data-toggle="modal" data-target="#addFlight">Add Flight (From:<?php echo $citynamesss; echo "->" ; echo $this->AdminMD->cutEng($cityname) ; ?>)</div>
 
 						</div>
 
