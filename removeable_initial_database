@@ -1,0 +1,6 @@
+DELETE FROM address;
+DELETE FROM country;
+DELETE FROM image;
+DELETE FROM province;
+DELETE FROM tour;
+DELETE FROM tour_condition;

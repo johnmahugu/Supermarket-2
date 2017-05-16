@@ -548,7 +548,6 @@ foreach($condition->result_array() as $row){
 							</div>
 						</div>
 					</div>
-				</div>
 				<div class="row">
 					<div class="btn-wrapper text-center">
             <form action="update-outbound-package-condition" method="POST">

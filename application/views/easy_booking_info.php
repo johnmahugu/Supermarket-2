@@ -14,7 +14,6 @@
   $package = $package->row_array(0);
   $b_detail = json_decode($booking_detail,true);
   $totaltourist = $b_detail['tourist'][0]['total_tourist'];
-  echo $totaltourist;
   $datestart = $b_detail['date'][0]['start'];
   $datefinish = $b_detail['date'][0]['end'];
   if(isset($price_range)){

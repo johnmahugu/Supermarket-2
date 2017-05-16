@@ -124,7 +124,7 @@
 					<div class="col-md-4 col-sm-6">
 						<div class="tour-box">
 							<div class="img">
-								<img src="<?=$filestorage.$row['img_source'];?>" alt="">
+								<img src="<?=$filestorage.$row['img_source']?>" alt="">
 								<div class="img-des">
 									<p>Start at <?=number_format($row['tour_startPrice'])?> <?=$row['tour_currency']?><br>
 										<?php
