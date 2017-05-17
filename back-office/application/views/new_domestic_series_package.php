@@ -185,11 +185,18 @@
 										<span>
                       <select name="daytrip">
                         <option disabled selected>Select Day Night</option>
+												<optgroup label="Ordinary">
                       <?php
                         for($i=1;$i<=10;$i++){
                           echo '<option value="'.$i.'">'.$i.' Day / '.($i-1).' Night</option>';
                         }
                       ?>
+												</optgroup>
+												<optgroup label="Extraordinary">
+												<option value="5">5 Day / 3 Night</option>
+												<option value="7">7 Day / 4 Night</option>
+												<option value="8">8 Day / 5 Night</option>
+												</optgroup>
                       </select>
 										</span>
 									</div>

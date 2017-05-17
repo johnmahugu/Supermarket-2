@@ -215,19 +215,25 @@ if(isset($price_range)){
 								</div>
 								<div class="col-sm-6">
 									<div class="form-inline">
-										<label>Day Night Program</label>
+                    <?php
+                    $est_date = explode(",",$package['tour_dayNight']);
+                     ?>
+										<label>Day Night Program (<?=$est_date[0]?> Day / <?=$est_date[1]?> Night)</label>
 										<span>
                       <select name="daytrip">
-                      <?php
-                        $est_date = explode(",",$package['tour_dayNight']);
-                        for($i=1;$i<=10;$i++){
-                          if($i == $est_date[0]){
-                            echo '<option value="'.$i.'" selected>'.$i.' Day / '.($i-1).' Night</option>';
-                          }else{
-                            echo '<option value="'.$i.'">'.$i.' Day / '.($i-1).' Night</option>';
-                          }
-                        }
-                      ?>
+												<option disabled selected>Select Day Night</option>
+												<optgroup label="Ordinary">
+											<?php
+												for($i=1;$i<=10;$i++){
+													echo '<option value="'.$i.'">'.$i.' Day / '.($i-1).' Night</option>';
+												}
+											?>
+												</optgroup>
+												<optgroup label="Extraordinary">
+												<option value="5">5 Day / 3 Night</option>
+												<option value="7">7 Day / 4 Night</option>
+												<option value="8">8 Day / 5 Night</option>
+												</optgroup>
                       </select>
 										</span>
 									</div>
