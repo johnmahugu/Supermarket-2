@@ -542,6 +542,9 @@ class PackageCL extends CI_Controller {
 			$filetype = $data['upload_data']['file_ext'];
 			$this->upload_filestorage($nameSlug.$filetype,$filetype);
 			$this->PackageMD->updateFile($nameSlug,$filetype);
+			echo 100;
+		}else{
+			echo 200;
 		}
 	}
 

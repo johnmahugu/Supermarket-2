@@ -229,9 +229,14 @@ if(isset($price_range)){
 											?>
 												</optgroup>
 												<optgroup label="Extraordinary">
-												<option value="5">5 Day / 3 Night</option>
-												<option value="7">7 Day / 4 Night</option>
-												<option value="8">8 Day / 5 Night</option>
+                          <option value="5">5 Day / 3 Night</option>
+                          <option value="6">6 Day / 3 Night</option>
+                          <option value="6">6 Day / 4 Night</option>
+  												<option value="7">7 Day / 4 Night</option>
+  												<option value="8">8 Day / 5 Night</option>
+                          <option value="8">8 Day / 6 Night</option>
+                          <option value="9">9 Day / 5 Night</option>
+                          <option value="10">9 Day / 6 Night</option>
 												</optgroup>
                       </select>
 										</span>
@@ -397,9 +402,20 @@ $('#submitfile').click(function(){
     cache: false,
     processData: false,
     success:function(data){
-      alert(data);
+      if(data == 100){
+        alert('Upload successful');
+      }else{
+        alert('Upload unsuccessful. Please contact to administrator.');
+      }
       $('#addFile').removeClass('in');
       $('.modal-backdrop.fade').removeClass('in');
+    },
+    error: function(jqXHR, error, errorThrown) {
+      if(jqXHR.status&&jqXHR.status==400){
+        alert("Something went wrong. Please contact to administrator. ("+jqXHR.responseText+")");
+      }else{
+        alert("Something went wrong. Please contact to administrator.");
+      }
     }
   });
 });
@@ -559,7 +575,7 @@ function numberWithSpaces(x) {
 	            $(this).closest('.form-group').find('.date.to').datepicker({
 			      	buttonText: "Select date",
 			      	dateFormat: 'dd/mm/yy' });
-	            to.setDate(to.getDate()+daytrip);
+	            to.setDate(to.getDate()+(daytrip-1));
 	            $(this).closest('.form-group').find('.date.to').datepicker('setDate', to);}
 	    	});
 	});
