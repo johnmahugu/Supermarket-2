@@ -6,7 +6,9 @@
   }
   /*************Hilight Package*************/
   if(isset($hilight_price_range)){
-  	$hilight_booking_timerange = json_decode($hilight_price_range,true);
+    for($i=0;$i<count($hilight_price_range);$i++){
+      $hilight_booking_timerange[$i] = json_decode($hilight_price_range[$i],true);
+    }
   	$last_hbtr = count($hilight_booking_timerange)-1;
   }
   /*************Normal Package**************/
@@ -34,9 +36,9 @@
     <link rel="stylesheet" href="<?=base_url()?>assets/css/style.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.4/numeral.min.js"></script>
     <script src="<?=base_url()?>assets/js/date.format.js"></script>
-    <link rel="stylesheet" href="assets/owl-carousel/owl.carousel.css">
-	<link rel="stylesheet" href="assets/owl-carousel/owl.theme.css">
-  <script src="assets/owl-carousel/owl.carousel.js"></script>
+    <link rel="stylesheet" href="<?=base_url()?>assets/owl-carousel/owl.carousel.css">
+	<link rel="stylesheet" href="<?=base_url()?>assets/owl-carousel/owl.theme.css">
+  <script src="<?=base_url()?>assets/owl-carousel/owl.carousel.js"></script>
   </head>
   <body>
     <header>
@@ -238,13 +240,19 @@
               <p><?=$row['tour_type'];?></p>
             </div>
             <div class="description">
-              <p class="date"><?=date_format(date_create($hilight_booking_timerange[$i]['from']),"j F Y");?> - <?=date_format(date_create($hilight_booking_timerange[$i]['to']),"j F Y");?></p>
+              <?php
+              $from = $hilight_booking_timerange[$i][0]['from'];
+              $c = count($hilight_booking_timerange[$i])-1;
+              $to = $hilight_booking_timerange[$i][$c]['to'];
+               ?>
+              <p class="date"><?=date_format(date_create($from),"j F Y");?> - <?=date_format(date_create($to),"j F Y");?></p>
               <a href="<?=base_url()?>readmore?tour=<?=$row['tour_nameSlug'];?>" class="btn bold"> Detail & Booking </a>
               <hr>
               <a href="<?=base_url()?>filestorage/pdf/<?=$row['tour_pdf'];?>">Download Program</a>
             </div>
           </div>
         </div>
+
         <?php
           $i++;
           }
@@ -494,6 +502,9 @@
           }
         }
 
+        if($result['pagination_links'] != ''){
+          $('<div class="pagination-wrapper"><div class="col-xs-12"><div class="pagination">'+$result['pagination_links']+'</div></div></div>').insertAfter('.tour-package');
+        }
         $('.pagination').html('');
         $('.pagination').html($result['pagination_links']);
 

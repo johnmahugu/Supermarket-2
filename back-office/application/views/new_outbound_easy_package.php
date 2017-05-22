@@ -43,7 +43,7 @@
 				<div class="main-wrapper">
 					<div class="row">
 						<div class="col-xs-12">
-							<h1>Edit
+							<h1>New
                 <?php
                 if($this->session->flashdata('f1') == 'ep'){
 									echo 'Easy Package';
@@ -193,9 +193,14 @@
 											?>
 												</optgroup>
 												<optgroup label="Extraordinary">
-												<option value="5">5 Day / 3 Night</option>
-												<option value="7">7 Day / 4 Night</option>
-												<option value="8">8 Day / 5 Night</option>
+													<option value="5">5 Day / 3 Night</option>
+	                        <option value="6">6 Day / 3 Night</option>
+	                        <option value="6">6 Day / 4 Night</option>
+													<option value="7">7 Day / 4 Night</option>
+													<option value="8">8 Day / 5 Night</option>
+	                        <option value="8">8 Day / 6 Night</option>
+	                        <option value="9">9 Day / 5 Night</option>
+	                        <option value="10">10 Day / 6 Night</option>
 												</optgroup>
                       </select>
 										</span>
@@ -471,8 +476,7 @@ function submitform(){
 			$('#popup').modal('show');
 		break;
 		case ($night == ''):
-			$status = false;
-			$('#popup').modal('show');
+			$night == '0';
 		break;
 	}
 

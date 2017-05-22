@@ -34,10 +34,10 @@ class HomepageCL extends CI_Controller {
     $data['province']            = $this->HomepageMD->getProvince();
     $data['region']              = $this->HomepageMD->getRegion();
     /********************Hilight Package*********************/
-    $query = $this->HomepageMD->getHiLightPackage('thailand domestic tour');
-    if($query->num_rows() > 0){
-      $data['hilight_package'] = $query;
-      $data['hilight_price_range'] = $data['hilight_package']->row()->tour_priceRange;
+    $query = $this->HomepageMD->getHiLightPackage('international tour');
+    $data['hilight_package'] = $query;
+    for($i=0;$i<$query->num_rows();$i++){
+      $data['hilight_price_range'][$i] = $query->row($i)->tour_priceRange;
     }
     /**************Pagination Configuration******************/
     $config['base_url']          = base_url() . 'index.php/' . $this->uri->segment(1);
@@ -70,9 +70,9 @@ class HomepageCL extends CI_Controller {
     $data['country']             = $this->HomepageMD->getCountry();
     /********************Hilight Package*********************/
     $query = $this->HomepageMD->getHiLightPackage('international tour');
-    if($query->num_rows() > 0){
-      $data['hilight_package'] = $query;
-      $data['hilight_price_range'] = $data['hilight_package']->row()->tour_priceRange;
+    $data['hilight_package'] = $query;
+    for($i=0;$i<$query->num_rows();$i++){
+      $data['hilight_price_range'][$i] = $query->row($i)->tour_priceRange;
     }
     /**************Pagination Configuration******************/
     $config['base_url']          = base_url() . 'index.php/' . $this->uri->segment(1);
@@ -109,7 +109,7 @@ class HomepageCL extends CI_Controller {
     $offset                  = $this->input->post('offset');
     /**************Pagination Configuration******************/
     $config['base_url']      = $ref_url;
-    $config['per_page']      = 3;
+    $config['per_page']      = 6;
     $config['cur_tag_open']  = '&nbsp;<a class="current">';
     $config['cur_tag_close'] = '</a>';
     $config['cur_page']      = $offset;

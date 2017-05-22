@@ -6,7 +6,9 @@
   }
   /*************Hilight Package*************/
   if(isset($hilight_price_range)){
-  	$hilight_booking_timerange = json_decode($hilight_price_range,true);
+    for($i=0;$i<count($hilight_price_range);$i++){
+      $hilight_booking_timerange[$i] = json_decode($hilight_price_range[$i],true);
+    }
   	$last_hbtr = count($hilight_booking_timerange)-1;
   }
   /*************Normal Package**************/
@@ -238,7 +240,12 @@
               <p><?=$row['tour_type'];?></p>
             </div>
             <div class="description">
-              <p class="date"><?=date_format(date_create($hilight_booking_timerange[$i]['from']),"j F Y");?> - <?=date_format(date_create($hilight_booking_timerange[$i]['to']),"j F Y");?></p>
+              <?php
+              $from = $hilight_booking_timerange[$i][0]['from'];
+              $c = count($hilight_booking_timerange[$i])-1;
+              $to = $hilight_booking_timerange[$i][$c]['to'];
+               ?>
+              <p class="date"><?=date_format(date_create($from),"j F Y");?> - <?=date_format(date_create($to),"j F Y");?></p>
               <a href="<?=base_url()?>readmore?tour=<?=$row['tour_nameSlug'];?>" class="btn bold"> Detail & Booking </a>
               <hr>
               <a href="<?=base_url()?>filestorage/pdf/<?=$row['tour_pdf'];?>">Download Program</a>

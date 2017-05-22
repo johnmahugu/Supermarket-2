@@ -233,7 +233,7 @@ if(isset($price_range)){
   												<option value="8">8 Day / 5 Night</option>
                           <option value="8">8 Day / 6 Night</option>
                           <option value="9">9 Day / 5 Night</option>
-                          <option value="10">9 Day / 6 Night</option>
+                          <option value="10">10 Day / 6 Night</option>
 												</optgroup>
                       </select>
 										</span>
