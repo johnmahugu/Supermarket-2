@@ -32,3 +32,4 @@ $route['booking-list']              = 'BookingListCL/booking_list';
 $route['cancel-booking']            = 'BookingListCL/cancel_booking';
 $route['user-edit-profile']         = 'UserCL/user_edit_profile';
 $route['user-update-profile']       = 'UserCL/user_update_profile';
+$route['notify-message']            = 'NotifyCL/notify_message';

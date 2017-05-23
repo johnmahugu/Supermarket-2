@@ -221,19 +221,19 @@ if(isset($price_range)){
 												<optgroup label="Ordinary">
 											<?php
 												for($i=1;$i<=10;$i++){
-													echo '<option value="'.$i.'">'.$i.' Day / '.($i-1).' Night</option>';
+													echo '<option value="'.$i.'" night="'.($i-1).'">'.$i.' Day / '.($i-1).' Night</option>';
 												}
 											?>
 												</optgroup>
 												<optgroup label="Extraordinary">
-                          <option value="5">5 Day / 3 Night</option>
-                          <option value="6">6 Day / 3 Night</option>
-                          <option value="6">6 Day / 4 Night</option>
-  												<option value="7">7 Day / 4 Night</option>
-  												<option value="8">8 Day / 5 Night</option>
-                          <option value="8">8 Day / 6 Night</option>
-                          <option value="9">9 Day / 5 Night</option>
-                          <option value="10">10 Day / 6 Night</option>
+                          <option value="5" night="3">5 Day / 3 Night</option>
+                          <option value="6" night="3">6 Day / 3 Night</option>
+                          <option value="6" night="4">6 Day / 4 Night</option>
+  												<option value="7" night="4">7 Day / 4 Night</option>
+  												<option value="8" night="5">8 Day / 5 Night</option>
+                          <option value="8" night="6">8 Day / 6 Night</option>
+                          <option value="9" night="5">9 Day / 5 Night</option>
+                          <option value="10" night="6">10 Day / 6 Night</option>
 												</optgroup>
                       </select>
 										</span>
@@ -379,6 +379,8 @@ if(isset($price_range)){
   	</div>
     <input id="nameSlug" type="hidden" value="<?=$package['tour_nameSlug']?>">
     <input id="isTourType" type="hidden" value="<?=$this->session->flashdata('f1')?>">
+    <input id="oldDay" type="hidden" value="<?=$est_date[0]?>">
+    <input id="oldNight" type="hidden" value="<?=$est_date[1]?>">
 </body>
 <script src="assets/js/script.js"></script>
 <script>
@@ -443,7 +445,11 @@ function submit(){
   $advanceBooking = $('#advanceBooking').val();
   $startPrice = $('#startPrice').val().replace(' ','');
   $day = $('select[name=daytrip]').val();
-  $night = $day-1;
+  $night = $('select[name=daytrip] option:selected').attr('night');
+  if($day == null){
+    $day = $('#oldDay').val();
+    $night = $('#oldNight').val();
+  }
   $('input[name=oldNameSlug]').val($nameSlug);
   $('input[name=newNameSlug]').val($newNameSlug);
   $('input[name=nameTH]').val($nameTH);

@@ -79,6 +79,8 @@ class HomepageCL extends CI_Controller {
     $config['per_page']          = 6;
     $config['cur_tag_open']      = '<a class="current">';
     $config['cur_tag_close']     = '</a>';
+    $config['prev_link'] = 'false';
+    $config['next_link'] = 'false';
     $count_allrow                = $this->HomepageMD->getPackage($this->country, 'sp', '', '');
     $config['total_rows']        = $count_allrow->num_rows();
     $this->pagination->initialize($config);

@@ -188,19 +188,19 @@
 												<optgroup label="Ordinary">
 											<?php
 												for($i=1;$i<=10;$i++){
-													echo '<option value="'.$i.'">'.$i.' Day / '.($i-1).' Night</option>';
+													echo '<option value="'.$i.'" night="'.($i-1).'">'.$i.' Day / '.($i-1).' Night</option>';
 												}
 											?>
 												</optgroup>
 												<optgroup label="Extraordinary">
-													<option value="5">5 Day / 3 Night</option>
-	                        <option value="6">6 Day / 3 Night</option>
-	                        <option value="6">6 Day / 4 Night</option>
-													<option value="7">7 Day / 4 Night</option>
-													<option value="8">8 Day / 5 Night</option>
-	                        <option value="8">8 Day / 6 Night</option>
-	                        <option value="9">9 Day / 5 Night</option>
-	                        <option value="10">10 Day / 6 Night</option>
+													<option value="5" night="3">5 Day / 3 Night</option>
+                          <option value="6" night="3">6 Day / 3 Night</option>
+                          <option value="6" night="4">6 Day / 4 Night</option>
+  												<option value="7" night="4">7 Day / 4 Night</option>
+  												<option value="8" night="5">8 Day / 5 Night</option>
+                          <option value="8" night="6">8 Day / 6 Night</option>
+                          <option value="9" night="5">9 Day / 5 Night</option>
+                          <option value="10" night="6">10 Day / 6 Night</option>
 												</optgroup>
                       </select>
 										</span>
@@ -411,7 +411,7 @@ function submitform(){
   $advanceBooking = $('#advanceBooking').val();
   $startPrice = $('#startPrice').val().replace(' ','');
   $day = $('select[name=daytrip]').val();
-  $night = $day-1;
+  $night = $('select[name=daytrip] option:selected').attr('night');
 	var imageData = $('.image-editor').cropit('export');
 	$status = true;
 	switch(true){
