@@ -673,7 +673,7 @@ class PackageMD extends CI_Model {
   function getContinent() {
     self::$db->select("continent.*");
     self::$db->from('continent');
-    self::$db->order_by('continent.continent_name', 'ASC');
+    self::$db->order_by('continent.continent_id', 'ASC');
     return self::$db->get();
   }
 

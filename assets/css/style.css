@@ -269,6 +269,12 @@ body {
     border: 1px solid white;
     background: transparent;
     color: white; }
+    .btn.border.blue {
+      border-color: #2e3193;
+      color: #2e3193; }
+      .btn.border.blue:hover {
+        background: #2e3193;
+        color: white; }
   .btn.right {
     float: right; }
 
@@ -319,7 +325,8 @@ header {
         padding-top: 2.5px; }
       header .header-box .contact a {
         vertical-align: middle;
-        margin-left: 5px; }
+        margin-left: 5px;
+        color: white; }
     header .header-box .language-box {
       padding-top: 5px;
       margin: 0 5px; }
@@ -825,7 +832,8 @@ footer {
 .tour-date {
   margin: 20px 0;
   width: 100%;
-  text-align: left; }
+  text-align: left;
+  font-size: 0.9em; }
   .tour-date tr td {
     height: 35px;
     line-height: 35px;
@@ -1464,6 +1472,17 @@ div.ui-datepicker {
 
 #joinchart {
   opacity: 0.5; }
+
+.coming {
+  margin-top: 20px; }
+  .coming h2 {
+    color: white;
+    font-size: 2.2em;
+    margin: 10px 0 15px 0; }
+  .coming h3 {
+    color: #2e3193;
+    margin-top: 10px;
+    font-size: 1.2em; }
 
 @media only screen and (max-width: 992px) {
   .hilight-box {

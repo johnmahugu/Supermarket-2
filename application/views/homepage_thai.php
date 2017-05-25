@@ -19,210 +19,204 @@
   		$last_btr[$i] = count($booking_timerange[$i])-1;
   	}
   }
-  ?>
+?>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>SUPERMARKET TOURS</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="<?=base_url()?>assets/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="<?=base_url()?>assets/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="<?=base_url()?>assets/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="<?=base_url()?>assets/css/font-awesome.min.css">
-    <link rel="stylesheet" href="<?=base_url()?>assets/css/style.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.4/numeral.min.js"></script>
-    <script src="<?=base_url()?>assets/js/date.format.js"></script>
-    <link rel="stylesheet" href="assets/owl-carousel/owl.carousel.css">
+<head>
+	<meta charset="UTF-8">
+	<title>SUPERMARKET TOURS</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="assets/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+	<link rel="stylesheet" href="assets/css/font-awesome.min.css">
+
+  <script src="assets/js/numeral.min.js"></script>
+  <script src="assets/js/date.format.js"></script>
+	<link rel="stylesheet" href="assets/owl-carousel/owl.carousel.css">
 	<link rel="stylesheet" href="assets/owl-carousel/owl.theme.css">
-  <script src="assets/owl-carousel/owl.carousel.js"></script>
-  </head>
-  <body>
-    <header>
-      <div class="container-fulid clearfix">
-        <div class="header-box">
-          <div class="language-box">
-            <a class="current" href="<?=base_url()?>#">
-            <img src="<?=base_url()?>assets/images/ico-en.png" alt="">
-            </a>
-            <a href="<?=base_url()?>index_thai_th">
-            <img src="<?=base_url()?>assets/images/ico-th.png" alt="">
-            </a>
-          </div>
-          <div class="contact">
-            <h2>Add Line</h2>
-            <a href="http://line.me/ti/p/~bankzahaplus"><img src="<?=base_url()?>assets/images/ico-line.png" alt=""></a>
-          </div>
-          <div class="contact">
-            <h2>Contact Us</h2>
-            <p><a href="tel:0875012500">02-222-2222</a></p>
-          </div>
-        </div>
-      </div>
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-2">
-            <a href="<?=base_url()?>"><img src="<?=base_url()?>assets/images/logo.png" alt="" class="logo"></a>
-          </div>
-          <div class="col-sm-10">
-            <div class="menu-burger">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-            <ul class="menu-list">
-              <li><a href="<?=base_url()?>thai-tour">THAILAND DOMESTIC TOURS</a></li>
-              <li><a href="<?=base_url()?>international-tour">INTERNATIONAL TOURS</a></li>
-              <li><a href="<?=base_url()?>about">ABOUT</a></li>
-              <?php if(empty($this->session->userdata('firstname'))){?>
-              <li><a href="_signin?from=tt" class="btn">Sign In</a></li>
+	<script src="assets/owl-carousel/owl.carousel.js"></script>
+
+	<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+	<header>
+		<div class="container-fulid clearfix">
+			<div class="header-box">
+				<div class="language-box">
+					<a class="current" href="#">
+						<img src="assets/images/ico-en.png" alt="">
+					</a>
+					<a href="#">
+						<img src="assets/images/ico-th.png" alt="">
+					</a>
+				</div>
+				<div class="contact">
+					<h2>Add Line</h2>
+					<a href="http://line.me/ti/p/~bankzahaplus"><img src="<?=base_url()?>assets/images/ico-line.png" alt=""></a>
+				</div>
+				<div class="contact">
+					<h2>Contact Us</h2>
+					<p>02-222-2222</p>
+				</div>
+
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-2">
+					<a href="index.php"><img src="assets/images/logo.png" alt="" class="logo"></a>
+				</div>
+				<div class="col-sm-10">
+					<div class="menu-burger">
+						<span></span>
+						<span></span>
+						<span></span>
+					</div>
+          <ul class="menu-list">
+            <li><a href="thai-tour">THAILAND DOMESTIC TOURS</a></li>
+            <li><a href="international-tour">INTERNATIONAL TOURS</a></li>
+            <li><a href="about">ABOUT</a></li>
+            <?php if(empty($this->session->userdata('firstname'))){?>
+            <li><a href="_signin?from=it" class="btn">Sign In</a></li>
+            <?php
+              }else{
+              ?>
+            <li class="user-profile">
+              <i class="fa fa-user-circle-o" aria-hidden="true"></i> PROFILE
+              <ul>
+                <li><a href="booking-list">BOOKING LIST</a></li>
+                <li><a href="user-edit-profile">EDIT PROFILE</a></li>
+                <li><a href="signout">LOG OUT</a></li>
+              </ul>
               <?php
-                }else{
+                }
                 ?>
-              <li class="user-profile">
-                <i class="fa fa-user-circle-o" aria-hidden="true"></i> PROFILE
-                <ul>
-                  <li><a href="<?=base_url()?>booking-list">BOOKING LIST</a></li>
-                  <li><a href="<?=base_url()?>user-edit-profile">EDIT PROFILE</a></li>
-                  <li><a href="signout">LOG OUT</a></li>
-                </ul>
-                <?php
-                  }
-                  ?>
-            </ul>
-          </div>
+          </ul>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<h1 class="animate-title">SUPERMARKET TOURS <br>
+					<span>แพ็คเกจท่องเที่ยวในประเทศและต่างประเทศ</span></h1>
+				</div>
+			</div>
+		</div>
+	</header>
+	<div class="title-bar">
+		<div class="container">
+			<div class="col-sm-6">
+				<h1>Anywhere You Can Go</h1><br>
+				<p>Let,s Start Your Journey</p>
+			</div>
+			<div class="col-sm-6">
+				<input type="text" id="searchBar" class="search-bar">
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+      <a href="thai-tour">
+        <div class="col-xs-6 no-pd">
+          <p class="choose-tours-box current">
+            THAILAND DOMESTIC TOURS
+          </p>
         </div>
-        <div class="row">
-          <div class="col-xs-12">
-            <h1 class="animate-title">
-              SUPERMARKET TOURS <br>
-              <span>
-                แพ็คเกจท่องเที่ยวในประเทศและต่างประเทศ<br>
-                <p style="font-size:20px;color:#ffff00;margin-top:-15px;">ที่นักท่องเที่ยวนิยมเข้ามาเลือกซื้อมากที่สุด</p>
-              </span>
-              <br>
-            </h1>
-          </div>
+      </a>
+      <a href="international-tour">
+        <div class="col-xs-6 no-pd">
+          <p class="choose-tours-box">
+            INTERNATIONAL TOURS
+          </p>
         </div>
-      </div>
-    </header>
-    <div class="title-bar">
-      <div class="container">
-        <div class="col-sm-6">
-          <h1>Anywhere You Can Go</h1>
-          <br>
-          <p>Let,s Start Your Journey</p>
-        </div>
-        <div class="col-sm-6">
-          <input type="text" class="search-bar">
-        </div>
-      </div>
-    </div>
-    <div class="container">
-      <div class="row">
-        <a href="<?=base_url()?>thai-tour">
-          <div class="col-xs-6 no-pd">
-            <p class="choose-tours-box current">
-              THAILAND DOMESTIC TOURS
-            </p>
+      </a>
+		</div>
+	</div>
+	<div class="hilight-wrapper">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-2 col-sm-3">
+					<div class="title-text">
+						<img src="assets/images/ico-searchtext.png" alt="">
+						<p>Tour Type</p>
+					</div>
+				</div>
+				<div class="col-sm-9">
+          <div id="SeriesPackageSelector" class="tour-category-box current">
+            Join Group Tours
           </div>
-        </a>
-        <a href="<?=base_url()?>international-tour">
-          <div class="col-xs-6 no-pd">
-            <p class="choose-tours-box">
-              INTERNATIONAL TOURS
-            </p>
+          <div id="EasyPackageSelector" class="tour-category-box">
+            Private Group Tours
           </div>
-        </a>
-      </div>
-    </div>
-    <div class="hilight-wrapper">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-2 col-sm-3">
-            <div class="title-text">
-              <img src="<?=base_url()?>assets/images/ico-searchtext.png" alt="">
-              <p>Tour Type</p>
-            </div>
-          </div>
-          <div class="col-sm-9">
-            <div id="series-package-selector" class="tour-category-box current">
-              Join Group Tours
-            </div>
-            <div id="easy-package-selector" class="tour-category-box">
-              Private Group Tours
-            </div>
-          </div>
-          <div class="clear"></div>
-          <div class="filter-bar clearfix">
-            <div class="col-md-4">
-              <p>Region</p>
-              <br>
-              <select name="region">
-                <option>All Region</option>
+				</div>
+				<div class="clear"></div>
+				<div class="filter-bar clearfix">
+					<div class="col-md-4">
+						<p>Region</p> <br>
+            <select name="region">
+              <option value="0" selected disabled>All Region</option>
               <?php
                 if(isset($region)){
                   foreach($region->result_array() as $row){
-                  	echo "<option value=".$row['region_id'].">".$row['region_nameEN']."</option>";
+                    echo "<option value='".$row['region_id']."'>".$row['region_nameEN']."</option>";
                   }
                 }
                 ?>
-              </select>
-              <div class="line">
-                <div class="tab"></div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <p>Province</p>
-              <br>
-              <select name="province">
-                <option>All Province</option>
+            </select>
+						<div class="line">
+							<div class="tab"></div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<p>Province</p> <br>
+            <select name="province">
+              <option value="0" selected disabled>All Province</option>
               <?php
                 if(isset($province)){
-                	foreach($province->result_array() as $row){
-                		echo "<option value=".$row['province_id'].">".$row['province_name'.$lang]."</option>";
-                	}
+                  foreach($province->result_array() as $row){
+                    echo "<option value='".$row['province_id']."'>".$row['province_nameEN']."</option>";
+                  }
                 }
-                ?>
-              </select>
-              <div class="line">
-                <div class="tab"></div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <p>Season</p>
-              <br>
-              <select name="season">
-                <option>All Season</option>
-                <option>High Season</option>
-                <option>Low Season</option>
-              </select>
-              <div class="line">
-                <div class="tab"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="container tourprogram show">
-      <div class="hilight-box row">
-        <div class="hilight-title">
-          <div class="col-md-12">
-            <h2>HIGHLIGHT PROGRAM<br>
-              <span>โปรแกรมทัวร์แนะนำ</span>
-            </h2>
-          </div>
-        </div>
-        <div class="hilight-slide owl-theme">
+              ?>
+            </select>
+						<div class="line">
+							<div class="tab"></div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<p>Season</p> <br>
+						<select name="season">
+							<option value="0" selected disabled>All Season</option>
+							<option value="h">High Season</option>
+							<option value="l">Low Season</option>
+						</select>
+						<div class="line">
+							<div class="tab"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container normal">
+		<div class="hilight-box row">
+      <?php
+      if(isset($hilight_package) && $hilight_package->num_rows()>0){
+      ?>
+			<div class="hilight-title">
+				<div class="col-md-12">
+					<h2>HIGHLIGHT PROGRAM<br>
+					<span>โปรแกรมทัวร์แนะนำ</span></h2>
+				</div>
+			</div>
+			<div class="hilight-slide owl-theme">
         <?php
-          if(isset($hilight_package)){
           	$i = 0;
           	foreach($hilight_package->result_array() as $row){
-          ?>
+        ?>
         <div class="item">
           <div class="tour-box">
             <div class="img">
@@ -231,7 +225,7 @@
                 <p>Price: <?=number_format($row['tour_startPrice']);?> <?=$row['tour_currency']?><br>
                   <?php
                     $hilight_est_date = explode(",",$row['tour_dayNight']);
-                    ?>
+                  ?>
                   <span><?=$hilight_est_date[0];?> Day <?=$hilight_est_date[1];?> Night</span>
                 </p>
               </div>
@@ -241,10 +235,10 @@
             </div>
             <div class="description">
               <?php
-              $from = $hilight_booking_timerange[$i][0]['from'];
-              $c = count($hilight_booking_timerange[$i])-1;
-              $to = $hilight_booking_timerange[$i][$c]['to'];
-               ?>
+                $from = $hilight_booking_timerange[$i][0]['from'];
+                $c = count($hilight_booking_timerange[$i])-1;
+                $to = $hilight_booking_timerange[$i][$c]['to'];
+              ?>
               <p class="date"><?=date_format(date_create($from),"j F Y");?> - <?=date_format(date_create($to),"j F Y");?></p>
               <a href="<?=base_url()?>readmore?tour=<?=$row['tour_nameSlug'];?>" class="btn bold"> Detail & Booking </a>
               <hr>
@@ -253,405 +247,251 @@
           </div>
         </div>
         <?php
-          $i++;
+            $i++;
           }
+        ?>
+          </div>
+          <?php
+        }else{
+        ?>
+    		<div class="col-xs-12">
+    			<div class="coming">
+    				<img src="assets/images/ico-coming.png" alt="">
+    				<h2>Coming Soon</h2>
+            <br><br><br><br><br><br><br>
+    			</div>
+    		</div>
+        <?php
+        }
+        ?>
+		<div id="package">
+			<div class="col-xs-12">
+				<div id="package-title" class="title-header">
+					<h2>LATEST TOUR PROGRAMS</h2>
+					<div class="line">
+						<div class="tab"></div>
+					</div>
+				</div>
+			</div>
+			<div class="clear top-mg"></div><br>
+      <div id="package-list">
+        <?php
+          if(isset($package) && $package->num_rows() > 0){
+            $i = 0;
+          foreach($package->result_array() as $row){
+        ?>
+        <div class="col-md-4 col-sm-6">
+          <div class="tour-box">
+            <div class="img">
+              <img src="<?=base_url()?><?=$row['img_source'];?>" alt="tour image cover">
+              <div class="img-des">
+                <p>Price: <?=number_format($row['tour_startPrice']);?> <?=$row['tour_currency']?><br>
+                  <?php
+                    $est_date = explode(",",$row['tour_dayNight']);
+                    ?>
+                  <span><?=$est_date[0];?> Day <?=$est_date[1];?> Night</span>
+                </p>
+              </div>
+            </div>
+            <div class="tag">
+              <p><?=$row['tour_type'];?></p>
+            </div>
+            <div class="description">
+              <p class="date"><?=date_format(date_create($booking_timerange[$i][0]['from']),"j F Y");?> - <?=date_format(date_create($booking_timerange[$i][$last_btr[$i]]['to']),"j F Y");?></p>
+              <a href="<?=base_url()?>readmore?tour=<?=$row['tour_nameSlug'];?>" class="btn bold"> Detail & Booking </a>
+              <hr>
+              <a href="<?=base_url()?>filestorage/pdf/<?=$row['tour_pdf']?>">Download Program</a>
+            </div>
+          </div>
+        </div>
+        <?php
+              $i++;
+            }
+          }else{
+        ?>
+        <div class="coming">
+  				<img src="assets/images/ico-coming-blue.png" alt="">
+  				<h3>Coming Soon</h3>
+  			</div>
+        <?php
           }
           ?>
-          </div>
-      </div>
-      <div class="tours-program-box row">
-        <div class="col-xs-12">
-          <div class="title-header">
-            <h2>ALL TOURS PROGRAM</h2>
-            <div class="line">
-              <div class="tab"></div>
-            </div>
-          </div>
         </div>
-        <div class="clear top-mg"></div>
-        <div class="tour-package">
-          <?php
-            if(isset($package)){
-            	$i = 0;
-            	foreach($package->result_array() as $row){
-            ?>
-          <div class="col-md-4 col-sm-6">
-            <div class="tour-box">
-              <div class="img">
-                <img src="<?=base_url()?><?=$row['img_source'];?>" alt="tour image cover">
-                <div class="img-des">
-                    <p>Price: <?=number_format($row['tour_startPrice']);?> <?=$row['tour_currency']?><br>
-                      <?php
-                        $est_date = explode(",",$row['tour_dayNight']);
-                      ?>
-                    <span><?=$est_date[0];?> Day <?=$est_date[1];?> Night</span>
-                  </p>
-                </div>
-              </div>
-              <div class="tag">
-                <p><?= $row['tour_type'];?></p>
-              </div>
-              <div class="description">
-                <p class="date"><?=date_format(date_create($booking_timerange[$i][0]['from']),"j F Y");?> - <?=date_format(date_create($booking_timerange[$i][$last_btr[$i]]['to']),"j F Y");?></p>
-                <a href="<?=base_url()?>readmore?tour=<?=$row['tour_nameSlug'];?>" class="btn bold"> Detail & Booking </a>
-                <hr>
-                <a href="<?=base_url()?>filestorage/pdf/<?=$row['tour_pdf'];?>">Download Program</a>
-              </div>
-            </div>
-          </div>
-          <?php
-            $i++;
+      </div>
+		</div>
+    <?php
+    if(isset($package) && $package->num_rows() > 0){
+    ?>
+		<div id="seeMoreBtn" class="row top-mg">
+			<div class="col-md-4 col-md-offset-4">
+				<a id="seeMoreProgram" class="btn bold square border blue seemore">See More Program</a>
+			</div>
+		</div>
+    <?php
+    }
+    ?>
+  </div>
+	</div>
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-4 col-xs-12">
+					<h3>SUPERMARKET Tours</h3>
+					<p>by P.B Travel Agency</p>
+					<hr>
+					<a href="http://www.myanmar-center.in.th/">Myanmar Center</a>
+				</div>
+				<div class="col-sm-4 col-sm-offset-4 col-xs-12">
+					<div class="contact">
+						<h2>Add Line</h2>
+						<a href="#"><img src="assets/images/ico-line.png" alt=""></a>
+					</div>
+					<div class="contact">
+						<h2>Contact Us</h2>
+						<p>02-222-2222</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="strap"></div>
+	</footer>
+</body>
+<input type="hidden" id="isTourType" value="sp">
+<script>
+  $( "#seeMoreProgram" ).click(function() {
+    $(this).attr("href","thai-tour-all?type="+$("#isTourType").val());
+  });
+
+  $('#SeriesPackageSelector').click(function(){
+    $("#isTourType").val("sp");
+    changeTourType();
+    $('html, body').animate({
+      scrollTop: $('#package-title').offset().top-20
+    }, 500);
+  });
+
+  $('#EasyPackageSelector').click(function(){
+    $("#isTourType").val("ep");
+    changeTourType();
+    $('html, body').animate({
+      scrollTop: $('#package-title').offset().top-20
+    }, 500);
+  });
+
+  $('select[name=region]').change(function(){
+    url = "thai-tour-all?type="+$("#isTourType").val()+"&region="+$(this).val();
+    $(location).attr("href", url);
+  });
+
+  $('select[name=province]').change(function(){
+    url = "thai-tour-all?type="+$("#isTourType").val()+"&province="+$(this).val();
+    $(location).attr("href", url);
+  });
+
+  $('select[name=season]').change(function(){
+    url = "thai-tour-all?type="+$("#isTourType").val()+"&season="+$(this).val();
+    $(location).attr("href", url);
+  });
+
+  $('#searchBar').keypress(function(e){
+    if(e.which == 13) {
+      url = "thai-tour-all?type="+$("#isTourType").val()+"&keysearch="+$(this).val();
+      $(location).attr("href", url);
+    }
+  });
+
+  function changeTourType(){
+    $.ajax({
+      type: 'POST',
+      url:'/change-tour-type',
+      data:{
+        'country': 'thailand',
+      	'type': $('#isTourType').val()
+      	},
+      dataType: 'json',
+      success:function(data){
+        $result = '';
+      	if($.trim(data['package'])){
+            for($i=0;$i<data['package'].length;$i++){
+              $date_range = JSON.parse(data['package'][$i].tour_priceRange);
+              $last_btr = $date_range.length-1;
+              $open_booking = new Date($date_range[0].from);
+              $close_booking = new Date($date_range[$last_btr].to);
+              $result += '<div class="col-md-4 col-sm-6">';
+              $result += '<div class="tour-box">';
+            	$result += '<div class="img">';
+            	$result += '<img src="'+data['package'][$i].img_source+'" alt="tour image cover">';
+            	$result += '<div class="img-des">';
+              $result += '<p>Price: '+numeral(data['package'][$i].tour_startPrice).format('0,0')+' '+data['package'][$i].tour_currency+'<br>';
+            	$est_dayNight = data['package'][$i].tour_dayNight.split(",");
+            	$result += '<span>'+$est_dayNight[0]+' Day '+$est_dayNight[1]+' Night</span></p>';
+            	$result += '</div></div>';
+            	$result += '<div class="tag">';
+            	$result += '<p>'+data['package'][$i].tour_type+'</p>';
+            	$result += '</div>';
+            	$result += '<div class="description">';
+            	$result += '<p class="date">'+$open_booking.format("d mmmm yyyy")+' - '+$close_booking.format("d mmmm yyyy")+'</p>';
+            	$result += '<a href="readmore?tour='+data['package'][$i].tour_nameSlug+'" class="btn bold"> Detail & Booking </a>';
+            	$result += '<hr>';
+            	$result += '<a href="filestorage/pdf/'+data['package'][$i].tour_pdf+'">Download Program</a>';
+            	$result += '</div></div></div>';
             }
-            }
-            ?>
-        </div>
-      </div>
-      <div class="pagination-wrapper">
-        <div class="col-xs-12">
-          <div class="pagination">
-            <?php foreach ($pagination_links as $link) {
-              echo $link;
-              }?>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer>
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-4 col-xs-12">
-            <h3>SUPERMARKET Tours</h3>
-            <p>by P.B Travel Agency</p>
-            <hr>
-            <a href="http://www.myanmar-center.in.th/">Myanmar Center</a>
-          </div>
-          <div class="col-sm-4 col-sm-offset-4 col-xs-12">
-            <div class="contact">
-              <h2>Add Line</h2>
-              <a href="http://line.me/ti/p/~bankzahaplus"><img src="<?=base_url()?>assets/images/ico-line.png" alt=""></a>
-            </div>
-            <div class="contact">
-              <h2>Contact Us</h2>
-              <p><a href="tel:0875012500">02-222-2222</a></p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="strap"></div>
-    </footer>
-    <input id="isTourCountry" type="hidden" value="thailand">
-    <input id="isTourType" type="hidden" value="sp">
-  </body>
-  <script>
-  $base_url = '<?=base_url()?>';
-
-  $('document').ready(function(){
-  $(".hilight-slide").owlCarousel({
-      pagination : false,
-      navigation: true,
-      items:3,
-      autoPlay: 5000,
-      nav:true,
-      navigationText: ["&#xf104","&#xf105"],
-      responsiveClass:true,
-      responsive:{
-          480:{
-              items:1,
-          },
-          768:{
-              items:2,
-          },
-          1000:{
-              items:3,
-              loop:false
-          }
-            }
-          });
-      });
-
-      $('#series-package-selector').click(function(){
-      	$('#isTourType').val('sp');
-      	filter();
-      });
-
-      $('#easy-package-selector').click(function(){
-      	$('#isTourType').val('ep');
-      	filter();
-      });
-
-      $('select').change(function(){
-      	filter();
-      });
-
-      $('.search-bar').on('keyup',function(e){
-      	if(e.keyCode == 13){
-      		filter();
-      	}
-      });
-
-      $('.tour-category-box').click(function(){
-      	$('.tour-category-box').removeClass('current');
-      	$(this).addClass('current');
-      });
-
-      function filter(){
-      	/**********Initial variable***********/
-      	$ref_url = $base_url+'international-tour/';
-      	$type = $('#isTourType').val();
-      	$region = '';
-      	$province = '';
-      	$continent = '';
-      	$country = $('#isTourCountry').val();
-      	$keysearch = $('.search-bar').val();
-      	$season = '';
-      	if($('select[name="region"]').val() != null && $('select[name="region"]').val() != 'All Region'){
-      		$region = $('select[name="region"]').val();
-      	}
-      	if($('select[name="province"]').val() != null && $('select[name="province"]').val() != 'All Province'){
-      		$province = $('select[name="province"]').val();
-      	}
-      	if($('select[name="continent"]').val() != null && $('select[name="continent"]').val() != 'All Continent'){
-      		$continent = $('select[name="continent"]').val();
-      	}
-      	if($('select[name="country"]').val() != null && $('select[name="country"]').val() != 'All Country'){
-      			$country = $('select[name="country"]').val();
-      	}
-      	if($('select[name="season"]').val() != 'All Season'){
-      		if($('select[name="season"]').val() == 'High Season'){
-      			$season = '1';
-      		}else{
-      			$season = '0';
-      		}
-      	}
-      	/************Get package ************/
-        $offset = location.href.match(/([^\/]*)\/*$/)[1];
-        if($offset == 'international-tour'){
-        	$offset = 0;
-        }
-      	$result = getPackage($base_url, $type, $region, $province, $continent, $country, $season, $keysearch, $ref_url, $offset);
-        if($result != ''){
-          if($region != '' || $province != '' || $continent != '' || $keysearch != ''){
-            $('.tour-package').html('');
-            $('.tourprogram.show').html('');
-          	$('.tourprogram.show').html($result['list_package']);
+            $('#package-list').html($result);
+            $( "#seeMoreProgram" ).click(function() {
+              $(this).attr("href","international-tour-all?type="+$("#isTourType").val());
+            });
           }else{
-            $('.tourprogram.show').html('');
-            $('.tourprogram.show').html(getHilight());
-            $('.tour-package').html('');
-            $('.tour-package').html($result['list_package']);
-            $(".hilight-slide").owlCarousel({
-                pagination : false,
-                navigation: true,
-                items:3,
-                autoPlay: 5000,
-                nav:true,
-                navigationText: ["&#xf104","&#xf105"],
-                responsiveClass:true,
-                responsive:{
-                    480:{
-                        items:1,
-                    },
-                    768:{
-                        items:2,
-                    },
-                    1000:{
-                        items:3,
-                        loop:false
-                    }
-                      }
-                    });
+            $result = '<div class="tours-program-box row"><div class="col-xs-12"><div id="package-title" class="title-header"><h2>LATEST TOUR PROGRAMS</h2><div class="line"><div class="tab"></div></div></div></div>';
+            $result += '<div class="clear top-mg"></div><br><div id="package-list" class="coming"><img src="assets/images/ico-coming-blue.png" alt=""><h3>Coming Soon</h3></div>';
+            $('#package').html($result);
+            $('#package-list').removeClass('coming');
+            $('#seeMoreBtn').hide();
           }
-        }else{
-          if($region == '' && $province == '' && $continent == '' && $season == '' && $keysearch == ''){
-            if($country == 'thailand' || $country == 'international'){
-              $('.tourprogram.show').html('');
-              $('.tourprogram.show').html(getHilight());
-              $result = getPackage($base_url, $type, $region, $province, $continent, $country, $season, $keysearch, $ref_url, 0,1);
-              $('.tourprogram.show').append($result['list_package']);
-              $(".hilight-slide").owlCarousel({
-                  pagination : false,
-                  navigation: true,
-                  items:3,
-                  autoPlay: 5000,
-                  nav:true,
-                  navigationText: ["&#xf104","&#xf105"],
-                  responsiveClass:true,
-                  responsive:{
-                      480:{
-                          items:1,
-                      },
-                      768:{
-                          items:2,
-                      },
-                      1000:{
-                          items:3,
-                          loop:false
-                      }
-                  }
-              });
-            }else{
-              $('.tourprogram.show').html('');
-              $result = getPackage($base_url, $type, $region, $province, $continent, $country, $season, $keysearch, $ref_url, 0,2);
-              $('.tourprogram.show').html($result['list_package']);
-            }
-          }else{
-            $('.tourprogram.show').html('');
-            $result = getPackage($base_url, $type, $region, $province, $continent, $country, $season, $keysearch, $ref_url, 0,2);
-            $('.tourprogram.show').html($result['list_package']);
-          }
-        }
-
-        $('.pagination').html('');
-        $('.pagination').html($result['pagination_links']);
-
-        function getHilight(){
-          $result = '';
-          $.ajax({
-      			type: 'POST',
-      			async : false,
-      			url:'/hilight',
-            data : { 'nationality' : 'thailand domestic tour'},
-      			dataType: 'json',
-      			success:function(data){
-      				$result_hilight = listHilight(data);
-      			}
-      		});
-      		return $result_hilight;
-        }
-
-        function listHilight(data){
-          $result_hilight = '<div class="hilight-box row"><div class="hilight-title"><div class="col-md-12"><h2>HIGHLIGHT PROGRAM<br>';
-          $result_hilight += '<span>โปรแกรมทัวร์แนะนำ</span></h2></div></div><div class="hilight-slide owl-theme">';
-          for($i=0;$i<data['package'].length;$i++){
-            $date_range = JSON.parse(data['package'][$i].tour_priceRange);
-            $last_btr = $date_range.length-1;
-            $open_booking = new Date($date_range[0].from);
-            $close_booking = new Date($date_range[$last_btr].to);
-            $result_hilight += '<div class="item"><div class="tour-box"><div class="img">';
-            $result_hilight += '<img src="'+$base_url+data['package'][$i].img_source+'" alt="tour image cover">';
-            $result_hilight += '<div class="img-des"><p>Price: '+numeral(data['package'][$i].tour_startPrice).format('0,0')+' '+data['package'][$i].tour_currency+'<br>';
-            $est_dayNight = data['package'][$i].tour_dayNight.split(",");
-            $result_hilight += '<span>'+$est_dayNight[0]+' Day '+$est_dayNight[1]+' Night</span>';
-            $result_hilight += '</p></div></div><div class="tag"><p>'+data['package'][$i].tour_type+'</p></div>';
-            $result_hilight += '<div class="description">';
-            $result_hilight += '<p class="date">'+$open_booking.format("d mmmm yyyy")+' - '+$close_booking.format("d mmmm yyyy")+'</p>';
-            $result_hilight += '<a href="'+$base_url+'readmore?tour='+data['package'][$i].tour_nameSlug+'" class="btn bold"> Detail & Booking </a>';
-            $result_hilight += '<hr><a href="'+$base_url+'filestorage/pdf/'+data['package'][$i].tour_pdf+'">Download Program</a>';
-            $result_hilight += '</div></div></div>';
-          }
-          $result_hilight += '</div></div></div>';
-          return $result_hilight;
-        }
-
-      	function getPackage($base_url, $type, $region, $province, $continent, $country, $season, $keysearch, $ref_url, $offset, $mode){
-      		$result = '';
-      		$.ajax({
-      			type: 'POST',
-      			async : false,
-      			url:'/filter-tour',
-      			data:{
-      				'type': $type,
-      				'region': $region,
-      				'province': $province,
-      				'continent': $continent,
-      				'country': $country,
-      				'season': $season,
-      				'keysearch': $keysearch,
-      				'ref_url': $ref_url,
-      				'offset': $offset
-      				},
-      			dataType: 'json',
-      			success:function(data){
-      				$result = listPackage($base_url,data,$mode);
-      			}
-      		});
-      		return $result;
-      	}
-
-      	function listPackage($base_url, data, $mode){
-      		$result = new Array();
-      		$result['list_package'] = '';
-      		$result['pagination_links'] = '';
-      		if($.trim(data['package'])){
-            switch($mode){
-              case 1:
-              $result = new Array();
-          		$result['list_package'] = '';
-          		$result['pagination_links'] = '';
-          		if($.trim(data['package'])){
-          			$result = new Array();
-          			$result['list_package'] = '';
-                $result['list_package'] += '<div class="tours-program-box row"><div class="col-xs-12"><div class="title-header">';
-                $result['list_package'] += '<h2>ALL TOURS PROGRAM</h2><div class="line"><div class="tab"></div>';
-                $result['list_package'] += '</div></div></div>';
-                $result['list_package'] += '<div class="clear top-mg"></div><div class="tour-package">';
-          			for($i=0;$i<data['package'].length;$i++){
-          				$date_range = JSON.parse(data['package'][$i].tour_priceRange);
-          				$last_btr = $date_range.length-1;
-          				$open_booking = new Date($date_range[0].from);
-          				$close_booking = new Date($date_range[$last_btr].to);
-          				$result['list_package'] += '<div class="col-md-4 col-sm-6">';
-          				$result['list_package'] += '<div class="tour-box">';
-          				$result['list_package'] += '<div class="img">';
-          				$result['list_package'] += '<img src="'+$base_url+data['package'][$i].img_source+'" alt="tour image cover">';
-          				$result['list_package'] += '<div class="img-des">';
-                  $result['list_package'] += '<p>Price: '+numeral(data['package'][$i].tour_startPrice).format('0,0')+' '+data['package'][$i].tour_currency+'<br>';
-          				$est_dayNight = data['package'][$i].tour_dayNight.split(",");
-          				$result['list_package'] += '<span>'+$est_dayNight[0]+' Day '+$est_dayNight[1]+' Night</span></p>';
-          				$result['list_package'] += '</div></div>';
-          				$result['list_package'] += '<div class="tag">';
-          				$result['list_package'] += '<p>'+data['package'][$i].tour_type+'</p>';
-          				$result['list_package'] += '</div>';
-          				$result['list_package'] += '<div class="description">';
-          				$result['list_package'] += '<p class="date">'+$open_booking.format("d mmmm yyyy")+' - '+$close_booking.format("d mmmm yyyy")+'</p>';
-          				$result['list_package'] += '<a href="'+$base_url+'readmore?tour='+data['package'][$i].tour_nameSlug+'" class="btn bold"> Detail & Booking </a>';
-          				$result['list_package'] += '<hr>';
-          				$result['list_package'] += '<a href="'+$base_url+'filestorage/pdf/'+data['package'][$i].tour_pdf+'">Download Program</a>';
-          				$result['list_package'] += '</div></div></div>';
-          			}
-                $result['list_package'] += '</div>';
-          		}
-              break;
-              case 2:
-              $result = new Array();
-        			$result['list_package'] = '';
-              $result['list_package'] += '<div class="hilight-box row"><div class="col-xs-12"><div class="tour-header-bar result"><div class="title-header">';
-              $result['list_package'] += '<h2><i class="fa fa-plane" aria-hidden="true"></i> ALL TOURS PROGRAM</h2></div>';
-              $result['list_package'] += '<div class="digi">'+data['package'].length+' Programs</div><div class="clear"></div><h3>ALL OF DOMESTIC PACKAGE</h3></div>';
-              $result['list_package'] += '</div>';
-        			for($i=0;$i<data['package'].length;$i++){
-        				$date_range = JSON.parse(data['package'][$i].tour_priceRange);
-        				$last_btr = $date_range.length-1;
-        				$open_booking = new Date($date_range[0].from);
-        				$close_booking = new Date($date_range[$last_btr].to);
-        				$result['list_package'] += '<div class="col-md-4 col-sm-6">';
-        				$result['list_package'] += '<div class="tour-box">';
-        				$result['list_package'] += '<div class="img">';
-        				$result['list_package'] += '<img src="'+$base_url+data['package'][$i].img_source+'" alt="tour image cover">';
-        				$result['list_package'] += '<div class="img-des">';
-                $result['list_package'] += '<p>Price: '+numeral(data['package'][$i].tour_startPrice).format('0,0')+' '+data['package'][$i].tour_currency+'<br>';
-        				$est_dayNight = data['package'][$i].tour_dayNight.split(",");
-        				$result['list_package'] += '<span>'+$est_dayNight[0]+' Day '+$est_dayNight[1]+' Night</span></p>';
-        				$result['list_package'] += '</div></div>';
-        				$result['list_package'] += '<div class="tag">';
-        				$result['list_package'] += '<p>'+data['package'][$i].tour_type+'</p>';
-        				$result['list_package'] += '</div>';
-        				$result['list_package'] += '<div class="description">';
-        				$result['list_package'] += '<p class="date">'+$open_booking.format("d mmmm yyyy")+' - '+$close_booking.format("d mmmm yyyy")+'</p>';
-        				$result['list_package'] += '<a href="'+$base_url+'readmore?tour='+data['package'][$i].tour_nameSlug+'" class="btn bold"> Detail & Booking </a>';
-        				$result['list_package'] += '<hr>';
-        				$result['list_package'] += '<a href="'+$base_url+'filestorage/pdf/'+data['package'][$i].tour_pdf+'">Download Program</a>';
-        				$result['list_package'] += '</div></div></div>';
-        			}
-              $result['list_package'] += '</div>';
-              break;
-            }
-      		}
-      		if(data['pagination_links'] != "undefined"){
-      			$result['pagination_links'] = data['pagination_links'];
-      		}
-      		return $result;
-      	}
       }
-  </script>
+  	});
+  }
+
+	$('.menu-burger').click(function(){
+		$('.menu-burger , .menu-list').toggleClass('open');
+	});
+
+	$('.choose-tours-box').click(function(){
+		$('.choose-tours-box').removeClass('current');
+		$('.filter-bar').toggleClass('hide');
+		$(this).addClass('current');
+	});
+
+	$('.tour-category-box').click(function(){
+		$('.tour-category-box').removeClass('current');
+		$(this).addClass('current');
+	});
+
+	$('document').ready(function(){
+    $('#isTourType').val('sp');
+    $('select[name=continent]').val(0);
+    $('select[name=country]').val(0);
+    $('select[name=season]').val(0);
+		$('.hilight-slide').owlCarousel({
+	      	pagination : false,
+	    	navigation: true,
+	    	items:3,
+	    	autoPlay: 5000,
+	    	nav:true,
+  			navigationText: ["&#xf104","&#xf105"],
+  			responsiveClass:true,
+		    responsive:{
+		        480:{
+		            items:1,
+		        },
+		        768:{
+		            items:2,
+		        },
+		        1000:{
+		            items:3,
+		            loop:false
+		        }
+		    }
+	  	});
+	});
+</script>
 </html>

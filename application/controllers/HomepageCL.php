@@ -19,38 +19,26 @@ class HomepageCL extends CI_Controller {
     redirect('thai-tour');
   }
 
-  function hilight(){
+  /*function hilight(){
     $tour_nationality = $this->input->post('nationality');
     $query = $this->HomepageMD->getHiLightPackage($tour_nationality);
     $data['package'] = $query->result();
     echo json_encode($data);
-  }
+  }*/
 
   function thai_tour() {
-    /********************Initial Variable********************/
-    $this->country = 'thailand';
-    $this->session->set_userdata('country', 'thailand');
     /********************Initial Filter**********************/
-    $data['province']            = $this->HomepageMD->getProvince();
     $data['region']              = $this->HomepageMD->getRegion();
+    $data['province']            = $this->HomepageMD->getProvince();
     /********************Hilight Package*********************/
     $query = $this->HomepageMD->getHiLightPackage('international tour');
     $data['hilight_package'] = $query;
+    $data['c_hilight_package'] = $query->num_rows();
     for($i=0;$i<$query->num_rows();$i++){
       $data['hilight_price_range'][$i] = $query->row($i)->tour_priceRange;
     }
-    /**************Pagination Configuration******************/
-    $config['base_url']          = base_url() . 'index.php/' . $this->uri->segment(1);
-    $config['per_page']          = 6;
-    $config['cur_tag_open']      = '<a class="current">';
-    $config['cur_tag_close']     = '</a>';
-    $count_allrow                = $this->HomepageMD->getPackage($this->country, 'sp', '', '');
-    $config['total_rows']        = $count_allrow->num_rows();
-    $this->pagination->initialize($config);
-    $str_links                = $this->pagination->create_links();
-    $data["pagination_links"] = explode('&nbsp;', $str_links);
     /*********************Normal Package*********************/
-    $query                    = $this->HomepageMD->getPackage($this->session->userdata('country'), 'sp', $config['per_page'], $this->uri->segment(2));
+    $query                    = $this->HomepageMD->getLastPackage('thailand', 'sp');
     $data['package']          = $query;
     $count                    = $query->num_rows();
     if($count>0){
@@ -61,33 +49,98 @@ class HomepageCL extends CI_Controller {
     $this->load->view('homepage_thai', $data);
   }
 
-  function international_tour() {
+  function thai_tour_all() {
     /********************Initial Variable********************/
-    $this->country = 'international';
-    $this->session->set_userdata('country', 'international');
-    /********************Initial Filter**********************/
-    $data['continent']           = $this->HomepageMD->getContinent();
-    $data['country']             = $this->HomepageMD->getCountry();
-    /********************Hilight Package*********************/
-    $query = $this->HomepageMD->getHiLightPackage('international tour');
-    $data['hilight_package'] = $query;
-    for($i=0;$i<$query->num_rows();$i++){
-      $data['hilight_price_range'][$i] = $query->row($i)->tour_priceRange;
+    $type                    = $this->input->get('type');
+    $region                  = $this->input->get('region');
+    $province                = $this->input->get('province');
+    $season                  = $this->input->get('season');
+    $keysearch               = $this->input->get('keysearch');
+    $offset                  = $this->input->get('per_page');
+    if($offset == ''){
+      $offset = '0';
     }
+    /********************Initial Filter**********************/
+    $data['region']           = $this->HomepageMD->getRegion();
+    $data['province']             = $this->HomepageMD->getProvince();
     /**************Pagination Configuration******************/
-    $config['base_url']          = base_url() . 'index.php/' . $this->uri->segment(1);
-    $config['per_page']          = 6;
+    $cur_url = base_url().'/thai-tour-all';
+    $cur_url .= '?type='.$type;
+    if($region != ''){
+      $cur_url .= '&region='.$region;
+    }
+    if($province != ''){
+      $cur_url .= '&province='.$province;
+    }
+    if($season != ''){
+      $cur_url .= '&season='.$season;
+    }
+    $config['base_url']          = $cur_url;
+    $config['per_page']          = 9;
     $config['cur_tag_open']      = '<a class="current">';
     $config['cur_tag_close']     = '</a>';
-    $config['prev_link'] = 'false';
-    $config['next_link'] = 'false';
-    $count_allrow                = $this->HomepageMD->getPackage($this->country, 'sp', '', '');
+    $config['prev_link'] = false;
+    $config['next_link'] = false;
+    $config['first_link'] = false;
+    $config['last_link'] = false;
+    $config['page_query_string'] = true;
+    $count_allrow                = $this->HomepageMD->getPackage($type, '', $region, $province, '', $season, $keysearch, '', '');
     $config['total_rows']        = $count_allrow->num_rows();
     $this->pagination->initialize($config);
     $str_links                = $this->pagination->create_links();
     $data["pagination_links"] = explode('&nbsp;', $str_links);
+    $data['c_package']        = $config['total_rows'];
     /*********************Normal Package*********************/
-    $query                    = $this->HomepageMD->getPackage($this->session->userdata('country'), 'sp', $config['per_page'], $this->uri->segment(2));
+    $query                    = $this->HomepageMD->getPackage($type, '', $region, $province, '', $season, $keysearch, $config['per_page'], $offset);
+    $data['package']          = $query;
+    $count                    = $query->num_rows();
+    if($count>0){
+      for ($i = 0; $i <= $count; $i++) {
+        $data['price_range'][$i] = $query->row($i)->tour_priceRange;
+      }
+    }
+    $this->load->view('homepage_thai_all', $data);
+  }
+
+  function filter_thai() {
+    /********************Initial Variable********************/
+    $type                    = $this->input->post('type');
+    $region                  = $this->input->post('region');
+    $province                = $this->input->post('province');
+    $season                  = $this->input->post('season');
+    $keysearch               = $this->input->post('keysearch');
+    $ref_url                 = $this->input->post('ref_url');
+    $offset                  = $this->input->post('offset');
+    /**************Pagination Configuration******************/
+    $config['base_url']      = $ref_url;
+    $config['per_page']      = 9;
+    $config['cur_tag_open']  = '&nbsp;<a class="current">';
+    $config['cur_tag_close'] = '</a>';
+    $config['cur_page']      = $offset;
+    $count_allrow            = $this->HomepageMD->getFilter($type, $region, $province, $continent, $country, $season, $keysearch, '', '');
+    $config['total_rows']    = $count_allrow->num_rows();
+    $this->pagination->initialize($config);
+    $str_links                = $this->pagination->create_links();
+    $data["pagination_links"] = explode('&nbsp;', $str_links);
+    /*********************Filter Package*********************/
+    $query                    = $this->HomepageMD->getFilter($type, $region, $province, $continent, $country, $season, $keysearch, $config['per_page'], $offset);
+    $data['package']          = $query->result();
+    echo json_encode($data);
+  }
+
+  function international_tour() {
+    /********************Initial Filter**********************/
+    $data['continent']           = $this->HomepageMD->getContinent('');
+    $data['country']             = $this->HomepageMD->getCountry('');
+    /********************Hilight Package*********************/
+    $query = $this->HomepageMD->getHiLightPackage('international tour');
+    $data['hilight_package'] = $query;
+    $data['c_hilight_package'] = $query->num_rows();
+    for($i=0;$i<$query->num_rows();$i++){
+      $data['hilight_price_range'][$i] = $query->row($i)->tour_priceRange;
+    }
+    /*********************Normal Package*********************/
+    $query                    = $this->HomepageMD->getLastPackage('international', 'sp');
     $data['package']          = $query;
     $count                    = $query->num_rows();
     if($count>0){
@@ -98,30 +151,91 @@ class HomepageCL extends CI_Controller {
     $this->load->view('homepage_international', $data);
   }
 
-  function filter() {
+  function international_tour_all() {
+    /********************Initial Variable********************/
+    $type                    = $this->input->get('type');
+    $continent               = $this->input->get('continent');
+    $country                 = $this->input->get('country');
+    $season                  = $this->input->get('season');
+    $keysearch               = $this->input->get('keysearch');
+    $offset                  = $this->input->get('per_page');
+    if($offset == ''){
+      $offset = '0';
+    }
+    /********************Initial Filter**********************/
+    $data['continent']           = $this->HomepageMD->getContinent($country);
+    $data['country']             = $this->HomepageMD->getCountry($continent);
+    /**************Pagination Configuration******************/
+    $cur_url = base_url().'/international-tour-all';
+    $cur_url .= '?type='.$type;
+    if($continent != ''){
+      $cur_url .= '&continent='.$continent;
+    }
+    if($country != ''){
+      $cur_url .= '&country='.$country;
+    }
+    if($season != ''){
+      $cur_url .= '&season='.$season;
+    }
+    $config['base_url']          = $cur_url;
+    $config['per_page']          = 9;
+    $config['cur_tag_open']      = '<a class="current">';
+    $config['cur_tag_close']     = '</a>';
+    $config['prev_link'] = false;
+    $config['next_link'] = false;
+    $config['first_link'] = false;
+    $config['last_link'] = false;
+    $config['page_query_string'] = true;
+    $count_allrow                = $this->HomepageMD->getPackage($type, $country, '', '', $continent, $season, $keysearch, '', '');
+    $config['total_rows']        = $count_allrow->num_rows();
+    $this->pagination->initialize($config);
+    $str_links                = $this->pagination->create_links();
+    $data["pagination_links"] = explode('&nbsp;', $str_links);
+    $data['c_package']        = $config['total_rows'];
+    /*********************Normal Package*********************/
+    $query                    = $this->HomepageMD->getPackage($type, $country, '', '', $continent, $season, $keysearch, $config['per_page'], $offset);
+    $data['package']          = $query;
+    $count                    = $query->num_rows();
+    if($count>0){
+      for ($i = 0; $i <= $count; $i++) {
+        $data['price_range'][$i] = $query->row($i)->tour_priceRange;
+      }
+    }
+    $this->load->view('homepage_international_all', $data);
+  }
+
+  function change_tour_type(){
+    /********************Initial Variable********************/
+    $country                 = $this->input->post('country');
+    $type                    = $this->input->post('type');
+    /*********************Normal Package*********************/
+    $query                   = $this->HomepageMD->getLastPackage($country, $type);
+    $data['package']         = $query->result();
+    echo json_encode($data);
+  }
+
+  function filter_international() {
     /********************Initial Variable********************/
     $type                    = $this->input->post('type');
-    $country                 = $this->input->post('country');
-    $region                  = $this->input->post('region');
-    $province                = $this->input->post('province');
     $continent               = $this->input->post('continent');
+    $country                 = $this->input->post('country');
     $season                  = $this->input->post('season');
     $keysearch               = $this->input->post('keysearch');
     $ref_url                 = $this->input->post('ref_url');
     $offset                  = $this->input->post('offset');
     /**************Pagination Configuration******************/
     $config['base_url']      = $ref_url;
-    $config['per_page']      = 6;
+    $config['per_page']      = 9;
     $config['cur_tag_open']  = '&nbsp;<a class="current">';
     $config['cur_tag_close'] = '</a>';
     $config['cur_page']      = $offset;
-    $count_allrow            = $this->HomepageMD->getFilter($type, $country, $region, $province, $continent, $season, $keysearch, '', '');
+    $count_allrow            = $this->HomepageMD->getFilter($type, $region, $province, $continent, $country, $season, $keysearch, '', '');
     $config['total_rows']    = $count_allrow->num_rows();
     $this->pagination->initialize($config);
     $str_links                = $this->pagination->create_links();
     $data["pagination_links"] = explode('&nbsp;', $str_links);
     /*********************Filter Package*********************/
-    $query                    = $this->HomepageMD->getFilter($type, $country, $region, $province, $continent, $season, $keysearch, $config['per_page'], $offset);
+    $query                    = $this->HomepageMD->getFilter($type, $region, $province, $continent, $country, $season, $keysearch, $config['per_page'], $offset);
     $data['package']          = $query->result();
     echo json_encode($data);
   }
