@@ -15,6 +15,7 @@ class SeriesBookingMD extends CI_Model {
 			tour.tour_nameSlug,
 			tour.tour_startPrice,
 			tour.tour_priceRange,
+      tour_dayNight,
 			tour.tour_currency,
       tour.tour_advanceBooking,
       tour.tour_privateGroup,

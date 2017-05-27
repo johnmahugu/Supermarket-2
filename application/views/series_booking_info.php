@@ -37,7 +37,6 @@
     <link rel="stylesheet" href="<?=base_url()?>assets/css/style.css">
     <script src="<?=base_url()?>assets/js/date.format.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.4/numeral.min.js"></script>
-    <script src="<?=base_url()?>assets/js/page_controllers/series-booking-info.js"></script>
   </head>
   <body>
     <header class="readmore outbouce">
@@ -53,7 +52,7 @@
           </div>
           <div class="contact">
             <h2>Add Line</h2>
-            <a href="http://line.me/ti/p/~bankzahaplus"><img src="<?=base_url()?>assets/images/ico-line.png" alt=""></a>
+            <a href="http://line.me/ti/p/XdJsl_Agtu"><img src="assets/images/ico-line.png" alt=""></a>
           </div>
           <div class="contact">
             <h2>Contact Us</h2>
@@ -294,11 +293,11 @@
     <div class="col-sm-4 col-sm-offset-4 col-xs-12">
     <div class="contact">
     <h2>Add Line</h2>
-    <a href="#"><img src="<?=base_url()?>assets/images/ico-line.png" alt=""></a>
+    <a href="http://line.me/ti/p/XdJsl_Agtu"><img src="assets/images/ico-line.png" alt=""></a>
     </div>
     <div class="contact">
     <h2>Contact Us</h2>
-    <p>02-222-2222</p>
+    <p><a href="tel:025381811">02-538-1811</a></p>
     </div>
     </div>
     </div>
@@ -351,7 +350,7 @@
     });
 
     $('.dob-picker').datepicker({
-    	dateFormat: 'dd/mm/yy',
+    	dateFormat: 'yy-mm-dd',
     	changeMonth: true,
     	changeYear: true,
     	maxDate: "0D",

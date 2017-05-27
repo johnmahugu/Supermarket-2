@@ -46,7 +46,7 @@
 				</div>
 				<div class="contact">
 					<h2>Add Line</h2>
-					<a href="#"><img src="assets/images/ico-line.png" alt=""></a>
+					<a href="http://line.me/ti/p/XdJsl_Agtu"><img src="assets/images/ico-line.png" alt=""></a>
 				</div>
 				<div class="contact">
 					<h2>Contact Us</h2>
@@ -236,20 +236,21 @@
         </div>
       </div>
 	</div>
-	<footer>
-	</footer>
+  <?php
+	include 'footer.php';
+  ?>
 </body>
 <input type="hidden" id="isTourType" value="sp">
 <input type="hidden" id="cPackage" value="<?=$c_package?>">
 <script>
 
   $('#SeriesPackageSelector').click(function(){
-    $("#isTourType").val('sp');
+    $('#isTourType').val('sp');
     filter();
   });
 
   $('#EasyPackageSelector').click(function(){
-    $("#isTourType").val('ep');
+    $('#isTourType').val('ep');
     filter();
   });
 
@@ -274,7 +275,7 @@
 	});
 
   function filter(){
-    $url = "thai-tour-all?type="+$("#isTourType").val();
+    $url = 'thai-tour-all?type='+$('#isTourType').val();
     $region = $('select[name=region]').val();
     if($region != '0'){
        $url += '&region='+$region;
@@ -291,7 +292,7 @@
     if($keysearch != ''){
       $url += '&keysearch='+$keysearch;
     }
-    $(location).attr("href", $url+'&scroll=1');
+    $(location).attr('href', $url+'&scroll=1');
   }
 
 	$(function() {

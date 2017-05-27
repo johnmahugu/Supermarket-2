@@ -56,7 +56,7 @@
 				</div>
 				<div class="contact">
 					<h2>Add Line</h2>
-					<a href="http://line.me/ti/p/~bankzahaplus"><img src="<?=base_url()?>assets/images/ico-line.png" alt=""></a>
+					<a href="http://line.me/ti/p/XdJsl_Agtu"><img src="assets/images/ico-line.png" alt=""></a>
 				</div>
 				<div class="contact">
 					<h2>Contact Us</h2>
@@ -319,34 +319,12 @@
 		</div>
   </div>
 	</div>
-	<footer>
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-4 col-xs-12">
-					<h3>SUPERMARKET Tours</h3>
-					<p>by P.B Travel Agency</p>
-					<hr>
-					<a href="http://www.myanmar-center.in.th/">Myanmar Center</a>
-				</div>
-				<div class="col-sm-4 col-sm-offset-4 col-xs-12">
-					<div class="contact">
-						<h2>Add Line</h2>
-						<a href="#"><img src="assets/images/ico-line.png" alt=""></a>
-					</div>
-					<div class="contact">
-						<h2>Contact Us</h2>
-						<p>02-222-2222</p>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="strap"></div>
-	</footer>
+  <?php include 'footer.php';?>
 </body>
 <input type="hidden" id="isTourType" value="sp">
 <script>
-  $( "#seeMoreProgram" ).click(function() {
-    $(this).attr("href","international-tour-all?type="+$("#isTourType").val());
+  $('#seeMoreProgram').click(function() {
+    $(this).attr('href','international-tour-all?type='+$('#isTourType').val());
   });
 
   $('#SeriesPackageSelector').click(function(){
@@ -358,7 +336,7 @@
   });
 
   $('#EasyPackageSelector').click(function(){
-    $("#isTourType").val("ep");
+    $('#isTourType').val('ep');
     changeTourType();
     $('html, body').animate({
       scrollTop: $('#package-title').offset().top-20
@@ -366,23 +344,23 @@
   });
 
   $('select[name=continent]').change(function(){
-    url = "international-tour-all?type="+$("#isTourType").val()+"&continent="+$(this).val();
+    url = 'international-tour-all?type='+$('#isTourType').val()+'&continent='+$(this).val();
     $(location).attr("href", url);
   });
 
   $('select[name=country]').change(function(){
-    url = "international-tour-all?type="+$("#isTourType").val()+"&country="+$(this).val();
+    url = 'international-tour-all?type='+$('#isTourType').val()+'&country='+$(this).val();
     $(location).attr("href", url);
   });
 
   $('select[name=season]').change(function(){
-    url = "international-tour-all?type="+$("#isTourType").val()+"&season="+$(this).val();
+    url = 'international-tour-all?type='+$('#isTourType').val()+'&season='+$(this).val();
     $(location).attr("href", url);
   });
 
   $('#searchBar').keypress(function(e){
     if(e.which == 13) {
-      url = "international-tour-all?type="+$("#isTourType").val()+"&keysearch="+$(this).val();
+      url = 'international-tour-all?type='+$('#isTourType').val()+'&keysearch='+$(this).val();
       $(location).attr("href", url);
     }
   });
@@ -424,8 +402,8 @@
             	$result += '</div></div></div>';
             }
             $('#package-list').html($result);
-            $( "#seeMoreProgram" ).click(function() {
-              $(this).attr("href","international-tour-all?type="+$("#isTourType").val());
+            $('#seeMoreProgram').click(function() {
+              $(this).attr('href','international-tour-all?type='+$('#isTourType').val());
             });
           }else{
             $result = '<div class="tours-program-box row"><div class="col-xs-12"><div id="package-title" class="title-header"><h2>LATEST TOUR PROGRAMS</h2><div class="line"><div class="tab"></div></div></div></div>';
@@ -459,7 +437,7 @@
     $('select[name=country]').val(0);
     $('select[name=season]').val(0);
 		$('.hilight-slide').owlCarousel({
-	      	pagination : false,
+	      pagination : false,
 	    	navigation: true,
 	    	items:3,
 	    	autoPlay: 5000,

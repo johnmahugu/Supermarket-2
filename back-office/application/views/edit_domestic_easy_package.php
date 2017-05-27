@@ -230,14 +230,7 @@ if(isset($price_range)){
 											?>
 												</optgroup>
 												<optgroup label="Extraordinary">
-                          <option value="5" night="3">5 Day / 3 Night</option>
-                          <option value="6" night="3">6 Day / 3 Night</option>
-                          <option value="6" night="4">6 Day / 4 Night</option>
-                          <option value="7" night="4">7 Day / 4 Night</option>
-                          <option value="8" night="5">8 Day / 5 Night</option>
-                          <option value="8" night="6">8 Day / 6 Night</option>
-                          <option value="9" night="5">9 Day / 5 Night</option>
-                          <option value="10" night="6">10 Day / 6 Night</option>
+                          <?php include('extraordinary.php') ; ?>
 												</optgroup>
                       </select>
 										</span>

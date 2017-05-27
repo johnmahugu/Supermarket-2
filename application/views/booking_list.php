@@ -34,7 +34,7 @@
           </div>
           <div class="contact">
             <h2>Add Line</h2>
-            <a href="http://line.me/ti/p/~bankzahaplus"><img src="<?=base_url()?>assets/images/ico-line.png" alt=""></a>
+            <a href="http://line.me/ti/p/XdJsl_Agtu"><img src="assets/images/ico-line.png" alt=""></a>
           </div>
           <div class="contact">
             <h2>Contact Us</h2>

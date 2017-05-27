@@ -48,11 +48,11 @@
           </div>
           <div class="contact">
             <h2>Add Line</h2>
-            <a href="http://line.me/ti/p/~bankzahaplus"><img src="<?=base_url()?>assets/images/ico-line.png" alt=""></a>
+            <a href="http://line.me/ti/p/XdJsl_Agtu"><img src="assets/images/ico-line.png" alt=""></a>
           </div>
           <div class="contact">
             <h2>Contact Us</h2>
-            <p><a href="tel:0875012500">02-222-2222</a></p>
+            <<p><a href="tel:025381811">02-5381811</a></p>
           </div>
         </div>
       </div>
@@ -183,6 +183,7 @@
               <span class="unit">person(s)</span>
             </div>
           </div>
+
           <?php
             if($condition->num_rows() > 0){
             	echo '<div class="form-group"><h3>Tour package option</h3>';
@@ -206,9 +207,9 @@
             </div>
           </div>
           <?php
-        }
+              }
             }
-            }
+          }
             $is_first = true;
             foreach($condition->result_array() AS $row){
               if($row['tc_type'] == 'option activity'){
@@ -261,6 +262,8 @@
 				</div>
         <?
       }
+      $est_date = explode(",",$package['tour_dayNight']);
+      if($est_date[1] > 0){
         ?>
           <div class="form-group">
             <h3>Select Room Type</h3>
@@ -313,6 +316,7 @@
               </div>
               <?php }
                 }
+              }
                 ?>
               <div class="form-group">
       					<h3>Spacial Request</h3>
@@ -325,8 +329,6 @@
                   <p id="total-amount" class="total">0</p><?=$package['tour_currency']?>
                 </div>
               </div>
-            </div>
-        </div>
       <div class="clear"></div>
       <div class="btn-wrapper">
         <div class="col-sm-4 col-sm-offset-4">
@@ -335,6 +337,7 @@
       </div>
     </div>
   </div>
+</div>
     <footer>
       <div class="container">
         <div class="row">
@@ -347,11 +350,11 @@
           <div class="col-sm-4 col-sm-offset-4 col-xs-12">
             <div class="contact">
               <h2>Add Line</h2>
-              <a href="http://line.me/ti/p/~bankzahaplus"><img src="<?=base_url()?>assets/images/ico-line.png" alt=""></a>
+              <a href="http://line.me/ti/p/XdJsl_Agtu"><img src="assets/images/ico-line.png" alt=""></a>
             </div>
             <div class="contact">
               <h2>Contact Us</h2>
-              <p><a href="tel:0875012500">02-222-2222</a></p>
+              <p><a href="tel:025381811">02-538-1811</a></p>
             </div>
           </div>
         </div>
@@ -361,6 +364,14 @@
         <input name="tour-nameSlug" type="hidden" value="<?php echo $package['tour_nameSlug']?>" required>
         <input name="booking-detail" type="hidden" value="" required>
       </form>
+      <?php
+      $est_date = explode(",",$package['tour_dayNight']);
+      if($est_date[1] > 0){
+        echo '<input id="isStay" type="hidden" value="1">';
+      }else{
+        echo '<input id="isStay" type="hidden" value="0">';
+      }
+       ?>
       <input id="isDoublePack" type="hidden" value="<?=$package['tour_doublePack']?>">
       <input id="isPrivateGroup" type="hidden" value="<?=$package['tour_privateGroup']?>">
       <input id="discountRate" type="hidden" value='<?=$package['tour_discountRate']?>'>
@@ -419,7 +430,7 @@
     	$('.priceroom').eq($index).text(numeral($price_starting).format('0,0'));
     	$count_input = $('.room_add').length;
     	for($i=1;$i<=$count_input;$i++){
-        if($('.room_add').eq($index).attr('room-type') != 'Children < 2 yrs'){
+          if($('.room_add').eq($index).attr('room-type') != 'Children < 2 yrs'){
           $result = parseInt($price_starting);
       		$result += parseInt($('.room_add').eq($index).val());
       		$('.priceroom').eq($i).text(numeral($result).format('0,0'));
@@ -569,69 +580,106 @@
           $('#alert-warning').html("This tour is double pack. Plese fill even number only");
       		$('#popup').modal('show');
         }else{
-          if(!check_room()){
-        		$tourist_total_num = $('#tourist-total-num').val();
-        		set_max($tourist_total_num);
-        		$('#alert-warning').html("Twin room can't stay alone.");
-        		$('#popup').modal('show');
-        	}else{
-        		$status_room = true;
-        		if($('select[name="daytrip"]').val() == null){
-        			$('#alert-warning').html('Plese select your interested day trip');
-        			$('#popup').modal('show');
-        		}else{
-        			$status_day = true;
-        			if(parseInt($('.amount').find('span').eq(0).html()) == parseInt($('.amount').find('span').eq(1).html())){
-        				$status_tourist = true;
-        			}
-        			if($status_room && $status_day && $status_tourist){
-        				$b_detail = '{"room":[';
-        				$count_list = $('.list').length;
-        				for($i=0;$i<$count_list;$i++){
-        					if(typeof($('.list').eq($i).find('input').eq(1).val()) != 'undefined' && $('.list').eq($i).find('input').eq(1).val() > 0){
-        						$roomtype = $('.list').eq($i).attr('room-type');
-        						$tourist = $('.list').eq($i).find('input').eq(1).val();
-        						$b_detail += '{"roomtype":"'+$roomtype+'","tourist_num":'+$tourist+'}';
-        						if(typeof($('.list').eq($i+1).find('input').eq(1).val()) != 'undefined' && $('.list').eq($i+1).find('input').eq(1).val() > 0){
-        							$b_detail += ',';
-        						}
-        					}
-        				}
-        				$b_detail += '],';
-        				$datestart = $('select[name="daytrip"]').find(':selected').attr('datestart');
-        				$datefinish = $('select[name="daytrip"]').find(':selected').attr('datefinish');
-        				$b_detail += '"date":[{"start":"'+$datestart+'","end":"'+$datefinish+'"}],';
-        				$tour_option = $('input.tour-option:checked');
-        				if($tour_option.length > 0){
-        					$b_detail += '"option":[';
-        					$tour_option.each(function(i){
-        						$b_detail += '{"condition":"'+$(this).attr('condition')+'","price":"'+$(this).attr('price')+'"}';
-        						if(i != $tour_option.length-1){
-        							$b_detail += ',';
-        						}
-        					});
-        					$b_detail += '],';
-        				}
-        				$totaltourist = $('#tourist-total-num').val();
-        				$b_detail += '"tourist":[{"total_tourist":'+$totaltourist+'}],';
-                if($('#private-group').is(":checked")){
-                  $b_detail += '"private-group":"true",';
-                }
-                if($('#spacial-request').val() != ''){
-                  $b_detail += '"special-request":"'+$('#spacial-request').val()+'",';
-                }
-        				$totalamount = numeral($('#total-amount').html()).format('0');
-        				$b_detail += '"total_amount":'+$totalamount+'';
-        				$b_detail += '}';
-        				$jsonData = JSON.stringify($b_detail);
-        				$('input[name=booking-detail]').val($jsonData);
-                document.forms['to-booking-info'].submit();
-        			}else{
-        				$('#alert-warning').html('Please fill in all tourist');
-        				$('#popup').modal('show');
-        			}
-        		}
-        	}
+          if($('#isStay').val() == '1'){
+            if(!check_room()){
+          		$tourist_total_num = $('#tourist-total-num').val();
+          		set_max($tourist_total_num);
+          		$('#alert-warning').html("Twin room can't stay alone.");
+          		$('#popup').modal('show');
+          	}else{
+          		$status_room = true;
+          		if($('select[name="daytrip"]').val() == null){
+          			$('#alert-warning').html('Plese select your interested day trip');
+          			$('#popup').modal('show');
+          		}else{
+          			$status_day = true;
+          			if(parseInt($('.amount').find('span').eq(0).html()) == parseInt($('.amount').find('span').eq(1).html())){
+          				$status_tourist = true;
+          			}
+          			if($status_room && $status_day && $status_tourist){
+          				$b_detail = '{"room":[';
+          				$count_list = $('.list').length;
+          				for($i=0;$i<$count_list;$i++){
+          					if(typeof($('.list').eq($i).find('input').eq(1).val()) != 'undefined' && $('.list').eq($i).find('input').eq(1).val() > 0){
+          						$roomtype = $('.list').eq($i).attr('room-type');
+          						$tourist = $('.list').eq($i).find('input').eq(1).val();
+          						$b_detail += '{"roomtype":"'+$roomtype+'","tourist_num":'+$tourist+'}';
+          						if(typeof($('.list').eq($i+1).find('input').eq(1).val()) != 'undefined' && $('.list').eq($i+1).find('input').eq(1).val() > 0){
+          							$b_detail += ',';
+          						}
+          					}
+          				}
+          				$b_detail += '],';
+          				$datestart = $('select[name="daytrip"]').find(':selected').attr('datestart');
+          				$datefinish = $('select[name="daytrip"]').find(':selected').attr('datefinish');
+          				$b_detail += '"date":[{"start":"'+$datestart+'","end":"'+$datefinish+'"}],';
+          				$tour_option = $('input.tour-option:checked');
+          				if($tour_option.length > 0){
+          					$b_detail += '"option":[';
+          					$tour_option.each(function(i){
+          						$b_detail += '{"condition":"'+$(this).attr('condition')+'","price":"'+$(this).attr('price')+'"}';
+          						if(i != $tour_option.length-1){
+          							$b_detail += ',';
+          						}
+          					});
+          					$b_detail += '],';
+          				}
+          				$totaltourist = $('#tourist-total-num').val();
+          				$b_detail += '"tourist":[{"total_tourist":'+$totaltourist+'}],';
+                  if($('#private-group').is(":checked")){
+                    $b_detail += '"private-group":"true",';
+                  }
+                  if($('#spacial-request').val() != ''){
+                    $b_detail += '"special-request":"'+$('#spacial-request').val()+'",';
+                  }
+          				$totalamount = numeral($('#total-amount').html()).format('0');
+          				$b_detail += '"total_amount":'+$totalamount+'';
+          				$b_detail += '}';
+          				$jsonData = JSON.stringify($b_detail);
+          				$('input[name=booking-detail]').val($jsonData);
+                  document.forms['to-booking-info'].submit();
+          			}else{
+          				$('#alert-warning').html('Please fill in all tourist');
+          				$('#popup').modal('show');
+          			}
+          		}
+          	}
+          }else{
+            if($('select[name="daytrip"]').val() == null){
+              $('#alert-warning').html('Plese select your interested day trip');
+              $('#popup').modal('show');
+            }else{
+              $b_detail = '';
+              $datestart = $('select[name="daytrip"]').find(':selected').attr('datestart');
+              $datefinish = $('select[name="daytrip"]').find(':selected').attr('datefinish');
+              $b_detail += '{"date":[{"start":"'+$datestart+'","end":"'+$datefinish+'"}],';
+              $tour_option = $('input.tour-option:checked');
+              if($tour_option.length > 0){
+                $b_detail += '"option":[';
+                $tour_option.each(function(i){
+                  $b_detail += '{"condition":"'+$(this).attr('condition')+'","price":"'+$(this).attr('price')+'"}';
+                  if(i != $tour_option.length-1){
+                    $b_detail += ',';
+                  }
+                });
+                $b_detail += '],';
+              }
+              $totaltourist = $('#tourist-total-num').val();
+              $b_detail += '"tourist":[{"total_tourist":'+$totaltourist+'}],';
+              if($('#private-group').is(":checked")){
+                $b_detail += '"private-group":"true",';
+              }
+              if($('#spacial-request').val() != ''){
+                $b_detail += '"special-request":"'+$('#spacial-request').val()+'",';
+              }
+              $totalamount = numeral($('#total-amount').html()).format('0');
+              $b_detail += '"total_amount":'+$totalamount+'';
+              $b_detail += '}';
+              $jsonData = JSON.stringify($b_detail);
+              $('input[name=booking-detail]').val($jsonData);
+              document.forms['to-booking-info'].submit();
+            }
+          }
         }
     });
 
@@ -667,8 +715,10 @@
     				}
     			}
     			if($count == 0){
-    				$('#alert-warning').html("No single room in this day trip.");
-    				$('#popup').modal('show');
+            if($('isStay').val() == 1){
+              $('#alert-warning').html("No single room in this day trip.");
+      				$('#popup').modal('show');
+            }
     			}
     			$('.amount').find('span').eq(0).html($count);
     		break;
@@ -695,6 +745,7 @@
     }
 
     function sum_amount(){
+      if($('isStay').val() == 1){
     	$count_list = $('.list').length;
     	$sum = 0;
       $extension_activity_price = 0;
@@ -733,6 +784,10 @@
           }
         }
       }
+    }else{
+      $sum = $('select[name="daytrip"]').find(':selected').val()*$('#tourist-total-num').val();
+      $('#total-amount').html(numeral($sum).format('0,0'));
+    }
     }
 
     function check_room(){

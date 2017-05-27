@@ -46,7 +46,7 @@
 				</div>
 				<div class="contact">
 					<h2>Add Line</h2>
-					<a href="#"><img src="assets/images/ico-line.png" alt=""></a>
+					<a href="http://line.me/ti/p/XdJsl_Agtu"><img src="assets/images/ico-line.png" alt=""></a>
 				</div>
 				<div class="contact">
 					<h2>Contact Us</h2>
@@ -236,8 +236,9 @@
         </div>
       </div>
 	</div>
-	<footer>
-	</footer>
+  <?php
+	include 'footer.php';
+  ?>
 </body>
 <input type="hidden" id="isTourType" value="sp">
 <input type="hidden" id="cPackage" value="<?=$c_package?>">
@@ -274,7 +275,7 @@
 	});
 
   function filter(){
-    $url = "international-tour-all?type="+$("#isTourType").val();
+    $url = 'international-tour-all?type='+$('#isTourType').val();
     $continent = $('select[name=continent]').val();
     if($continent != '0'){
        $url += '&continent='+$continent;
