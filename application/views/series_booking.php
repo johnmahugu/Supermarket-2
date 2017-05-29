@@ -481,6 +481,45 @@
       }
     });
 
+    $('#tourist-total-num').click(function(){
+      $('#total-tourist').html($(this).val());
+    	$total = parseInt($(this).val(),10);
+    	switch(true){
+    		case ($total == 0 || $total < 0):
+    			$(this).val(1);
+    			set_room(1);
+          $('#total-tourist').html(1);
+    			$('#alert-warning').html('Invalid number');
+    			$('#popup').modal('show');
+    		break;
+    		case ($total == 100 || $total > 100):
+    			$(this).val(1);
+    			set_room(1);
+    			$('#alert-warning').html('Invalid number');
+    			$('#popup').modal('show');
+    		break;
+    		case ($total == 1):
+    			set_room(1);
+    			set_max($total);
+    		break;
+    		case ($total > 0):
+    			set_room(2);
+    			set_max($total);
+    		break;
+    	}
+      $direction = this.defaultValue < this.value
+      this.defaultValue = this.value;
+      if(!$direction){
+        $count_list = $('.list').length;
+      	for($i=0;$i<$count_list;$i++){
+          $('.list').eq($i).find('input').eq(1).val(0);
+        }
+        set_room(2);
+        set_max();
+        sum_amount();
+      }
+    });
+
     /**************Change tourist****************/
     $('#tourist-total-num').blur(function(){
     	$total = parseInt($(this).val(),10);
@@ -745,7 +784,7 @@
     }
 
     function sum_amount(){
-      if($('isStay').val() == 1){
+      if($('#isStay').val() == '1'){
     	$count_list = $('.list').length;
     	$sum = 0;
       $extension_activity_price = 0;

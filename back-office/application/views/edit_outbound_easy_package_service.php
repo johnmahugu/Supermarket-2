@@ -160,11 +160,6 @@ foreach($condition->result_array() as $row){
                   $count++;
                 }
               }
-              if($count > 0){
-                echo '<input type="checkbox" name="multi" checked>Multiple Hotel Options';
-              }else{
-                echo '<input type="checkbox" name="multi">Multiple Hotel Options';
-              }
                ?>
 							</p>
 						</div>
@@ -186,7 +181,7 @@ foreach($condition->result_array() as $row){
 					</div>
 				</div>
 				<div class="row">
-          <div class="list-card card-header hide" id="multi">
+          <div class="list-card card-header" id="multi">
             <div class="header">
               <h2>Hotel</h2>
             </div>
@@ -210,43 +205,46 @@ foreach($condition->result_array() as $row){
             <hr>
             <div class="content">
               <?php
+              $count = 0;
               foreach($condition->result_array() as $row){
                 if($row['tc_type'] == 'hotel'){
                   $count++;
                 }
               }
               if($count > 0){
-                $hotel = json_decode($row['tc_data'],true);
-                $c_hotel = count($hotel);
-                for($i=0;$i<$c_hotel;$i++){
-                  $twin_price = '';
-                  $extra_twin_price = '';
-                  $single_price = '';
-                  $extra_single_price = '';
-                  $cwb_price = '';
-                  $cwob_price = '';
-                  $c_price = '';
-                  for($k=0;$k<count($hotel[$i]['room']);$k++){
-                    switch($hotel[$i]['room'][$k]['roomtype']){
-                      case 'Twin room':
-                      $twin_price = $hotel[$i]['room'][$k]['price'];
-                      $extra_twin_price = $hotel[$i]['room'][$k]['extension'];
-                      break;
-                      case 'Single room':
-                      $single_price = $hotel[$i]['room'][$k]['price'];
-                      $extra_single_price = $hotel[$i]['room'][$k]['extension'];
-                      break;
-                      case 'Children 2 - 12 yrs (with bed)':
-                      $cwb_price = $hotel[$i]['room'][$k]['price'];
-                      break;
-                      case 'Children 2 - 12 yrs (without bed)':
-                      $cwob_price = $hotel[$i]['room'][$k]['price'];
-                      break;
-                      case 'Children < 2 yrs':
-                      $c_price =  $hotel[$i]['room'][$k]['price'];
-                      break;
+                foreach($condition->result_array() as $row){
+                  if($row['tc_type'] == 'hotel'){
+                  $hotel = json_decode($row['tc_data'],true);
+                  $c_hotel = count($hotel);
+                  for($i=0;$i<$c_hotel;$i++){
+                    $twin_price = '';
+                    $extra_twin_price = '';
+                    $single_price = '';
+                    $extra_single_price = '';
+                    $cwb_price = '';
+                    $cwob_price = '';
+                    $c_price = '';
+                    for($k=0;$k<count($hotel[$i]['room']);$k++){
+                      switch($hotel[$i]['room'][$k]['roomtype']){
+                        case 'Twin room':
+                        $twin_price = $hotel[$i]['room'][$k]['price'];
+                        $extra_twin_price = $hotel[$i]['room'][$k]['extension'];
+                        break;
+                        case 'Single room':
+                        $single_price = $hotel[$i]['room'][$k]['price'];
+                        $extra_single_price = $hotel[$i]['room'][$k]['extension'];
+                        break;
+                        case 'Children 2 - 12 yrs (with bed)':
+                        $cwb_price = $hotel[$i]['room'][$k]['price'];
+                        break;
+                        case 'Children 2 - 12 yrs (without bed)':
+                        $cwob_price = $hotel[$i]['room'][$k]['price'];
+                        break;
+                        case 'Children < 2 yrs':
+                        $c_price =  $hotel[$i]['room'][$k]['price'];
+                        break;
+                      }
                     }
-                  }
               ?>
               <div class="form-group">
                 <div class="col-sm-4">
@@ -308,7 +306,7 @@ foreach($condition->result_array() as $row){
                 </div>
 
                 <div class="col-sm-3 col-xs-6">
-                  <label>SGL/TWN</label>
+                  <label>SGL</label>
                   <input class="extra-single-price" type="number" placeholder="PRPN" value="<?=$extra_single_price?>">
                   <span class="unit">
                     <span><?=$package['tour_currency']?></span>
@@ -316,7 +314,7 @@ foreach($condition->result_array() as $row){
                 </div>
 
                 <div class="col-sm-3 col-xs-6">
-                  <label>TRP</label>
+                  <label>TWN/TRP</label>
                   <input class="extra-twin-price" type="number" placeholder="PRPN" value="<?=$extra_twin_price?>">
                   <span class="unit">
                     <span><?=$package['tour_currency']?></span>
@@ -326,8 +324,10 @@ foreach($condition->result_array() as $row){
                 <div class="col-xs-12"><br><hr></div>
               </div>
               <?php
+                }
+              }
             }
-              }else{
+          }else{
                 ?>
                 <div class="form-group">
                   <div class="col-sm-4">
@@ -384,7 +384,7 @@ foreach($condition->result_array() as $row){
                   </div>
 
                   <div class="col-sm-3 col-xs-6">
-                    <label>SGL/TWN</label>
+                    <label>SGL</label>
                     <input class="extra-single-price" type="number" placeholder="PRPN">
                     <span class="unit">
                       <span><?=$package['tour_currency']?></span>
@@ -392,7 +392,7 @@ foreach($condition->result_array() as $row){
                   </div>
 
                   <div class="col-sm-3 col-xs-6">
-                    <label>TRP</label>
+                    <label>TWN/TRP</label>
                     <input class="extra-twin-price" type="number" placeholder="PRPN">
                     <span class="unit">
                       <span><?=$package['tour_currency']?></span>

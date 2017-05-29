@@ -81,9 +81,10 @@ class PackageCL extends CI_Controller {
  }
 
  function change_public() {
-  $nameSlug = $this->input->get('nameSlug');
-  $status   = $this->input->get('status');
-  $this->PackageMD->changePublic($nameSlug, $status);
+  $type = $this->input->get('type');
+     $nameSlug = $this->input->get('nameSlug');
+     $status   = $this->input->get('status');
+     echo $this->PackageMD->changePublic($type, $nameSlug, $status);
  }
 
  function change_highlight() {

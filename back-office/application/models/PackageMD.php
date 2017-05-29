@@ -12,17 +12,17 @@ class PackageMD extends CI_Model {
 
  function getPackage($country, $type) {
   self::$db->select("
-            tour.tour_id,
-            tour.tour_nameTH,
-            tour.tour_nameEN,
-            tour.tour_nameSlug,
-            IF(tour.tour_type = 'sp', 'SERIES PACKAGE', 'EASY PACKAGE') AS tour_type,
-            tour.tour_imgCover,
-            tour.tour_dayNight,
-            tour.tour_startPrice,
-            tour.tour_priceRange,
-            tour.tour_currency,
-            image.img_source,
+      tour.tour_id,
+      tour.tour_nameTH,
+      tour.tour_nameEN,
+      tour.tour_nameSlug,
+      tour.tour_type,
+      tour.tour_imgCover,
+      tour.tour_dayNight,
+      tour.tour_startPrice,
+      tour.tour_priceRange,
+      tour.tour_currency,
+      image.img_source,
       tour.tour_public,
       tour.tour_hilight
         ");
@@ -37,6 +37,7 @@ class PackageMD extends CI_Model {
    self::$db->where('tour.tour_nationality !=', 'thailand domestic tour');
   }
   self::$db->group_by('tour.tour_id');
+  self::$db->order_by('tour.tour_id', 'DESC');
   return self::$db->get();
  }
 
@@ -44,7 +45,7 @@ class PackageMD extends CI_Model {
   self::$db->select("
     tour.tour_id,
     tour.tour_nameSlug,
-    IF(tour.tour_type = 'sp', 'SERIES PACKAGE', 'EASY PACKAGE') AS tour_type,
+    tour.tour_type,
     tour.tour_imgCover,
     tour.tour_dayNight,
     tour.tour_startPrice,
@@ -77,6 +78,7 @@ class PackageMD extends CI_Model {
    self::$db->where('address.country_id', $country);
   }
   self::$db->group_by('tour.tour_id');
+  self::$db->order_by('tour.tour_id', 'DESC');
   return self::$db->get();
  }
 
@@ -91,11 +93,35 @@ class PackageMD extends CI_Model {
   return self::$db->trans_status();
  }
 
- function changePublic($nameSlug, $status) {
-  $query = "UPDATE tour
-    SET tour.tour_public = '" . $status . "'
-    WHERE tour.tour_nameSlug = '" . $nameSlug . "'";
-  self::$db->query($query);
+ function changePublic($type, $nameSlug, $status) {
+   if($type == 'sp'){
+     $query = "UPDATE tour
+       SET tour.tour_public = '" . $status . "'
+       WHERE tour.tour_nameSlug = '" . $nameSlug . "'";
+     self::$db->query($query);
+     return '1';
+   }else{
+     if($status == '1'){
+       $query = "SELECT tc.tc_id FROM tour_condition tc JOIN tour t ON tc.tour_id = t.tour_id
+       WHERE t.tour_nameSlug = '".$nameSlug."' AND tc.tc_type = 'hotel' AND tc.tc_data != '';";
+       $row = self::$db->query($query)->num_rows();
+       if($row > 0){
+         $query = "UPDATE tour
+           SET tour.tour_public = '" . $status . "'
+           WHERE tour.tour_nameSlug = '" . $nameSlug . "'";
+         self::$db->query($query);
+         return '1';
+       }else{
+         return '0';
+       }
+     }else{
+       $query = "UPDATE tour
+         SET tour.tour_public = '0'
+         WHERE tour.tour_nameSlug = '" . $nameSlug . "'";
+       self::$db->query($query);
+       return '1';
+     }
+   }
  }
 
  function changeHighlight($nameSlug, $status) {
@@ -144,14 +170,14 @@ class PackageMD extends CI_Model {
 
  function editPackageCondition($tour_nameSlug) {
   self::$db->select("
-            tour.tour_id,
-            tour.tour_nameTH,
-            tour.tour_nameEN,
-            tour.tour_nameSlug,
-            tour.tour_startPrice,
-            tour.tour_priceRange,
+      tour.tour_id,
+      tour.tour_nameTH,
+      tour.tour_nameEN,
+      tour.tour_nameSlug,
+      tour.tour_startPrice,
+      tour.tour_priceRange,
       tour.tour_openBooking,
-            tour.tour_currency,
+      tour.tour_currency,
       tour.tour_privateGroup,
       address.*,
       agent.agent_code,

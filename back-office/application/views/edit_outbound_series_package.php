@@ -383,6 +383,9 @@ $(document).ready(function(){
   $('#startPrice').val(numberWithSpaces($start_price));
 });
 
+$('#submit').click(function(){
+  submit();
+});
 
 $('#submitfile').click(function(){
   var formData = new FormData($("#update-itinerary")[0]);

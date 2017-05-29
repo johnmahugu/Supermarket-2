@@ -200,8 +200,14 @@ $('.public').change(function(){
 		type: 'GET',
 		url:'/change-public',
 		data:{
+			'type': $('#isTourType').val(),
 			'nameSlug': $nameSlug,
 			'status': $status
+		},success:function(data){
+				if(data == '0'){
+					alert('Please enter the information about hotel before publishing');
+					$('.public[nameSlug="'+$nameSlug+'"]').prop('checked', false);
+				}
 			}
 	});
 });
@@ -219,7 +225,7 @@ $('.highlight').change(function(){
 		data:{
 			'nameSlug': $nameSlug,
 			'status': $status
-			}
+		}
 	});
 });
 

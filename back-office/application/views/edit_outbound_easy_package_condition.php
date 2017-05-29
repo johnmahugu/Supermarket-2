@@ -238,11 +238,11 @@ foreach($condition->result_array() as $row){
                   echo '</div><div class="col-md-3 form-inline"><label>Condition</label><span>';
                   echo '<select>';
                   if($row['tc_condition'] == 'increase'){
-                    echo '<option class="optioncond" selected>Increase</option>';
-                    echo '<option class="optioncond">Decrease</option>';
+                    echo '<option class="optioncond" value="increase" selected>Increase</option>';
+                    echo '<option class="optioncond" value="decrease">Decrease</option>';
                   }else{
-                    echo '<option class="optioncond" selected>Decrease</option>';
-                    echo '<option class="optioncond">Increase</option>';
+                    echo '<option class="optioncond" value="decrease" selected>Decrease</option>';
+                    echo '<option class="optioncond" value="increase">Increase</option>';
                   }
                   echo '</select>';
                   echo '</span></div>';
@@ -257,8 +257,8 @@ foreach($condition->result_array() as $row){
 								echo '<input class="option" type="text" placeholder="Option Name">';
 								echo '</div><div class="col-md-3 form-inline"><label>Condition</label><span>';
 								echo '<select>';
-								echo '<option class="optioncond" selected>Increase</option>';
-								echo '<option class="optioncond">Decrease</option>';
+								echo '<option class="optioncond" value="increase" selected>Increase</option>';
+								echo '<option class="optioncond" value="decrease">Decrease</option>';
 								echo '</select>';
 								echo '</span></div>';
 								echo '<div class="col-md-3">';
@@ -418,11 +418,11 @@ foreach($condition->result_array() as $row){
               if($package['tour_minimum'] > 0){
                 echo '<div class="form-group">';
                 echo '<div class="col-md-4 col-sm-6">';
-                echo '<input type="checkbox" checked>';
+                echo '<input id="paxminimum-cb" type="checkbox" checked>';
               }else{
                 echo '<div class="form-group cb-nonselect">';
                 echo '<div class="col-md-4 col-sm-6">';
-                echo '<input type="checkbox">';
+                echo '<input id="paxminimum-cb" type="checkbox">';
               }
                ?>
 									<p>Minimum Tourists</p>
@@ -487,6 +487,8 @@ $(document).ready(function(){
   $('#startPrice').val(numberWithSpaces($startPrice));
 });
 
+$()
+
 $('#submit').click(function(){
   $nameSlug = $('#nameSlug').val();
   $nameTH = $('#nameTH').val();
@@ -516,7 +518,7 @@ $('#submit').click(function(){
   }
 
   $option = $('.option');
-  $optioncond = $('.optioncond');
+  $optioncond = $('.optioncond:selected');
   $optionprice = $('.optionprice');
   $c_option = $option.length;
   $optionname_a = new Array();
@@ -525,7 +527,7 @@ $('#submit').click(function(){
   for($i=0;$i<$c_option;$i++){
     if($option.eq($i).val() != '' && $optionprice.eq($i).val() != ''){
       $optionname_a.push($option.eq($i).val());
-      $optioncond_a.push($optioncond.eq($i).html().toLowerCase());
+      $optioncond_a.push($optioncond.eq($i).val());
       $optionprice_a.push($optionprice.eq($i).val());
     }
   }
@@ -566,7 +568,13 @@ $('#submit').click(function(){
   }else{
     $('input[name=paxdouble]').val('0');
   }
-  $paxminimum = $('#paxminimum').val();
+
+  $paxminimum = $('#paxminimum-cb');
+  if($paxminimum.prop('checked') == true){
+    $paxminimum = $('#paxminimum').val();
+  }else{
+    $paxminimum = '';
+  }
 
   $('input[name=oldNameSlug]').val($nameSlug);
   $('input[name=newNameSlug]').val($newNameSlug);
